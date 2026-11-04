@@ -31,8 +31,15 @@
         header.classList.toggle("is-scrolled", window.scrollY > 16);
 
         // No fim da página, a última seção pode nunca chegar ao meio da tela.
+        // Então, ao chegar no rodapé, o último link do menu fica ativo...
+        // MAS só se a última seção do menu for mesmo a última da página.
+        // (Hoje "Contato" é a última seção da página, porém não está no
+        // menu; sem esta checagem o link "Eventos" ficaria aceso lá embaixo.)
+        // Se você recolocar "Contato" no menu, ele volta a funcionar sozinho.
         const noFim = window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
-        if (noFim && ids.length) setActive(ids[ids.length - 1]);
+        const ultimaSecao = document.querySelector("main > section:last-of-type");
+        const ultimoId = ids[ids.length - 1];
+        if (noFim && ultimaSecao && ultimaSecao.id === ultimoId) setActive(ultimoId);
     }
 
     onScroll();

@@ -17,8 +17,16 @@
     <!-- Avisa o CSS de que o JavaScript está ativo (usado pelo menu de celular). -->
     <script>document.documentElement.classList.add("js");</script>
 
+    <!--
+        FONTE DO SITE INTEIRO: Outfit (pesos 400, 500, 600, 700 e 800).
+        Todas as seções usam esta mesma fonte. Os pesos pedidos aqui são os
+        únicos que carregam: se um CSS pedir um peso que não está na lista
+        (ex.: 900), o navegador usa o mais próximo. Para trocar a fonte do
+        site: troque "Outfit" neste link E na variável --fonte-principal
+        (no :root do header-hero.css).
+    -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
     <link
@@ -26,14 +34,13 @@
         rel="stylesheet"
     >
 
-    <!-- Fontes das seções Cidades e Quem somos (Inter, Playfair Display, Knewave, Quicksand). -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Knewave&family=Playfair+Display:wght@700;800;900&family=Quicksand:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
+    <!--
+        ARQUIVOS DE ESTILO (a ORDEM importa: se duas regras tiverem o mesmo
+        peso, vale a do arquivo que vem por último):
+          1) header-hero.css       -> cores, fonte padrão, fundo bege,
+                                      títulos, cabeçalho, hero e Eventos
+          2) cidades-quem-somos.css -> seções Quem somos, Cidades e Mapas
+    -->
     <link rel="stylesheet" href="header-hero.css">
     <link rel="stylesheet" href="cidades-quem-somos.css">
 
@@ -95,6 +102,18 @@
             >
                 <ul class="main-navigation__list">
 
+                    <!--
+                        ORDEM DO MENU: os itens aparecem na MESMA ordem em que
+                        estão aqui. Para mudar a ordem, recorte um bloco
+                        <li>...</li> inteiro e cole em outra posição.
+                        Cada href (ex.: "#cidades") deve ser o id de uma
+                        seção do <main> mais abaixo. Hoje a ordem do menu
+                        acompanha a ordem da página: Início, Quem somos,
+                        Cidades e Eventos.
+                        O item "Contato" foi retirado do menu. Para recolocar,
+                        crie um <li> igual aos outros com href="#contato"
+                        (ícone "mail"); a seção #contato continua na página.
+                    -->
                     <li class="main-navigation__item">
                         <a class="main-navigation__link" href="#inicio" aria-current="location">
                             <span
@@ -102,6 +121,16 @@
                                 aria-hidden="true"
                             >home</span>
                             <span class="main-navigation__text">Início</span>
+                        </a>
+                    </li>
+
+                    <li class="main-navigation__item">
+                        <a class="main-navigation__link" href="#quem-somos">
+                            <span
+                                class="main-navigation__icon material-symbols-rounded"
+                                aria-hidden="true"
+                            >groups</span>
+                            <span class="main-navigation__text">Quem somos</span>
                         </a>
                     </li>
 
@@ -122,26 +151,6 @@
                                 aria-hidden="true"
                             >event</span>
                             <span class="main-navigation__text">Eventos</span>
-                        </a>
-                    </li>
-
-                    <li class="main-navigation__item">
-                        <a class="main-navigation__link" href="#quem-somos">
-                            <span
-                                class="main-navigation__icon material-symbols-rounded"
-                                aria-hidden="true"
-                            >groups</span>
-                            <span class="main-navigation__text">Quem somos</span>
-                        </a>
-                    </li>
-
-                    <li class="main-navigation__item">
-                        <a class="main-navigation__link" href="#contato">
-                            <span
-                                class="main-navigation__icon material-symbols-rounded"
-                                aria-hidden="true"
-                            >mail</span>
-                            <span class="main-navigation__text">Contato</span>
                         </a>
                     </li>
 
@@ -166,14 +175,103 @@
                     <p class="hero__description">
                         Descubra destinos, experiências e paisagens que tornam o Pantanal Paulista único.
                     </p>
+                    <!--
+                        BOTÃO DO HERO (removido).
+                        Para RECOLOCAR o botão "Conheça as cidades", apague
+                        as marcas de comentário (a abertura e o fechamento) ao
+                        redor do <a> abaixo. Ele é estilizado por .hero__action
+                        no header-hero.css.
+                        Para mudar o destino do clique, troque o href
+                        (ex.: "#quem-somos" leva à seção Quem somos).
 
                     <a class="hero__action" href="#cidades">
                         Conheça as cidades
                     </a>
+                    -->
                 </div>
             </div>
         </section>
 
+        <!-- =================================================================
+             ORDEM DAS SEÇÕES DA PÁGINA (de cima para baixo):
+               1) Hero (banner)            id="inicio"
+               2) Quem somos               id="quem-somos"
+               3) Cidades                  id="cidades"
+               4) Informações e mapas      id="mapas" (escondida até clicar
+                                           em "Saiba mais" de uma cidade)
+               5) Eventos                  id="eventos"
+               6) Contato                  id="contato"
+             Para mudar a ordem, recorte uma <section> INTEIRA (da abertura
+             até o </section> dela) e cole em outro lugar. Lembre de mudar
+             também a ordem dos itens do menu lá em cima, para os dois
+             ficarem iguais.
+             Todas as seções abaixo do hero têm class="content-section", que
+             é o que aplica o fundo bege (ver header-hero.css).
+             ================================================================= -->
+
+        <!-- ============ SEÇÃO QUEM SOMOS (id="quem-somos") ============
+             Estilo: cidades-quem-somos.css, bloco "13. QUEM SOMOS". -->
+        <section class="content-section" id="quem-somos" aria-labelledby="quem-somos-title">
+
+    <!-- 1) APRESENTAÇÃO -->
+    <div class="qs-hero">
+        <div class="qs-texto">
+            <h2 class="qs-titulo" id="quem-somos-title">QUEM SOMOS</h2>
+            <p>O Pantanal Paulista é uma região do extremo noroeste do Estado de São Paulo, na divisa com Mato Grosso do Sul, formada pelos encontros dos rios Tietê, Paraná, Aguapeí e São José dos Dourados. Ali, as grandes represas e as áreas alagadas lembram o Pantanal original, e daí vem o nome. Ele não faz parte oficialmente do bioma Pantanal, mas divide com ele rios, várzeas e uma fauna riquíssima.</p>
+            <p>Reunimos neste site as cidades que integram essa rota, com suas histórias, atrações e dicas de como chegar. A região fica a pelo menos 650 km da capital paulista e ainda é pouco conhecida pelos próprios paulistas: aqui o Tietê chega limpo, com praias de água doce, pesca esportiva, ecoturismo e muita natureza preservada.</p>
+        </div>
+
+        <!-- A foto é definida no CSS (cidades-quem-somos.css, classe .qs-imagem). -->
+        <div class="qs-imagem" role="img" aria-label="Foto do Pantanal Paulista"></div>
+    </div>
+
+    <!-- 2) O PANTANAL PAULISTA EM DETALHES -->
+    <div class="qs-destaques">
+        <article class="qs-card">
+            <h3>Onde fica</h3>
+            <p>No noroeste paulista, em cidades como Andradina, Castilho, Ilha Solteira, Itapura, Pereira Barreto, Sud Mennucci e Suzanápolis. A Região Turística reúne cerca de 215 mil habitantes (estimativa de 2021).</p>
+        </article>
+        <article class="qs-card">
+            <h3>Rios e águas</h3>
+            <p>Os reservatórios de Jupiá, Ilha Solteira e Três Irmãos, criados pelas usinas do Complexo de Urubupungá, formaram praias fluviais, canais e planícies inundáveis, como a foz do Tietê, em Itapura.</p>
+        </article>
+        <article class="qs-card">
+            <h3>Natureza protegida</h3>
+            <p>O Parque Estadual do Aguapeí e a RPPN Foz do Rio Aguapeí somam cerca de 23 mil hectares e abrigam um dos últimos refúgios do cervo-do-pantanal no Estado, além de aves, capivaras e jacarés.</p>
+        </article>
+        <article class="qs-card">
+            <h3>Turismo e cultura</h3>
+            <p>Pesca esportiva (principalmente o tucunaré), mergulho, passeios de barco, festas de peão, herança da imigração japonesa e uma história ligada à ferrovia, às usinas e ao Brasil Império.</p>
+        </article>
+    </div>
+
+    <!-- 3) LINHA DO TEMPO -->
+    <h2 class="qs-titulo qs-titulo-menor">LINHA DO TEMPO</h2>
+    <p class="qs-subtitulo">Da época das “estradas de água” à Rota Turística Pantanal Paulista</p>
+
+    <div class="linha-tempo">
+        <!-- Para adicionar um marco, copie um bloco <div class="marco"> e cole na ordem certa.
+             Os lados esquerdo/direito se alternam sozinhos. -->
+        <div class="marco"><span class="marco-ano">Antes de 1858</span><h3>Estradas de água</h3><p>Os rios Tietê, Paraná e Aguapeí servem de caminho para indígenas e, depois, para os bandeirantes.</p></div>
+        <div class="marco"><span class="marco-ano">1858</span><h3>Colônia Militar de Itapura</h3><p>O Império cria a colônia na foz do Tietê, junto aos saltos de Itapura, para proteger a fronteira.</p></div>
+        <div class="marco"><span class="marco-ano">1928</span><h3>Nasce Novo Oriente</h3><p>Surge a colônia que viria a ser Pereira Barreto, marco da imigração japonesa na região.</p></div>
+        <div class="marco"><span class="marco-ano">Anos 1930</span><h3>A ferrovia chega</h3><p>A Estrada de Ferro Noroeste do Brasil avança (Guaraçaí, 1936) e cidades como Andradina (1937) são fundadas.</p></div>
+        <div class="marco"><span class="marco-ano">1962–1974</span><h3>Usina de Jupiá</h3><p>As obras começam em 1962, a usina entra em operação em 1969 e o reservatório de 330 km² inunda a antiga Itapura.</p></div>
+        <div class="marco"><span class="marco-ano">1965–1978</span><h3>Usina de Ilha Solteira</h3><p>Obras iniciadas em 1965, operação em 1973 e conclusão em 1978. Nasce a cidade planejada de Ilha Solteira.</p></div>
+        <div class="marco"><span class="marco-ano">1980–1991</span><h3>Três Irmãos e o Canal</h3><p>Começam as obras do Canal de Pereira Barreto (1980) e a Usina de Três Irmãos é inaugurada (1991), submergindo a antiga Ponte Novo Oriente.</p></div>
+        <div class="marco"><span class="marco-ano">1996–1998</span><h3>Compensação ambiental</h3><p>Pela Resolução Conama nº 2/1996, a CESP precisa criar áreas protegidas. Em 2 de julho de 1998, o Decreto 43.269 cria o Parque Estadual do Aguapeí, com 9.043 hectares.</p></div>
+        <div class="marco"><span class="marco-ano">2010</span><h3>RPPN Foz do Rio Aguapeí</h3><p>Reserva criada pela Resolução SMA 117/2010. Junto ao Parque, forma cerca de 23 mil hectares conhecidos como Pantanal Paulista.</p></div>
+        <div class="marco"><span class="marco-ano">2019–2021</span><h3>Rota Turística</h3><p>Os municípios se reúnem para criar um roteiro para agências, um site e um aplicativo. Em 2021 a RT, com dez municípios, elege sua interlocutora regional.</p></div>
+        <div class="marco"><span class="marco-ano">2025</span><h3>Rota 7 do Estado</h3><p>A Setur-SP inclui o “Pantanal Paulista e Tietê Vivo” entre as rotas turísticas oficiais do Estado.</p></div>
+        <div class="marco"><span class="marco-ano">Hoje</span><h3>Este site</h3><p>Reúne as cidades da região para divulgar o Pantanal Paulista a visitantes e moradores.</p></div>
+    </div>
+
+</section>
+
+        <!-- ============ SEÇÃO CIDADES (id="cidades") ============
+             Cards das cidades. O botão "Saiba mais" de cada card leva ao
+             mapa/informações dela (seção #mapas, logo abaixo).
+             Estilo: cidades-quem-somos.css. -->
         <section class="content-section" id="cidades" aria-labelledby="cidades-title">
 
             <!-- Título principal da seção -->
@@ -411,7 +509,7 @@
                - o botão para voltar à lista de cidades
              O endereço do mapa fica no "src" do iframe (q=Nome da cidade).
              ================================================================= -->
-        <section id="mapas">
+        <section class="content-section" id="mapas">
 
             <!-- Título da seção de informações + mapas -->
             <h2 class="titulos">INFORMAÇÕES E LOCALIZAÇÃO</h2>
@@ -1104,65 +1202,12 @@
             </button>
         </section>
 
-        <section class="content-section" id="quem-somos" aria-labelledby="quem-somos-title">
-
-    <!-- 1) APRESENTAÇÃO -->
-    <div class="qs-hero">
-        <div class="qs-texto">
-            <h2 class="qs-titulo" id="quem-somos-title">QUEM SOMOS</h2>
-            <p>O Pantanal Paulista é uma região do extremo noroeste do Estado de São Paulo, na divisa com Mato Grosso do Sul, formada pelos encontros dos rios Tietê, Paraná, Aguapeí e São José dos Dourados. Ali, as grandes represas e as áreas alagadas lembram o Pantanal original, e daí vem o nome. Ele não faz parte oficialmente do bioma Pantanal, mas divide com ele rios, várzeas e uma fauna riquíssima.</p>
-            <p>Reunimos neste site as cidades que integram essa rota, com suas histórias, atrações e dicas de como chegar. A região fica a pelo menos 650 km da capital paulista e ainda é pouco conhecida pelos próprios paulistas: aqui o Tietê chega limpo, com praias de água doce, pesca esportiva, ecoturismo e muita natureza preservada.</p>
-        </div>
-
-        <!-- A foto é definida no CSS (cidades-quem-somos.css, classe .qs-imagem). -->
-        <div class="qs-imagem" role="img" aria-label="Foto do Pantanal Paulista"></div>
-    </div>
-
-    <!-- 2) O PANTANAL PAULISTA EM DETALHES -->
-    <div class="qs-destaques">
-        <article class="qs-card">
-            <h3>Onde fica</h3>
-            <p>No noroeste paulista, em cidades como Andradina, Castilho, Ilha Solteira, Itapura, Pereira Barreto, Sud Mennucci e Suzanápolis. A Região Turística reúne cerca de 215 mil habitantes (estimativa de 2021).</p>
-        </article>
-        <article class="qs-card">
-            <h3>Rios e águas</h3>
-            <p>Os reservatórios de Jupiá, Ilha Solteira e Três Irmãos, criados pelas usinas do Complexo de Urubupungá, formaram praias fluviais, canais e planícies inundáveis, como a foz do Tietê, em Itapura.</p>
-        </article>
-        <article class="qs-card">
-            <h3>Natureza protegida</h3>
-            <p>O Parque Estadual do Aguapeí e a RPPN Foz do Rio Aguapeí somam cerca de 23 mil hectares e abrigam um dos últimos refúgios do cervo-do-pantanal no Estado, além de aves, capivaras e jacarés.</p>
-        </article>
-        <article class="qs-card">
-            <h3>Turismo e cultura</h3>
-            <p>Pesca esportiva (principalmente o tucunaré), mergulho, passeios de barco, festas de peão, herança da imigração japonesa e uma história ligada à ferrovia, às usinas e ao Brasil Império.</p>
-        </article>
-    </div>
-
-    <!-- 3) LINHA DO TEMPO -->
-    <h2 class="qs-titulo qs-titulo-menor">LINHA DO TEMPO</h2>
-    <p class="qs-subtitulo">Da época das “estradas de água” à Rota Turística Pantanal Paulista</p>
-
-    <div class="linha-tempo">
-        <!-- Para adicionar um marco, copie um bloco <div class="marco"> e cole na ordem certa.
-             Os lados esquerdo/direito se alternam sozinhos. -->
-        <div class="marco"><span class="marco-ano">Antes de 1858</span><h3>Estradas de água</h3><p>Os rios Tietê, Paraná e Aguapeí servem de caminho para indígenas e, depois, para os bandeirantes.</p></div>
-        <div class="marco"><span class="marco-ano">1858</span><h3>Colônia Militar de Itapura</h3><p>O Império cria a colônia na foz do Tietê, junto aos saltos de Itapura, para proteger a fronteira.</p></div>
-        <div class="marco"><span class="marco-ano">1928</span><h3>Nasce Novo Oriente</h3><p>Surge a colônia que viria a ser Pereira Barreto, marco da imigração japonesa na região.</p></div>
-        <div class="marco"><span class="marco-ano">Anos 1930</span><h3>A ferrovia chega</h3><p>A Estrada de Ferro Noroeste do Brasil avança (Guaraçaí, 1936) e cidades como Andradina (1937) são fundadas.</p></div>
-        <div class="marco"><span class="marco-ano">1962–1974</span><h3>Usina de Jupiá</h3><p>As obras começam em 1962, a usina entra em operação em 1969 e o reservatório de 330 km² inunda a antiga Itapura.</p></div>
-        <div class="marco"><span class="marco-ano">1965–1978</span><h3>Usina de Ilha Solteira</h3><p>Obras iniciadas em 1965, operação em 1973 e conclusão em 1978. Nasce a cidade planejada de Ilha Solteira.</p></div>
-        <div class="marco"><span class="marco-ano">1980–1991</span><h3>Três Irmãos e o Canal</h3><p>Começam as obras do Canal de Pereira Barreto (1980) e a Usina de Três Irmãos é inaugurada (1991), submergindo a antiga Ponte Novo Oriente.</p></div>
-        <div class="marco"><span class="marco-ano">1996–1998</span><h3>Compensação ambiental</h3><p>Pela Resolução Conama nº 2/1996, a CESP precisa criar áreas protegidas. Em 2 de julho de 1998, o Decreto 43.269 cria o Parque Estadual do Aguapeí, com 9.043 hectares.</p></div>
-        <div class="marco"><span class="marco-ano">2010</span><h3>RPPN Foz do Rio Aguapeí</h3><p>Reserva criada pela Resolução SMA 117/2010. Junto ao Parque, forma cerca de 23 mil hectares conhecidos como Pantanal Paulista.</p></div>
-        <div class="marco"><span class="marco-ano">2019–2021</span><h3>Rota Turística</h3><p>Os municípios se reúnem para criar um roteiro para agências, um site e um aplicativo. Em 2021 a RT, com dez municípios, elege sua interlocutora regional.</p></div>
-        <div class="marco"><span class="marco-ano">2025</span><h3>Rota 7 do Estado</h3><p>A Setur-SP inclui o “Pantanal Paulista e Tietê Vivo” entre as rotas turísticas oficiais do Estado.</p></div>
-        <div class="marco"><span class="marco-ano">Hoje</span><h3>Este site</h3><p>Reúne as cidades da região para divulgar o Pantanal Paulista a visitantes e moradores.</p></div>
-    </div>
-
-</section>
 
         <section class="content-section" id="contato" aria-labelledby="contato-title">
-            <h2 id="contato-title">Contato</h2>
+            <!-- Mesmo padrão de título das outras seções (classe "titulos").
+                 O conteúdo do contato (formulário, e-mail, telefone...)
+                 deve ser colocado abaixo deste título. -->
+            <h2 class="titulos" id="contato-title">CONTATO</h2>
         </section>
 
     </main>

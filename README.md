@@ -21,15 +21,27 @@ assets/img/
 | Seção          | id            | Estilo                   |
 | -------------- | ------------- | ------------------------ |
 | Hero           | `#inicio`     | `header-hero.css`        |
+| Quem somos     | `#quem-somos` | `cidades-quem-somos.css` |
 | Cidades        | `#cidades`    | `cidades-quem-somos.css` |
 | Info + mapas   | `#mapas`      | `cidades-quem-somos.css` |
 | Eventos        | `#eventos`    | `header-hero.css`        |
-| Quem somos     | `#quem-somos` | `cidades-quem-somos.css` |
-| Contato        | `#contato`    | (a fazer)                |
+| Contato        | `#contato`    | (a fazer, fora do menu)  |
 | Rodapé         | `.site-footer`| (a fazer – Kauê)         |
+
+Menu: Início, Quem somos, Cidades, Eventos (mesma ordem da página).
+
+## Padrões do site (editar em um lugar só)
+
+No `:root` do `header-hero.css`:
+
+- `--fonte-principal`: fonte do site inteiro (hoje Outfit).
+- `--titulo-*`: tamanho, peso, inclinação, espaçamento e cor de todos os títulos de seção.
+- Fundo bege: classe `.content-section` (vale para toda seção abaixo do hero).
 
 ## Observações para o time
 
+- Todo o código tem comentários explicando o que cada propriedade faz e o que
+  acontece se for alterada.
 - O reset global (`* { margin:0; padding:0; text-align:center }`) e a fonte
   Inter do código original de Cidades/Quem somos agora valem **só** dentro de
   `#cidades`, `#mapas` e `#quem-somos`, para não quebrar o cabeçalho e os Eventos.

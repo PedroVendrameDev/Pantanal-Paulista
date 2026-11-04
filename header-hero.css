@@ -9,6 +9,38 @@
     --ambar: #fbb230;
     --tinta: #102117;
     --branco: #fff;
+
+    /* ----- PADRÃO DE FONTES DO SITE (uma fonte só: Outfit) -----
+       Esta é a ÚNICA linha que define a fonte do site inteiro. Todas as
+       outras partes (cabeçalho, hero, eventos, cidades, quem somos) usam
+       esta variável. Se você trocar "Outfit" por outra fonte (e carregá-la
+       no <link> do Google Fonts no index.html), o site INTEIRO muda de
+       fonte de uma vez. "sans-serif" é a reserva, usada se a principal
+       não carregar. */
+    --fonte-principal: "Outfit", sans-serif;
+
+    /* ----- PADRÃO DOS TÍTULOS DAS SEÇÕES -----
+       Valem para os títulos grandes: QUEM SOMOS, CIDADES, INFORMAÇÕES E
+       LOCALIZAÇÃO, EVENTOS e CONTATO. Mudou aqui, mudou em todos. */
+
+    /* Tamanho: clamp(mínimo, ideal, máximo). No celular o título nunca
+       fica menor que 2.2rem e no computador nunca passa de 4rem.
+       Aumentar os números = títulos maiores; diminuir = títulos menores. */
+    --titulo-tamanho: clamp(2.2rem, 7vw, 4rem);
+
+    /* Espessura: 400 = normal, 700 = negrito, 800 = extranegrito. */
+    --titulo-peso: 700;
+
+    /* Estilo: "italic" deixa o título inclinado (como em EVENTOS).
+       Troque por "normal" para deixar todos os títulos retos. */
+    --titulo-estilo: italic;
+
+    /* Espaço entre as letras. Aumentar (ex.: .08em) = letras mais
+       afastadas; 0 = letras no espaçamento normal. */
+    --titulo-espaco-letras: 0.02em;
+
+    /* Cor dos títulos (por padrão o verde escuro do projeto, --verde). */
+    --titulo-cor: var(--verde);
 }
 
 /* Inclui padding e borda no cálculo da largura dos elementos. */
@@ -28,7 +60,96 @@ html {
 
 body {
     margin: 0;
-    font-family: "Outfit", sans-serif;
+
+    /* Fonte padrão da página inteira (vem da variável --fonte-principal
+       lá no topo deste arquivo). */
+    font-family: var(--fonte-principal);
+}
+
+/* ============================================================== */
+/*  FUNDO BEGE DAS SEÇÕES (tudo abaixo do hero)                    */
+/* ============================================================== */
+
+/*
+ * Esta regra coloca a imagem bege de fundo em TODAS as seções que têm
+ * a classe "content-section" no index.html: Quem somos, Cidades,
+ * Informações/Mapas, Eventos e Contato. O hero (banner) NÃO tem essa
+ * classe, por isso mantém a foto dele.
+ *
+ *  - Para uma seção NOVA receber o fundo bege: basta colocar
+ *    class="content-section" na tag <section> dela.
+ *  - Para uma seção NÃO receber o fundo: tire a classe "content-section".
+ *  - Para trocar a imagem de fundo de todas de uma vez: troque o caminho
+ *    do url(...) abaixo.
+ */
+.content-section {
+    /* Imagem de fundo (arquivo assets/img/fundos/back-bege.png).
+       Se o arquivo não existir, o fundo fica em branco. */
+    background-image: url("assets/img/fundos/back-bege.png");
+
+    /* Cor usada ENQUANTO a imagem carrega (um bege parecido com ela),
+       para a tela não piscar em branco. */
+    background-color: #f3ead7;
+
+    /* "cover" = a imagem estica até cobrir TODA a seção, sem deixar espaços
+       vazios (pode cortar um pouco das bordas).
+       "contain" = mostra a imagem inteira, mas pode sobrar espaço.
+       "auto" = tamanho original da imagem. */
+    background-size: cover;
+
+    /* Qual parte da imagem fica visível quando há corte.
+       "center" mantém o meio; "top" mostra a parte de cima. */
+    background-position: center;
+
+    /* "no-repeat" = a imagem não se repete em mosaico.
+       Trocar por "repeat" faz ela se repetir até preencher a área. */
+    background-repeat: no-repeat;
+
+    /* "fixed" = o fundo fica PARADO enquanto a página rola (efeito
+       parallax) e o conteúdo desliza por cima dele.
+       Trocar por "scroll" faz o fundo rolar junto com a página.
+       Obs.: alguns celulares (principalmente iPhone) ignoram o "fixed". */
+    background-attachment: fixed;
+}
+
+/* ============================================================== */
+/*  PADRÃO DE TÍTULOS DAS SEÇÕES                                   */
+/* ============================================================== */
+
+/*
+ * Esta classe é usada nos títulos grandes das seções (Cidades,
+ * Informações e Localização, Contato). O QUEM SOMOS (.qs-titulo) e o
+ * EVENTOS (.eventos__titulo) usam as MESMAS variáveis, então os cinco
+ * títulos ficam iguais. Para mudar o visual de todos, edite as
+ * variáveis "--titulo-..." no :root lá no topo deste arquivo.
+ */
+.titulos {
+    font-family: var(--fonte-principal);
+    font-size: var(--titulo-tamanho);
+    font-weight: var(--titulo-peso);
+    font-style: var(--titulo-estilo);
+    letter-spacing: var(--titulo-espaco-letras);
+    color: var(--titulo-cor);
+
+    /* Deixa o texto em MAIÚSCULAS mesmo que no HTML esteja em minúsculas.
+       Trocar por "none" mostra o texto exatamente como foi escrito. */
+    text-transform: uppercase;
+
+    /* Centraliza o título. Trocar por "left" alinha à esquerda. */
+    text-align: center;
+
+    /* Altura da linha: valores menores deixam títulos de 2 linhas
+       mais juntinhos. */
+    line-height: 1.1;
+}
+
+/*
+ * Seção CONTATO (ainda sem conteúdo, o responsável pode preencher).
+ * Só dá um respiro interno para o título não ficar colado nas bordas:
+ * 40px em cima e embaixo, 50px nos lados. Aumentar = mais espaço.
+ */
+#contato {
+    padding: 40px 50px;
 }
 
 /* Anel amarelo visível para quem navega pelo teclado. */
@@ -269,6 +390,13 @@ button:focus-visible {
     color: rgba(255, 255, 255, 0.9);
 }
 
+/*
+ * Botão do hero ("Conheça as cidades"): foi REMOVIDO do index.html.
+ * Estas duas regras (.hero__action e .hero__action:hover) ficaram
+ * guardadas para o caso de alguém recolocar o botão (o HTML para
+ * recolocar está comentado no index.html, dentro do hero).
+ * Enquanto o botão não existir, estas regras não fazem nada.
+ */
 .hero__action {
     display: inline-block;
     padding: 16px 28px;
@@ -383,26 +511,35 @@ section.eventos {
   --ev-titulo: var(--verde);
   --ev-texto: var(--tinta);
   --ev-destaque: var(--ambar);
-  --ev-fonte-titulo: "Outfit", system-ui, sans-serif; /* mesma fonte do site */
+  /* Fonte do título e dos textos dos cards: usa a fonte padrão do site
+     (--fonte-principal no :root). Para o carrossel usar outra fonte,
+     troque por, por exemplo, "Georgia", serif. */
+  --ev-fonte-titulo: var(--fonte-principal);
   --ev-largura-card: clamp(200px, 24vw, 280px);
   --ev-altura-card: clamp(300px, 40vw, 440px);
 
-  background: var(--ev-fundo);
+  /* FUNDO: esta seção NÃO define mais fundo próprio (antes era branco).
+     Ela recebe o fundo bege pela classe "content-section", definida lá em
+     cima neste arquivo. Se quiser um fundo diferente só nos Eventos,
+     adicione aqui, por exemplo:  background: #ffffff;  (o fundo bege
+     de content-section será substituído nesta seção). */
   color: var(--ev-texto);
   padding: clamp(2rem, 6vw, 4rem) 0;
   overflow: hidden;
 }
 
+/* Título "EVENTOS": usa o padrão de títulos do site (variáveis
+   --titulo-... no :root). Só o espaço abaixo dele é próprio desta seção. */
 .eventos .eventos__titulo {
   margin: 0 0 clamp(1.5rem, 4vw, 3rem);
   text-align: center;
   font-family: var(--ev-fonte-titulo);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(2.2rem, 7vw, 4rem);
-  letter-spacing: .02em;
+  font-style: var(--titulo-estilo);
+  font-weight: var(--titulo-peso);
+  font-size: var(--titulo-tamanho);
+  letter-spacing: var(--titulo-espaco-letras);
   text-transform: uppercase;
-  color: var(--ev-titulo);
+  color: var(--titulo-cor);
 }
 
 /* ---------- carrossel ---------- */
