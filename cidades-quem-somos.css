@@ -1,0 +1,840 @@
+/* ============================================================== */
+/*  PARTE 3 – CIDADES, MAPAS E QUEM SOMOS (Pedro)                  */
+/*  Veio de Cidades/estilo.css + QuemSomos/estilo.css (iguais, o   */
+/*  segundo só tem a seção a mais). Foi unificado em um arquivo e  */
+/*  o reset/fonte globais passaram a valer só nas três seções.     */
+/* ============================================================== */
+
+/* =========================================================================
+   ARQUIVO DE ESTILOS (estilo.css)
+   Aqui ficam as regras visuais do site: cores, tamanhos, espaçamentos,
+   posições e efeitos. O HTML diz O QUE aparece; o CSS diz COMO aparece.
+
+   Dica de leitura: cada bloco começa com um "seletor" (ex.: .titulos) que
+   indica QUAL elemento do HTML recebe aquelas regras.
+
+   Sumário:
+     1. Reset geral
+     2. Variáveis (fontes)
+     3. Corpo da página
+     4. Títulos
+     5. Seção de cidades (fundo)
+     6. Lista e cards
+     7. Camada de texto/botão do card
+     8. Efeito ao passar o mouse
+     9. Nome da cidade
+    10. Rolagem suave
+    11. Seção de mapas
+    12. Informações da cidade
+    13. Quem somos (hero, cartões e linha do tempo)
+   ========================================================================= */
+
+
+/* =========================================================================
+   1. RESET (restrito às seções Cidades, Mapas e Quem somos)
+   No projeto original era "* { ... }" e afetava o site inteiro (inclusive o
+   cabeçalho e os Eventos). Agora vale só dentro destas três seções.
+   :where() mantém a especificidade em 0, então as classes continuam
+   vencendo o reset, exatamente como antes.
+   ========================================================================= */
+:where(#cidades, #mapas, #quem-somos),
+:where(#cidades, #mapas, #quem-somos) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+/* =========================================================================
+   2. VARIÁVEIS
+   ":root" é o "painel de controle" do site. Aqui guardamos valores que são
+   usados em vários lugares. Mudando AQUI, muda em TODOS os lugares que
+   usam a variável.
+   ========================================================================= */
+:root {
+
+    /* Fonte dos títulos e botões.
+       Se trocar 'Poppins' por outra fonte, todos os títulos e botões mudam.
+       "sans-serif" é a fonte reserva, caso a principal não carregue. */
+    --fonte-titulo: 'Playfair Display', sans-serif;
+
+    /* Fonte dos textos comuns (descrições dos cards).
+       Mesma lógica da variável acima. */
+    --fonte-texto: 'Inter', sans-serif;
+
+}
+
+
+/* =========================================================================
+   3. FONTE BASE DAS SEÇÕES
+   Antes era "body { ... }". Agora só estas seções usam a fonte Inter; o resto
+   do site continua com a fonte Outfit definida em header-hero.css.
+   ========================================================================= */
+:where(#cidades, #mapas, #quem-somos) {
+    font-family: var(--fonte-texto);
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* =========================================================================
+   4. TÍTULOS
+   Classe usada nos títulos "CIDADES" e "LOCALIZAÇÃO".
+   ========================================================================= */
+.titulos {
+
+    /* Fonte dos títulos (Poppins) */
+    font-family: var(--fonte-titulo);
+
+    /* Tamanho da letra.
+       Aumentar (ex.: 60px) = título maior e mais chamativo.
+       Diminuir (ex.: 30px) = título menor e mais discreto. */
+    font-size: 42px;
+
+    /* Espessura da letra.
+       400 = normal, 700 = negrito. Quanto maior o número, mais grossa. */
+    font-weight: 700;
+
+    /* Espaço ENTRE as letras.
+       Aumentar = letras mais afastadas (ex.: 5px).
+       0 = letras coladas no espaçamento normal. */
+    letter-spacing: 2px;
+
+    /* Cor do texto (#111 = quase preto) */
+    color: #111;
+
+}
+
+
+/* =========================================================================
+   5. SEÇÃO DE CIDADES
+   "#cidades" é a área inteira que contém o título e os cards.
+   O "#" indica que o estilo vale para o elemento com id="cidades".
+   ========================================================================= */
+#cidades {
+
+    /* Imagem de fundo da seção (arquivo back.png na mesma pasta).
+       Se o arquivo não estiver na pasta, o fundo fica em branco. */
+    background-image: url("assets/img/fundos/back-bege.png");
+
+    /* "cover" = a imagem estica até cobrir TODA a seção, sem deixar espaços
+       vazios (pode cortar um pouco das bordas).
+       Se trocar por "contain", a imagem aparece inteira, mas pode sobrar espaço.
+       Se trocar por "auto", a imagem aparece no tamanho original. */
+    background-size: cover;
+
+    /* Define qual parte da imagem fica visível quando há corte.
+       "center" mantém o meio da imagem. Se trocar por "top", mostra a parte de cima. */
+    background-position: center;
+
+    /* "no-repeat" impede que a imagem se repita como azulejos.
+       Se trocar por "repeat", a imagem se repete até preencher a área. */
+    background-repeat: no-repeat;
+
+    /* "fixed" = o fundo fica PARADO enquanto a página rola (efeito parallax).
+       Se trocar por "scroll", o fundo rola junto com a página.
+       Obs.: em alguns celulares o "fixed" pode não funcionar. */
+    background-attachment: fixed;
+
+    /* Espaço interno da seção: 40px em cima/embaixo e 50px nas laterais.
+       Aumentar = mais "respiro" entre o conteúdo e a borda da seção.
+       Diminuir = conteúdo mais colado nas bordas. */
+    padding: 40px 50px;
+
+}
+
+
+/* =========================================================================
+   6. LISTA DE CARDS
+   ========================================================================= */
+
+/* Container que alinha os cards lado a lado */
+.listaCards {
+
+    /* coloca os cards em linha */
+    display: flex;
+
+    /* centraliza na horizontal.
+       Se trocar por "flex-start", os cards se alinham à esquerda.
+       Se trocar por "space-between", os cards se espalham até as bordas. */
+    justify-content: center;
+
+    /* espaço entre os cards: primeiro valor = distância VERTICAL (entre linhas),
+       segundo valor = distância HORIZONTAL (entre colunas).
+       Aumentar = cards mais afastados. Diminuir = cards mais juntos. */
+    gap: 50px 35px;
+
+    /* quebra linha em telas pequenas.
+       Sem isso, todos os cards ficariam espremidos numa única linha. */
+    flex-wrap: wrap;
+
+    /* Espaço entre o título "CIDADES" e a primeira linha de cards.
+       Aumentar = cards descem mais. */
+    padding-top: 30px;
+
+    /* Margem lateral esquerda. "vw" é uma porcentagem da largura da tela:
+       7vw = 7% da largura da tela. Aumentar = cards mais para o centro
+       (e menos cards por linha). */
+    padding-left: 7vw;
+
+    /* Margem lateral direita (mesma lógica da esquerda) */
+    padding-right: 7vw;
+
+}
+
+
+/* Cada card (foto + texto + nome) */
+.card-imagem-caixa {
+
+    /* permite posicionar a camada por cima da imagem.
+       Sem isso, o texto que aparece no hover não ficaria sobre a foto. */
+    position: relative;
+
+    /* esconde o que passar da caixa (o blur vaza nas bordas) */
+    overflow: hidden;
+
+    /* largura do card: 15vw = 15% da largura da tela.
+       Aumentar (ex.: 20vw) = cards maiores e menos cards por linha.
+       Diminuir (ex.: 10vw) = cards menores e mais cards por linha.
+       Por ser proporcional, o card cresce e encolhe junto com a tela. */
+    width: 15vw;
+
+}
+
+
+/* Foto da cidade */
+.imgCard {
+
+    /* ocupa toda a largura do card */
+    width: 100%;
+
+    /* altura maior que a largura = retrato.
+       Aumentar (ex.: 400px) = foto mais alta/comprida.
+       Diminuir (ex.: 200px) = foto mais baixa, quase quadrada ou paisagem. */
+    height: 300px;
+
+    /* corta a imagem sem deformar.
+       Se trocar por "fill", a foto é esticada e fica distorcida.
+       Se trocar por "contain", a foto aparece inteira, mas com espaços vazios. */
+    object-fit: cover;
+
+    /* Remove um pequeno espaço em branco que o navegador deixa embaixo de imagens */
+    display: block;
+
+    /* deixa o desfoque suave.
+       Funciona assim: quando o "filter" mudar (no hover), a mudança leva 0,4 segundo.
+       Aumentar o tempo (ex.: 1s) = efeito mais lento. Diminuir = mais rápido. */
+    transition: filter 0.4s ease;
+
+}
+
+
+/* =========================================================================
+   7. CAMADA DE CONTEÚDO DO CARD
+   É o texto + botão que ficam "escondidos" sobre a foto e só aparecem
+   quando o mouse passa por cima.
+   ========================================================================= */
+.card-conteudo {
+
+    /* fica por cima da imagem */
+    position: absolute;
+
+    /* ocupa toda a caixa (topo, direita, baixo, esquerda = 0) */
+    inset: 0;
+
+    /* ativa o alinhamento flexível dos itens internos (texto e botão) */
+    display: flex;
+
+    /* texto em cima, botão embaixo.
+       Se trocar por "row", ficariam lado a lado. */
+    flex-direction: column;
+
+    /* Centraliza o conteúdo na VERTICAL (meio da foto).
+       "flex-start" = conteúdo no topo. "flex-end" = conteúdo embaixo. */
+    justify-content: center;
+
+    /* Centraliza o conteúdo na HORIZONTAL */
+    align-items: center;
+
+    /* Espaço entre o texto e o botão.
+       Aumentar = botão mais afastado do texto. */
+    gap: 12px;
+
+    /* Espaço interno: afasta o texto das bordas da foto.
+       Aumentar = texto mais "apertado" no centro (quebra em mais linhas).
+       Diminuir = texto ocupa mais a largura do card. */
+    padding: 20px;
+
+    /* invisível por padrão.
+       0 = totalmente invisível, 1 = totalmente visível. */
+    opacity: 0;
+
+    /* A aparição leva 0,4 segundo (efeito suave de "fade").
+       Aumentar o tempo = aparece mais devagar. */
+    transition: opacity 0.4s ease;
+
+}
+
+
+/* Texto da camada */
+.card-texto {
+
+    /* Cor branca, para dar contraste com a foto escurecida */
+    color: #fff;
+
+    /* Fonte dos textos (Inter) */
+    font-family: var(--fonte-texto);
+
+    /* Tamanho da letra da descrição.
+       Aumentar = texto maior (mas pode não caber no card). */
+    font-size: 15px;
+
+    /* Espessura da letra (500 = intermediário, entre normal e negrito) */
+    font-weight: 500;
+
+    /* Espaço entre as linhas do texto, em múltiplos do tamanho da letra.
+       1.4 = linhas com 40% a mais de espaço. Aumentar = linhas mais afastadas. */
+    line-height: 1.4;
+
+    /* Remove qualquer margem do parágrafo */
+    margin: 0;
+
+}
+
+
+/* Botão ("Como chegar?", "Saiba mais" e "← Voltar às cidades") */
+.card-botao {
+
+    /* Cor de fundo do botão (laranja).
+       Para mudar a cor do botão em todo o site, altere este valor. */
+    background: #f9a51a;
+
+    /* Cor da letra do botão (quase preto) */
+    color: #111;
+
+    /* Espaço interno: 10px em cima/embaixo e 24px nas laterais.
+       Aumentar = botão maior e mais "gordinho". */
+    padding: 10px 24px;
+
+    /* Arredondamento dos cantos.
+       0 = botão quadrado. 30px = formato de pílula (bem arredondado). */
+    border-radius: 30px;
+
+    /* Remove o sublinhado que links têm por padrão */
+    text-decoration: none;
+
+    /* Fonte do botão (Poppins) */
+    font-family: var(--fonte-titulo);
+
+    /* Tamanho da letra do botão */
+    font-size: 14px;
+
+    /* Espessura da letra do botão */
+    font-weight: 600;
+
+    /* O crescimento do botão (ver hover abaixo) leva 0,3 segundo */
+    transition: transform 0.3s ease;
+
+}
+
+
+/* Botão quando o mouse está sobre ele */
+.card-botao:hover {
+
+    /* botão cresce um pouco ao passar o mouse nele.
+       1 = tamanho normal. 1.1 = 10% maior. 1.3 = 30% maior.
+       Valores menores que 1 fariam o botão encolher. */
+    transform: scale(1.1);
+
+}
+
+
+/* =========================================================================
+   8. EFEITO AO PASSAR O MOUSE (HOVER)
+   ":hover" = "quando o mouse está em cima".
+   ========================================================================= */
+
+/* Quando o mouse está na caixa, a imagem fica desfocada e escurecida */
+.card-imagem-caixa:hover .imgCard {
+
+    /* blur = desfoque. Aumentar (ex.: 5px) = foto bem borrada.
+       0 = sem desfoque.
+       brightness = brilho. 1 = normal; 0.68 = 32% mais escura;
+       valores menores (ex.: 0.4) = foto bem escura, deixando o texto branco mais legível.
+       Valores acima de 1 clareiam a foto. */
+    filter: blur(1.5px) brightness(0.68);
+
+}
+
+
+/* Quando o mouse está na caixa, a camada de conteúdo aparece */
+.card-imagem-caixa:hover .card-conteudo {
+
+    /* 1 = totalmente visível (era 0 = invisível) */
+    opacity: 1;
+
+}
+
+
+/* =========================================================================
+   9. NOME DA CIDADE (abaixo da foto)
+   ========================================================================= */
+.card-titulo {
+
+    /* Espaço entre a foto e o nome da cidade.
+       Aumentar = nome mais afastado da foto. */
+    margin-top: 12px;
+
+    /* Fonte do nome da cidade.
+       ATENÇÃO: a fonte 'Fredoka' NÃO está carregada no HTML, então o
+       navegador usa a fonte reserva (sans-serif). Para ela aparecer, seria
+       preciso adicioná-la no link do Google Fonts. */
+    font-family: 'Fredoka', sans-serif;
+
+    /* Tamanho da letra do nome */
+    font-size: 18px;
+
+    /* Negrito */
+    font-weight: 700;
+
+    /* texto escuro como na imagem */
+    color: #111;
+
+    /* Transforma TODO o texto em MAIÚSCULAS, mesmo que no HTML esteja em minúsculas.
+       Se trocar por "none", o nome aparece como foi escrito no HTML. */
+    text-transform: uppercase;
+
+}
+
+
+/* =========================================================================
+   10. ROLAGEM SUAVE
+   ========================================================================= */
+
+/* Rolagem suave: já definida em header-hero.css (html { scroll-behavior: smooth }). */
+
+
+/* =========================================================================
+   11. SEÇÃO DE MAPAS
+   ========================================================================= */
+
+/* ===== SEÇÃO DE MAPAS ===== */
+#mapas {
+
+    /* Começa ESCONDIDA. O visitante só vê esta seção depois de clicar
+       em um botão de cidade (ver regra logo abaixo). */
+    display: none;
+
+    /* Espaço interno da seção (mesma lógica da seção de cidades) */
+    padding: 40px 50px;
+
+    /* Mesma imagem de fundo da seção de cidades, para manter o visual igual */
+    background-image: url("assets/img/fundos/back-bege.png");
+
+    /* cobre toda a seção, sem deixar espaços */
+    background-size: cover;
+
+    /* mantém o centro da imagem visível */
+    background-position: center;
+
+    /* evita repetição em mosaico */
+    background-repeat: no-repeat;
+
+    /* Fundo parado enquanto a página rola */
+    background-attachment: fixed;
+
+}
+
+
+/* Aparece só quando um dos mapas dentro dela é o alvo do link */
+#mapas:has(.mapa-cidade:target) {
+
+    /* Torna a seção visível.
+       Funciona assim: quando o visitante clica em "Como chegar?", o endereço
+       da página muda para #mapa-nome-da-cidade. O navegador chama esse mapa
+       de ":target" (alvo). Se existe um alvo dentro da seção, ela é exibida. */
+    display: block;
+
+}
+
+
+/* Todos os mapas ficam escondidos... */
+.mapa-cidade {
+
+    /* Cada mapa começa invisível */
+    display: none;
+
+    /* Largura máxima do bloco do mapa.
+       Aumentar = mapa mais largo em telas grandes. Diminuir = mapa mais estreito. */
+    max-width: 900px;
+
+    /* 30px de espaço acima, e "auto" nas laterais, o que CENTRALIZA o bloco na tela */
+    margin: 30px auto 0;
+
+    /* Quando a página rola até o mapa, ele para 20px abaixo do topo da tela,
+       em vez de ficar colado no topo. Aumentar = mais espaço acima do mapa. */
+    scroll-margin-top: 20px;
+
+}
+
+
+/* ...e só aparece o mapa da cidade clicada */
+.mapa-cidade:target {
+
+    /* Mostra apenas o mapa que é o alvo do link clicado */
+    display: block;
+
+}
+
+
+/* Nome da cidade acima do mapa */
+.mapa-titulo {
+
+    /* Fonte do título do mapa (Poppins) */
+    font-family: var(--fonte-titulo);
+
+    /* Tamanho da letra. Aumentar = nome da cidade maior. */
+    font-size: 28px;
+
+    /* Espaço entre o nome da cidade e o mapa */
+    margin-bottom: 16px;
+
+    /* Cor do texto */
+    color: #111;
+
+}
+
+
+/* O mapa do Google (iframe) */
+.mapa-cidade iframe {
+
+    /* Ocupa toda a largura disponível do bloco (até o máximo de 900px) */
+    width: 100%;
+
+    /* Altura do mapa. Aumentar = mapa mais alto. Diminuir = mapa mais baixo. */
+    height: 450px;
+
+    /* Remove a borda padrão feia que o navegador coloca em iframes */
+    border: 0;
+
+    /* Arredondamento dos cantos do mapa. 0 = cantos retos. */
+    border-radius: 16px;
+
+    /* Espaço entre o mapa e o botão "Voltar" */
+    margin-bottom: 20px;
+
+    /* Sombra atrás do mapa. Os valores significam:
+       0 = deslocamento horizontal
+       6px = deslocamento vertical (sombra para baixo)
+       20px = suavidade/espalhamento (maior = sombra mais difusa)
+       rgba(0, 0, 0, 0.15) = preto com 15% de opacidade (aumentar = sombra mais forte) */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+}
+
+
+/* Botão "Voltar às cidades" dentro do mapa */
+.mapa-cidade .card-botao {
+
+    /* Por padrão, links são "em linha". Com "inline-block" o botão aceita
+       padding e tamanho corretamente e continua centralizado pelo text-align. */
+    display: inline-block;
+
+}
+
+
+/* =========================================================================
+   12. INFORMAÇÕES DA CIDADE
+   Bloco que aparece junto com o mapa quando o visitante clica em
+   "Saiba mais" ou "Como chegar?". Fica dentro de cada ".mapa-cidade",
+   entre o nome da cidade e o mapa.
+   ========================================================================= */
+
+/* Caixa que envolve todas as informações da cidade */
+.info-cidade {
+
+    /* Fundo branco levemente transparente, para destacar o texto sobre a imagem de fundo.
+       O último número (0.92) é a opacidade: 1 = totalmente branco, 0 = invisível. */
+    background: rgba(143, 201, 125, 0.92);
+
+    /* Cantos arredondados (mesmo valor do mapa, para combinar) */
+    border-radius: 16px;
+
+    /* Espaço interno entre a borda da caixa e o conteúdo */
+    padding: 30px;
+
+    /* Espaço entre a caixa e o mapa que vem abaixo */
+    margin-bottom: 30px;
+
+    /* Mesma sombra do mapa, para manter o visual igual */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+}
+
+
+/* Subtítulos ("Sobre a cidade", "Principais atrações", "Como chegar", "Localização") */
+.info-subtitulo {
+
+    /* Fonte dos títulos (Poppins) */
+    font-family: var(--fonte-titulo);
+
+    /* Tamanho da letra. Aumentar = subtítulo maior. */
+    font-size: 20px;
+
+    /* Cor do texto */
+    color: #111;
+
+    /* Espaço acima e abaixo do subtítulo */
+    margin: 24px 0 10px;
+
+    /* Pequeno traço laranja embaixo do subtítulo (mesma cor dos botões) */
+    display: inline-block;
+    border-bottom: 3px solid #041801;
+    padding-bottom: 4px;
+
+}
+
+/* O primeiro subtítulo da caixa não precisa de espaço em cima */
+.info-cidade > .info-subtitulo:first-child {
+
+    margin-top: 0;
+
+}
+
+/* O subtítulo "Localização" (fica fora da caixa, acima do mapa) */
+.info-subtitulo-mapa {
+
+    /* Espaço entre o subtítulo e o mapa */
+    margin: 0 0 16px;
+
+}
+
+
+/* Textos corridos (descrição da cidade e como chegar) */
+.info-descricao {
+
+    /* Fonte dos textos comuns (Inter) */
+    font-family: var(--fonte-texto);
+
+    /* Tamanho da letra do texto */
+    font-size: 16px;
+
+    /* Espaço entre as linhas (1.6 = bem arejado, bom para ler) */
+    line-height: 1.6;
+
+    /* Cor cinza escuro, mais suave que o preto */
+    color: #333;
+
+    /* Os textos do site são centralizados por padrão; aqui alinhamos à esquerda
+       para facilitar a leitura de parágrafos longos.
+       Se preferir centralizado, troque por "center". */
+    text-align: left;
+
+}
+
+
+/* Linha com os "cartões" de dados rápidos (população, fundação, etc.) */
+.info-dados {
+
+    /* Organiza os cartões em uma grade que se ajusta sozinha ao tamanho da tela.
+       Cada cartão tem no mínimo 180px; se não couber, desce para a linha de baixo. */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+    /* Espaço entre os cartões */
+    gap: 16px;
+
+    /* Espaço acima e abaixo da linha de cartões */
+    margin: 24px 0 8px;
+
+}
+
+/* Cada cartão de dado */
+.info-dado {
+
+    /* Empilha o título (ex.: "População") e o valor (ex.: "52.000") */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    /* Fundo claro, borda laranja à esquerda e cantos arredondados */
+    background: #fff7e8;
+    border-left: 5px solid #302007;
+    border-radius: 12px;
+
+    /* Espaço interno do cartão */
+    padding: 16px;
+
+}
+
+/* Nome do dado (ex.: "População") */
+.info-dado-titulo {
+
+    font-family: var(--fonte-texto);
+    font-size: 13px;
+    font-weight: 600;
+
+    /* Letras maiúsculas e levemente espaçadas, como uma etiqueta */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    color: #666;
+
+}
+
+/* Valor do dado (ex.: "52.000") */
+.info-dado-valor {
+
+    font-family: var(--fonte-titulo);
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+
+}
+
+
+/* Lista de atrações */
+.info-lista {
+
+    /* Mantém as bolinhas da lista e dá um recuo para a esquerda */
+    list-style: disc;
+    padding-left: 24px;
+
+    /* Alinha à esquerda, como os textos corridos */
+    text-align: left;
+
+}
+
+/* Cada item da lista */
+.info-lista li {
+
+    font-family: var(--fonte-texto);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+
+    /* Espaço entre um item e outro */
+    margin-bottom: 6px;
+
+    text-align: left;
+
+}
+
+
+/* =========================================================================
+   13. QUEM SOMOS
+   Hero (texto + foto quadrada), cartões e linha do tempo.
+   Usa o mesmo fundo bege da seção de cidades.
+   ========================================================================= */
+#quem-somos {
+    background-image: url("assets/img/fundos/back-bege.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 50px 50px 70px;
+    /* Cores desta seção: mude aqui para trocar tudo de uma vez */
+    --verde-escuro: #1f4a14;
+    --creme: #f5dfb5;
+    --laranja: #f9a51a;
+}
+
+/* Título grande com fonte pincelada (Knewave), como na referência */
+.qs-titulo {
+    font-family: 'Knewave', cursive;
+    font-size: 72px;
+    font-weight: 400;
+    color: var(--verde-escuro);
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+.qs-titulo-menor { font-size: 52px; margin-top: 70px; margin-bottom: 8px; }
+.qs-subtitulo { font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 18px; color: #3b4a2c; margin-bottom: 40px; }
+
+/* Hero: texto à esquerda, imagem à direita */
+.qs-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.qs-texto p {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #2c3a22;
+    margin-bottom: 16px;
+}
+
+/* Espaço da imagem QUADRADA (1:1) ao lado do texto.
+   Basta colocar a foto na mesma pasta do site com o nome pantanal-quem-somos.jpg.
+   Enquanto ela não existir, aparece uma caixa clara no lugar.
+   Para mudar o tamanho, altere o max-width; para cantos retos, use border-radius: 0. */
+.qs-imagem {
+    width: 100%;
+    max-width: 630px;
+    justify-self: center;
+    aspect-ratio: 1.5 / 1;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background: url("assets/img/quem-somos/paisagem-pantanal-paulista.png") center / cover no-repeat, rgba(255, 255, 255, 0.5);
+}
+
+/* Cartões de destaque */
+.qs-destaques {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 60px auto 0;
+}
+.qs-card {
+    background: rgba(255, 255, 255, 0.88);
+    border-top: 6px solid var(--laranja);
+    border-radius: 14px;
+    padding: 24px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+.qs-card h3 { font-family: var(--fonte-titulo); font-size: 22px; font-weight: 800; color: var(--verde-escuro); margin-bottom: 10px; }
+.qs-card p { font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 15px; line-height: 1.6; color: #333; }
+
+/* Linha do tempo vertical: linha ao centro, marcos alternando de lado */
+.linha-tempo { position: relative; max-width: 1000px; margin: 0 auto; padding: 10px 0; }
+.linha-tempo::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 4px; margin-left: -2px; background: var(--verde-escuro); border-radius: 4px;
+}
+.marco {
+    position: relative; width: 46%; margin-bottom: 28px;
+    background: rgba(255, 255, 255, 0.92); border-radius: 14px;
+    padding: 18px 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+.marco:nth-child(odd)  { margin-left: 0; }
+.marco:nth-child(even) { margin-left: 54%; }
+/* Bolinha laranja sobre a linha */
+.marco::after {
+    content: ""; position: absolute; top: 24px; width: 18px; height: 18px;
+    background: var(--laranja); border: 4px solid var(--verde-escuro); border-radius: 50%;
+}
+.marco:nth-child(odd)::after  { right: calc(-8.696% - 9px); }
+.marco:nth-child(even)::after { left: calc(-8.696% - 9px); }
+.marco-ano {
+    display: inline-block; background: var(--verde-escuro); color: var(--creme);
+    font-family: var(--fonte-titulo); font-weight: 800; font-size: 15px;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 8px;
+}
+.marco h3 { font-family: var(--fonte-titulo); font-size: 20px; font-weight: 800; color: #111; margin-bottom: 6px; }
+.marco p { font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 15px; line-height: 1.55; color: #333; }
+
+/* Celular/tablet: tudo em uma coluna, linha à esquerda */
+@media (max-width: 800px) {
+    #quem-somos { padding: 40px 20px 60px; }
+    .qs-hero { grid-template-columns: 1fr; }
+    .qs-titulo { font-size: 48px; }
+    .qs-titulo-menor { font-size: 38px; }
+    .linha-tempo::before { left: 14px; }
+    .marco, .marco:nth-child(even) { width: auto; margin-left: 40px; }
+    .marco:nth-child(odd)::after, .marco:nth-child(even)::after { left: -35px; right: auto; margin: 0; }
+}
