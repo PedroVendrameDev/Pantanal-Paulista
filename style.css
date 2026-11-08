@@ -1,0 +1,1638 @@
+/* ==========================================================================
+   STYLE.CSS - ARQUIVO ÚNICO DE ESTILOS DO SITE
+   --------------------------------------------------------------------------
+   O HTML diz O QUE aparece; o CSS diz COMO aparece (cores, tamanhos,
+   posições e efeitos). Cada bloco começa com um "seletor" (ex.: .hero) que
+   indica QUAL elemento do HTML recebe as regras. Em CSS os comentários
+   ficam entre barra-asterisco e asterisco-barra, como este: o navegador
+   ignora esse texto.
+
+   SUMÁRIO (na mesma ordem em que as seções aparecem na página)
+     1. Variáveis (cores, fontes e medidas do site inteiro)
+     2. Base (reset, corpo, rolagem, foco, fundo bege, títulos)
+     3. Cabeçalho e menu
+     4. Hero (banner inicial, 100% da tela)
+     5. Quem somos
+     6. Cidades (cards com foto)
+     7. Informações da cidade (painéis de vidro + mapa)
+     8. Eventos (carrossel)
+     9. Rodapé
+    10. Preferência por menos movimento (acessibilidade)
+
+   COMO USAR ESTE ARQUIVO
+     - Quer trocar uma COR ou FONTE do site todo? Mexa só na seção 1.
+     - Quer mexer em UMA parte da página? Use o sumário acima e procure o
+       número da seção (ex.: "7. INFORMAÇÕES DA CIDADE").
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. VARIÁVEIS
+   Uma variável é um "apelido" para um valor: var(--verde) usa o que está
+   escrito em --verde. Mudou aqui, mudou no site inteiro.
+   ========================================================================== */
+:root {
+    /* ----- Cores do projeto ----- */
+    --verde: #163808;           /* verde principal: cabeçalho, títulos, rodapé */
+    --verde-escuro: #1f4a14;    /* verde mais claro, usado em textos de destaque */
+    --ambar: #fbb230;           /* amarelo: botões, ícone ativo, detalhes */
+    --laranja: #f9a51a;         /* laranja dos botões dos cards e das faixas */
+    --tinta: #102117;           /* quase preto esverdeado: texto sobre fundo claro */
+    --branco: #fff;             /* branco */
+
+    /* ----- Medidas ----- */
+    --altura-header: 84px;      /* altura do cabeçalho (o hero desconta isto para ocupar a tela toda) */
+
+    /* ----- Fontes -----
+       Uma fonte só para o site inteiro (Outfit). Para trocar: mude o nome
+       aqui E o link do Google Fonts no <head> do index.html.
+       "sans-serif" é a reserva, usada se a fonte principal não carregar. */
+    --fonte-principal: "Outfit", sans-serif;
+    --fonte-titulo: var(--fonte-principal);  /* fonte dos títulos */
+    --fonte-texto: var(--fonte-principal);   /* fonte dos textos corridos */
+
+    /* ----- Padrão dos títulos grandes das seções -----
+       Valem para QUEM SOMOS, CIDADES, INFORMAÇÕES E LOCALIZAÇÃO e EVENTOS. */
+    --titulo-tamanho: clamp(2.2rem, 7vw, 4rem); /* clamp(mínimo, ideal, máximo) */
+    --titulo-peso: 700;                         /* 400 normal, 700 negrito, 800 extranegrito */
+    --titulo-estilo: italic;                    /* "italic" inclina; "normal" deixa reto */
+    --titulo-espaco-letras: 0.02em;             /* espaço entre as letras (0 = normal) */
+    --titulo-cor: var(--verde);                 /* cor dos títulos */
+}
+
+
+/* ==========================================================================
+   2. BASE
+   Regras que valem para a página inteira.
+   ========================================================================== */
+
+/* Inclui padding e borda no cálculo da largura (evita caixas "estourando"). */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;    /* rolagem suave ao clicar nos links do menu */
+    scroll-padding-top: 96px;   /* o título da seção não fica escondido atrás do cabeçalho fixo */
+}
+
+body {
+    margin: 0;                          /* tira a margem padrão do navegador */
+    font-family: var(--fonte-principal);/* fonte padrão da página */
+    overflow-x: clip;                   /* nunca aparece barra de rolagem horizontal */
+}
+
+/* Reset restrito às seções Quem somos, Cidades e Informações.
+   :where() deixa a "força" (especificidade) da regra em zero, então
+   qualquer classe do site continua vencendo este reset. */
+:where(#cidades, #mapas, #quem-somos),
+:where(#cidades, #mapas, #quem-somos) * {
+    margin: 0;              /* zera margens */
+    padding: 0;             /* zera espaços internos */
+    box-sizing: border-box; /* mesma regra de caixa do restante do site */
+    text-align: center;     /* textos centralizados por padrão (as classes mudam onde precisar) */
+}
+
+:where(#cidades, #mapas, #quem-somos) {
+    font-family: var(--fonte-texto);    /* fonte dos textos das três seções */
+    -webkit-font-smoothing: antialiased;/* letras mais nítidas em Mac/iPhone */
+}
+
+/* Anel amarelo visível para quem navega pelo teclado (tecla Tab). */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--ambar);
+    outline-offset: 3px;
+}
+
+/* Link de salto: fica fora da tela e aparece só ao receber foco do teclado. */
+.link-salto {
+    position: absolute;
+    top: -100px;                /* escondido acima da tela */
+    left: 16px;
+    z-index: 100;               /* fica na frente de tudo */
+    padding: 12px 16px;
+    border-radius: 0 0 12px 12px;
+    background: var(--ambar);
+    color: var(--tinta);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.link-salto:focus {
+    top: 0;                     /* desce para dentro da tela */
+}
+
+/* ----- Fundo bege (todas as seções abaixo do hero) -----
+   Vale para toda <section class="content-section">. Para uma seção nova
+   receber o fundo, basta colocar essa classe nela. O hero não tem a classe,
+   por isso mantém a foto dele. */
+.content-section {
+    background-image: url("img/back-bege.png"); /* imagem de fundo */
+    background-color: #f3ead7;                  /* cor mostrada enquanto a imagem carrega */
+    background-size: cover;                     /* cobre a seção toda, sem deixar vazios */
+    background-position: center;                /* mantém o meio da imagem visível */
+    background-repeat: no-repeat;               /* não repete em mosaico */
+    background-attachment: fixed;               /* fundo parado enquanto a página rola (efeito parallax) */
+}
+
+/* ----- Título padrão das seções (CIDADES, INFORMAÇÕES E LOCALIZAÇÃO) ----- */
+.titulos {
+    font-family: var(--fonte-principal);
+    font-size: var(--titulo-tamanho);
+    font-weight: var(--titulo-peso);
+    font-style: var(--titulo-estilo);
+    letter-spacing: var(--titulo-espaco-letras);
+    color: var(--titulo-cor);
+    text-transform: uppercase;  /* sempre em MAIÚSCULAS */
+    text-align: center;
+    line-height: 1.1;           /* títulos de 2 linhas ficam mais juntinhos */
+}
+
+
+/* ==========================================================================
+   3. CABEÇALHO E MENU
+   ========================================================================== */
+
+/* Barra fixa no topo (sticky = acompanha a rolagem). */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;                                        /* fica na frente do conteúdo */
+    background-color: var(--verde);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    transition: box-shadow 0.3s ease;                   /* sombra aparece suavemente */
+}
+
+/* A classe is-scrolled é colocada pelo index.js quando a página rola. */
+.site-header.is-scrolled {
+    box-shadow: 0 10px 28px rgba(16, 33, 23, 0.3);
+}
+
+.site-header__container {
+    width: min(1200px, 90%);            /* largura máxima de 1200px, com folga nas laterais */
+    min-height: var(--altura-header);
+    margin: 0 auto;                     /* centraliza */
+    display: flex;                      /* logo à esquerda, menu à direita */
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    transition: min-height 0.3s ease;
+}
+
+/* Ao rolar, o cabeçalho fica mais baixo e ocupa menos espaço. */
+.site-header.is-scrolled .site-header__container {
+    min-height: 68px;
+}
+
+/* Marca: logo + nome. */
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--branco);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+}
+
+.site-header__logo {
+    flex: none;         /* não encolhe quando falta espaço */
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+/* ----- Menu: ícones que se expandem mostrando o texto ----- */
+.main-navigation__list {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;   /* sem bolinhas */
+}
+
+/* Grade de duas colunas: ícone (52px) + texto.
+   O texto começa com 0fr (largura zero) e vira 1fr no hover, então o botão
+   se ajusta ao tamanho de cada palavra. */
+.main-navigation__link {
+    display: grid;
+    grid-template-columns: 52px 0fr;
+    align-items: center;
+    height: 52px;
+    color: var(--branco);
+    text-decoration: none;
+    border-radius: 18px;
+    transition:
+        grid-template-columns 0.35s ease,
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+.main-navigation__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    font-size: 24px;
+}
+
+/* min-width: 0 + overflow: hidden deixam o texto "caber" em largura zero. */
+.main-navigation__text {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 500;
+    opacity: 0;                         /* invisível até o hover */
+    transition: opacity 0.2s ease;
+}
+
+/* Respiro à direita do texto (fica dentro da área recortada). */
+.main-navigation__text::after {
+    content: "";
+    display: inline-block;
+    width: 18px;
+}
+
+.main-navigation__link:hover,
+.main-navigation__link:focus-visible {
+    grid-template-columns: 52px 1fr;                /* abre o botão */
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.main-navigation__link:hover .main-navigation__text,
+.main-navigation__link:focus-visible .main-navigation__text {
+    opacity: 1;                                     /* mostra o texto */
+}
+
+/* Seção atual: botão amarelo e sempre aberto (o index.js marca o link ativo). */
+.main-navigation__link[aria-current="location"] {
+    grid-template-columns: 52px 1fr;
+    background-color: var(--ambar);
+    color: var(--tinta);
+}
+
+.main-navigation__link[aria-current="location"] .main-navigation__text {
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Botão do menu de telas pequenas (escondido no computador). */
+.menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    height: 48px;
+    padding: 0 16px 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    background: transparent;
+    color: var(--branco);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ----- Celular e tablet (até 820px) ----- */
+@media (max-width: 820px) {
+    .site-header__container {
+        flex-wrap: wrap;
+        min-height: 68px;
+    }
+
+    .site-header.is-scrolled .site-header__container {
+        min-height: 60px;
+    }
+
+    .site-header__logo {
+        width: 52px;                        /* logo menor para caber no cabeçalho baixo */
+        height: 52px;
+    }
+
+    /* Marca e botão "Menu" precisam caber lado a lado: gaps e fonte menores. */
+    .site-header__container {
+        gap: 12px;
+    }
+
+    .site-header__brand {
+        gap: 10px;
+        font-size: 1.05rem;
+    }
+
+    .menu-toggle {
+        display: inline-flex;               /* mostra o botão "Menu" */
+    }
+
+    /* Sem JavaScript, o menu aparece normalmente abaixo da marca. */
+    .main-navigation {
+        width: 100%;
+        padding-bottom: 16px;
+    }
+
+    /* Com JavaScript, vira um painel que desce sob o cabeçalho. */
+    .js .main-navigation {
+        position: absolute;
+        top: 100%;                          /* logo abaixo do cabeçalho */
+        left: 0;
+        right: 0;
+        padding: 12px 5% 24px;
+        background: var(--verde);
+        box-shadow: 0 18px 28px rgba(16, 33, 23, 0.3);
+        visibility: hidden;                 /* fechado por padrão */
+        opacity: 0;
+        transform: translateY(-8px);
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease,
+            visibility 0s linear 0.25s;
+    }
+
+    /* A classe is-open é colocada pelo index.js ao clicar em "Menu". */
+    .js .main-navigation.is-open {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+        transition-delay: 0s;
+    }
+
+    .main-navigation__list {
+        flex-direction: column;             /* itens um embaixo do outro */
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    /* No celular não existe hover: todos os textos ficam visíveis. */
+    .main-navigation__link {
+        grid-template-columns: 52px 1fr;
+    }
+
+    .main-navigation__text {
+        opacity: 1;
+        font-size: 1.05rem;
+    }
+}
+
+
+/* ==========================================================================
+   4. HERO (banner inicial)
+   Ocupa 100% da altura da TELA: 100svh menos a altura do cabeçalho (que
+   fica no topo, fora do hero). "svh" = altura visível real da tela no
+   celular (descontando a barra do navegador).
+   ========================================================================== */
+.hero {
+    min-height: calc(100vh - var(--altura-header));     /* reserva para navegadores antigos (sem svh) */
+    min-height: calc(100svh - var(--altura-header));    /* 100% da tela, já descontando o cabeçalho */
+    display: flex;
+    align-items: center;                                /* centraliza o texto na vertical */
+    padding-block: 72px;                                /* respiro em cima e embaixo */
+    background-color: var(--tinta);                     /* cor mostrada enquanto a foto carrega */
+    background-image:
+        linear-gradient(90deg, rgba(16, 33, 23, 0.9), rgba(16, 33, 23, 0.1)), /* degradê escuro à esquerda para o texto ler bem */
+        url("img/banner.png");                          /* foto do banner */
+    background-size: cover;                             /* foto cobre o hero inteiro */
+    background-position: center;
+}
+
+.hero__container {
+    width: min(1200px, 90%);
+    margin: 0 auto;
+}
+
+.hero__content {
+    max-width: 680px;           /* limita a largura do bloco de texto */
+    color: var(--branco);
+}
+
+/* Etiqueta pequena acima do título. */
+.hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;                   /* formato de pílula */
+    background: rgba(255, 255, 255, 0.12);  /* branco translúcido */
+    backdrop-filter: blur(6px);             /* desfoca o que está atrás (vidro) */
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Bolinha amarela antes do texto. */
+.hero__eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ambar);
+}
+
+.hero__title {
+    margin: 0 0 20px;
+    font-size: clamp(2.1rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;         /* equilibra o tamanho das linhas do título */
+}
+
+.hero__description {
+    max-width: 52ch;            /* ~52 letras por linha: leitura confortável */
+    margin: 0 0 32px;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Botão do hero ("Conheça as cidades"): foi removido do HTML.
+   As regras ficam guardadas caso alguém recoloque o botão (o código para
+   recolocar está comentado no index.html, dentro do hero). */
+.hero__action {
+    display: inline-block;
+    padding: 16px 28px;
+    border-radius: 18px;
+    background: var(--ambar);
+    color: var(--tinta);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.hero__action:hover {
+    background: #ffc45c;
+    transform: translateY(-2px);    /* sobe 2px */
+}
+
+/* Celular: sem degradê lateral, escurece tudo para o texto continuar legível. */
+@media (max-width: 820px) {
+    .hero {
+        background-image:
+            linear-gradient(rgba(16, 33, 23, 0.68), rgba(16, 33, 23, 0.68)),
+            url("img/banner.png");
+    }
+}
+
+
+/* ==========================================================================
+   5. QUEM SOMOS
+   Texto + foto no topo e quatro cartões de destaque. O fundo bege vem da
+   classe .content-section (seção 2).
+   ========================================================================== */
+#quem-somos {
+    padding: 50px 50px 70px;    /* cima / laterais / baixo */
+}
+
+/* Título "QUEM SOMOS": usa as mesmas variáveis dos demais títulos. */
+.qs-titulo {
+    font-family: var(--fonte-titulo);
+    font-size: var(--titulo-tamanho);
+    font-weight: var(--titulo-peso);
+    font-style: var(--titulo-estilo);
+    letter-spacing: var(--titulo-espaco-letras);
+    color: var(--titulo-cor);
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 24px;        /* espaço entre o título e o texto */
+}
+
+/* Duas colunas: texto à esquerda, foto à direita. */
+.qs-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* duas colunas iguais ("3fr 2fr" daria mais espaço ao texto) */
+    align-items: center;            /* alinha texto e foto pelo meio */
+    gap: 40px;                      /* espaço entre as colunas */
+    max-width: 1200px;
+    margin: 0 auto;                 /* centraliza o bloco */
+}
+
+.qs-texto p {
+    font-family: var(--fonte-texto);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.7;               /* respiro entre as linhas */
+    color: #2c3a22;
+    margin-bottom: 16px;            /* espaço entre parágrafos */
+}
+
+/* Foto do Pantanal (definida aqui no CSS, por isso a div do HTML é vazia).
+   Para trocar a foto: substitua o arquivo em img/ ou mude o caminho do url(). */
+.qs-imagem {
+    width: 100%;
+    max-width: 630px;               /* largura máxima da foto */
+    justify-self: center;           /* centraliza dentro da coluna */
+    aspect-ratio: 1.5 / 1;          /* proporção: largura 1,5x a altura */
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background:
+        url("img/paisagem-pantanal-paulista.png") center / cover no-repeat, /* a foto */
+        rgba(255, 255, 255, 0.5);                                           /* cor de reserva */
+}
+
+/* Quatro cartões lado a lado (cada um com no mínimo 230px de largura). */
+.qs-destaques {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 60px auto 0;            /* 60px de espaço acima, centralizado */
+}
+
+.qs-card {
+    background: rgba(255, 255, 255, 0.88);  /* branco levemente translúcido */
+    border-top: 6px solid var(--laranja);   /* faixa laranja no topo */
+    border-radius: 14px;
+    padding: 24px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.qs-card h3 {
+    font-family: var(--fonte-titulo);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--verde-escuro);
+    margin-bottom: 10px;
+}
+
+.qs-card p {
+    font-family: var(--fonte-texto);
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Celular: tudo em uma coluna. */
+@media (max-width: 800px) {
+    #quem-somos {
+        padding: 40px 20px 60px;        /* menos espaço lateral */
+    }
+
+    .qs-hero {
+        grid-template-columns: 1fr;     /* texto em cima, foto embaixo */
+    }
+}
+
+
+/* ==========================================================================
+   6. CIDADES (cards com foto)
+   Cada card mostra a foto; ao passar o mouse a foto escurece e aparecem o
+   texto e o botão "Saiba mais".
+   ========================================================================== */
+#cidades {
+    padding: 40px 50px;     /* 40px em cima/embaixo, 50px nas laterais */
+}
+
+/* Caixa que alinha os cards lado a lado. */
+.listaCards {
+    display: flex;
+    justify-content: center;    /* centraliza os cards ("flex-start" = esquerda) */
+    flex-wrap: wrap;            /* quebra de linha quando não cabe mais */
+    gap: 50px 35px;             /* espaço vertical / horizontal entre os cards */
+    padding: 30px 7vw 0;        /* topo / laterais (7vw = 7% da largura da tela) / base */
+}
+
+/* Cada card (foto + texto + nome). */
+.card-imagem-caixa {
+    position: relative;         /* permite colocar a camada de texto por cima da foto */
+    overflow: hidden;           /* esconde o que passa da caixa (o blur vaza nas bordas) */
+    width: 15vw;                /* 15% da largura da tela: o card cresce e encolhe com a tela */
+}
+
+.imgCard {
+    display: block;             /* remove o espacinho em branco que fica embaixo de imagens */
+    width: 100%;
+    height: 300px;              /* altura maior que a largura = foto em pé (retrato) */
+    object-fit: cover;          /* corta a foto sem deformar */
+    transition: filter 0.4s ease;   /* o desfoque do hover aparece suavemente */
+}
+
+/* Camada com texto e botão: fica invisível sobre a foto até o hover. */
+.card-conteudo {
+    position: absolute;
+    inset: 0;                   /* ocupa a caixa toda (topo, direita, base e esquerda = 0) */
+    display: flex;
+    flex-direction: column;     /* texto em cima, botão embaixo */
+    justify-content: center;    /* centraliza na vertical */
+    align-items: center;        /* centraliza na horizontal */
+    gap: 12px;                  /* espaço entre texto e botão */
+    padding: 20px;
+    opacity: 0;                 /* invisível */
+    transition: opacity 0.4s ease;
+}
+
+.card-texto {
+    margin: 0;
+    color: #fff;
+    font-family: var(--fonte-texto);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Botão laranja ("Saiba mais" e "← Voltar às cidades"). */
+.card-botao {
+    background: var(--laranja);
+    color: #111;
+    padding: 10px 24px;
+    border-radius: 30px;            /* formato de pílula */
+    text-decoration: none;          /* tira o sublinhado do link */
+    font-family: var(--fonte-titulo);
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.card-botao:hover {
+    transform: scale(1.1);          /* cresce 10% ao passar o mouse */
+}
+
+/* Hover no card: foto desfocada e escurecida... */
+.card-imagem-caixa:hover .imgCard {
+    filter: blur(1.5px) brightness(0.68);   /* blur = desfoque; brightness 0.68 = 32% mais escura */
+}
+
+/* ...e a camada de texto aparece. */
+.card-imagem-caixa:hover .card-conteudo {
+    opacity: 1;
+}
+
+/* Nome da cidade abaixo da foto. */
+.card-titulo {
+    margin-top: 12px;
+    font-family: var(--fonte-titulo);
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    text-transform: uppercase;
+}
+
+/* Tablet e celular: cards maiores para caber 2 por linha (ou 1 em telas bem pequenas). */
+@media (max-width: 1000px) {
+    .card-imagem-caixa {
+        width: min(42vw, 260px);
+    }
+}
+
+@media (max-width: 520px) {
+    #cidades {
+        padding: 40px 20px;
+    }
+
+    .card-imagem-caixa {
+        width: min(80vw, 300px);
+    }
+}
+
+
+/* ==========================================================================
+   7. INFORMAÇÕES DA CIDADE (painéis de vidro + mapa)
+   A seção #mapas começa escondida. Ao clicar em "Saiba mais" o endereço da
+   página vira #mapa-nome-da-cidade, e o CSS (:target) mostra SÓ aquele bloco.
+
+   Efeito vidro ("glassmorphism"): painel translúcido + backdrop-filter
+   (desfoca o que está atrás) + borda clara fininha + sombra suave. Para o
+   vidro aparecer, existem manchas coloridas e desfocadas ATRÁS dos painéis
+   (os ::before e ::after do .mapa-cidade).
+   ========================================================================== */
+#mapas {
+    display: none;              /* escondida por padrão */
+    padding: 40px 50px;
+}
+
+/* Aparece só quando um dos blocos dentro dela é o alvo do link. */
+#mapas:has(.mapa-cidade:target) {
+    display: block;
+}
+
+/* Bloco de UMA cidade. Escondido, a menos que seja o alvo do link. */
+.mapa-cidade {
+    display: none;
+    position: relative;         /* referência para as manchas de fundo */
+    isolation: isolate;         /* mantém as manchas (z-index negativo) presas dentro do bloco */
+    max-width: 1000px;
+    margin: 30px auto 0;        /* centraliza */
+    scroll-margin-top: 20px;    /* ao rolar até o bloco, ele para 20px abaixo do topo */
+}
+
+.mapa-cidade:target {
+    display: block;
+}
+
+/* Manchas coloridas atrás dos painéis: dão "o que desfocar" ao vidro e
+   deixam a forma orgânica (nada de caixas retas sobre fundo liso). */
+.mapa-cidade::before,
+.mapa-cidade::after {
+    content: "";
+    position: absolute;
+    z-index: -1;                /* atrás dos painéis */
+    pointer-events: none;       /* o clique atravessa a mancha */
+    filter: blur(36px);         /* borda bem suave */
+}
+
+/* Mancha verde, canto superior esquerdo. */
+.mapa-cidade::before {
+    top: 4%;
+    left: -6%;
+    width: 46%;
+    height: 38%;
+    background: rgba(61, 140, 40, 0.55);
+    border-radius: 58% 42% 63% 37% / 45% 55% 45% 55%;   /* forma de "pedra de rio" */
+}
+
+/* Mancha âmbar, canto inferior direito. */
+.mapa-cidade::after {
+    right: -6%;
+    bottom: 18%;
+    width: 42%;
+    height: 34%;
+    background: rgba(251, 178, 48, 0.5);
+    border-radius: 40% 60% 35% 65% / 55% 40% 60% 45%;
+}
+
+/* Nome da cidade. */
+.mapa-titulo {
+    margin-bottom: 28px;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: var(--verde);
+    letter-spacing: -0.01em;
+}
+
+/* ----- Grade com os 4 painéis (12 colunas) -----
+   Linha 1: [ Sobre a cidade (7 col.) ][ Dados (5 col.) ]
+   Linha 2: [ Atrações (7 col.) ][ Como chegar (5 col.) ]
+   Larguras desiguais deixam o conjunto menos "quadrado" e mais orgânico. */
+.cidade__grade {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.cidade__sobre {
+    grid-column: 1 / 8;
+}
+
+.cidade__dados {
+    grid-column: 8 / 13;
+}
+
+.cidade__atracoes {
+    grid-column: 1 / 8;
+}
+
+.cidade__acesso {
+    grid-column: 8 / 13;
+    align-self: start;              /* altura do próprio texto (não estica até o fim da lista ao lado) */
+}
+
+/* ----- Painel de vidro (classe base de todos os painéis) ----- */
+.vidro {
+    padding: clamp(20px, 3vw, 32px);
+    text-align: left;                                   /* parágrafos ficam mais fáceis de ler à esquerda */
+    color: var(--tinta);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.62),                      /* mais claro no canto superior esquerdo... */
+        rgba(255, 255, 255, 0.24)                       /* ...e mais transparente no inferior direito */
+    );
+    border: 1px solid rgba(255, 255, 255, 0.65);        /* borda clara que imita a quina do vidro */
+    -webkit-backdrop-filter: blur(16px) saturate(140%); /* versão para Safari */
+    backdrop-filter: blur(16px) saturate(140%);         /* desfoca e realça as cores de trás */
+    box-shadow:
+        0 12px 32px rgba(22, 56, 8, 0.14),              /* sombra suave verde */
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);        /* brilho na borda de cima */
+}
+
+/* Navegadores sem backdrop-filter: fundo quase opaco para o texto continuar legível. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .vidro {
+        background: rgba(255, 255, 255, 0.88);
+    }
+}
+
+/* Cantos diferentes em cada painel (formato orgânico). Ordem dos valores:
+   canto superior esquerdo, superior direito, inferior direito, inferior esquerdo. */
+.cidade__sobre {
+    border-radius: 44px 16px 44px 16px;
+}
+
+.cidade__dados {
+    border-radius: 16px 44px 16px 44px;
+}
+
+.cidade__atracoes {
+    border-radius: 16px 40px 16px 40px;
+}
+
+.cidade__acesso {
+    border-radius: 40px 16px 40px 16px;
+}
+
+/* Subtítulo dos painéis: etiqueta pequena com uma "folhinha" antes. */
+.info-subtitulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-family: var(--fonte-titulo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--verde-escuro);
+}
+
+.info-subtitulo::before {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 12px;
+    background: var(--laranja);
+    border-radius: 0 100% 0 100%;   /* dois cantos arredondados = formato de folha */
+    transform: rotate(-10deg);
+}
+
+/* Textos corridos (sobre a cidade e como chegar). */
+.info-descricao {
+    font-family: var(--fonte-texto);
+    font-size: 1rem;
+    line-height: 1.7;               /* linhas bem espaçadas facilitam a leitura */
+    color: #25352a;
+    text-align: left;
+}
+
+/* Primeira letra grande do "Sobre a cidade" (capitular, como em revista). */
+.cidade__sobre .info-descricao::first-letter {
+    float: left;                    /* o texto contorna a letra */
+    margin: 0.06em 0.12em 0 0;
+    font-size: 3.2em;
+    font-weight: 800;
+    line-height: 0.85;
+    color: var(--verde);
+}
+
+/* ----- Dados rápidos: 2 x 2, sem caixinhas, separados por linhas finas ----- */
+.cidade__dados {
+    display: flex;
+    align-items: center;            /* centraliza a lista na altura do painel */
+}
+
+.info-dados {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* duas colunas */
+    gap: 0;
+    width: 100%;
+}
+
+.info-dado {
+    display: flex;
+    flex-direction: column;         /* nome em cima, valor embaixo */
+    gap: 4px;
+    padding: 14px 8px;
+    border-bottom: 1px solid rgba(22, 56, 8, 0.14);     /* linha fina entre os dados */
+}
+
+/* Remove a linha dos dois últimos (os de baixo). */
+.info-dado:nth-last-child(-n + 2) {
+    border-bottom: 0;
+}
+
+/* Linha vertical entre as duas colunas. */
+.info-dado:nth-child(odd) {
+    border-right: 1px solid rgba(22, 56, 8, 0.14);
+}
+
+.info-dado-titulo {
+    text-align: left;               /* o reset global centraliza; aqui voltamos para a esquerda */
+    font-family: var(--fonte-texto);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5b6b5f;
+}
+
+.info-dado-valor {
+    margin: 0;                      /* tira o recuo padrão do <dd> */
+    font-family: var(--fonte-titulo);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--verde);
+    text-align: left;
+}
+
+/* ----- Lista de atrações: marcador em forma de folha ----- */
+.info-lista {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* duas colunas de atrações */
+    gap: 8px 20px;
+    list-style: none;               /* tira as bolinhas padrão */
+}
+
+.info-lista li {
+    position: relative;
+    padding-left: 22px;             /* espaço para a folhinha */
+    font-family: var(--fonte-texto);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #25352a;
+    text-align: left;
+}
+
+.info-lista li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;                    /* alinha com a primeira linha do texto */
+    width: 10px;
+    height: 10px;
+    background: var(--verde-escuro);
+    border-radius: 0 100% 0 100%;
+}
+
+/* ----- Painel do mapa ----- */
+.cidade__mapa {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 16px 52px 16px 52px;
+}
+
+.cidade__mapa .info-subtitulo {
+    margin: 6px 0 12px 10px;
+}
+
+.cidade__mapa iframe {
+    display: block;
+    width: 100%;
+    height: 420px;
+    border: 0;                      /* tira a borda padrão feia do iframe */
+    border-radius: 12px 40px 12px 40px;
+}
+
+/* Botão "← Voltar às cidades". */
+.cidade__voltar {
+    display: block;
+    width: fit-content;             /* largura = tamanho do texto */
+    margin: 28px auto 0;            /* centraliza */
+}
+
+/* Tablet e celular: painéis empilhados em uma coluna. */
+@media (max-width: 800px) {
+    #mapas {
+        padding: 30px 20px;
+    }
+
+    .cidade__sobre,
+    .cidade__dados,
+    .cidade__atracoes,
+    .cidade__acesso {
+        grid-column: 1 / -1;        /* cada painel ocupa a linha toda */
+    }
+
+    .info-lista {
+        grid-template-columns: 1fr; /* lista em uma coluna só */
+    }
+
+    .cidade__mapa iframe {
+        height: 320px;
+    }
+}
+
+
+/* ==========================================================================
+   8. EVENTOS (carrossel infinito)
+   Os cards são criados pelo index.js (lista EVENTOS). Para ajustar tamanhos,
+   mexa nas variáveis --ev-* logo abaixo. O fundo bege vem de .content-section.
+   ========================================================================== */
+section.eventos {
+    --ev-fundo: #fff;                               /* cor do texto do botão de pausa no hover */
+    --ev-titulo: var(--verde);                      /* cor do título e do botão de pausa */
+    --ev-texto: var(--tinta);                       /* cor dos textos */
+    --ev-destaque: var(--ambar);                    /* cor do botão "saiba mais" */
+    --ev-fonte-titulo: var(--fonte-principal);      /* fonte dos títulos dos cards */
+    --ev-largura-card: clamp(270px, 32vw, 400px);   /* largura de cada card (mín., ideal, máx.) */
+    --ev-altura-card: clamp(340px, 42vw, 500px);    /* altura (proporcional às artes 4:5 do Instagram) */
+
+    color: var(--ev-texto);
+    padding: clamp(2rem, 6vw, 4rem) 0;
+    overflow: hidden;                               /* corta o carrossel nas bordas da tela */
+}
+
+/* Título "EVENTOS": mesmas variáveis dos demais títulos do site. */
+.eventos .eventos__titulo {
+    margin: 0 0 clamp(1.5rem, 4vw, 3rem);           /* espaço abaixo do título */
+    text-align: center;
+    font-family: var(--ev-fonte-titulo);
+    font-style: var(--titulo-estilo);
+    font-weight: var(--titulo-peso);
+    font-size: var(--titulo-tamanho);
+    letter-spacing: var(--titulo-espaco-letras);
+    text-transform: uppercase;
+    color: var(--titulo-cor);
+}
+
+/* ----- Carrossel ----- */
+
+/* Janela que recorta o trilho. */
+.eventos__janela {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Trilho: fila de cards que desliza (a animação é a ev-deslizar, abaixo). */
+.eventos__trilho {
+    display: flex;                  /* cards em fila horizontal */
+    width: max-content;             /* largura = soma dos cards */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    will-change: transform;         /* avisa o navegador que vai animar (fica mais fluido) */
+    animation: ev-deslizar var(--ev-duracao, 30s) linear infinite;  /* duração vem do JS (padrão 30s) */
+}
+
+/* Pausa a animação: mouse em cima, foco do teclado, card aberto no toque ou botão. */
+.eventos__janela:hover .eventos__trilho,
+.eventos__janela:focus-within .eventos__trilho,
+.eventos__janela:has(.evento--aberto) .eventos__trilho,
+.eventos--pausado .eventos__trilho {
+    animation-play-state: paused;
+}
+
+/* Movimento para a DIREITA (a distância é calculada pelo index.js). */
+@keyframes ev-deslizar {
+    from {
+        transform: translateX(calc(-1 * var(--ev-distancia, 50%)));
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.eventos__item {
+    flex: 0 0 auto;                         /* não encolhe nem cresce */
+    width: var(--ev-largura-card);
+    padding-inline: clamp(0.4rem, 1.5vw, 1rem); /* espaço entre os cards */
+}
+
+/* ----- Card ----- */
+.evento {
+    margin: 0;
+    text-align: center;
+}
+
+.evento__midia {
+    position: relative;
+    height: var(--ev-altura-card);
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);    /* recorta em paralelogramo (foto E painel) */
+}
+
+/* Botão que envolve a foto (clicável no toque e no teclado). */
+.evento__gatilho {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: #e3ede4;            /* cor mostrada enquanto a foto carrega */
+    cursor: pointer;
+}
+
+.evento__imagem {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
+}
+
+.evento__nome {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--ev-fonte-titulo);
+    font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ----- Painel de informações (aparece sobre a foto) ----- */
+.evento__info {
+    position: absolute;
+    inset: 0;                       /* cobre a foto inteira */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 12%;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(to top, rgba(16, 33, 23, 0.94), rgba(22, 56, 8, 0.86));
+    opacity: 0;                     /* escondido até o hover/toque */
+    visibility: hidden;
+    transition:
+        opacity 0.4s ease,
+        visibility 0s linear 0.4s;
+}
+
+/* Cada texto do painel começa 14px abaixo e sobe ao aparecer. */
+.evento__info > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+.evento__subtitulo {
+    margin: 0;
+    font-family: var(--ev-fonte-titulo);
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+}
+
+.evento__meta {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+/* Descrição limitada a 6 linhas (o que passar vira "..."). */
+.evento__descricao {
+    margin: 0;
+    font-size: clamp(0.72rem, 1.5vw, 0.85rem);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.evento__saiba {
+    align-self: center;
+    margin-top: 0.25rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ev-texto);
+    background: var(--ev-destaque);
+    border-radius: 999px;
+    text-decoration: none;
+}
+
+.evento__saiba:hover,
+.evento__saiba:focus-visible {
+    background: #ffc85c;
+}
+
+/* ----- Quando o painel aparece (card aberto ou com foco do teclado) ----- */
+.evento--aberto .evento__info,
+.evento:focus-within .evento__info {
+    opacity: 1;
+    visibility: visible;
+    transition:
+        opacity 0.4s ease,
+        visibility 0s;
+}
+
+.evento--aberto .evento__info > *,
+.evento:focus-within .evento__info > * {
+    opacity: 1;
+    transform: none;
+}
+
+.evento--aberto .evento__imagem,
+.evento:focus-within .evento__imagem {
+    transform: scale(1.08);         /* foto cresce 8% */
+    filter: blur(2px);              /* e desfoca atrás do painel */
+}
+
+/* Hover só em dispositivos com mouse (no celular o "hover" ficaria preso após o toque). */
+@media (hover: hover) {
+    .evento:hover .evento__info {
+        opacity: 1;
+        visibility: visible;
+        transition:
+            opacity 0.4s ease,
+            visibility 0s;
+    }
+
+    .evento:hover .evento__info > * {
+        opacity: 1;
+        transform: none;
+    }
+
+    .evento:hover .evento__imagem {
+        transform: scale(1.08);
+        filter: blur(2px);
+    }
+}
+
+/* Entrada em cascata dos textos (cada um espera um pouquinho mais). */
+.evento__info > :nth-child(2) {
+    transition-delay: 0.06s;
+}
+
+.evento__info > :nth-child(3) {
+    transition-delay: 0.12s;
+}
+
+.evento__info > :nth-child(4) {
+    transition-delay: 0.18s;
+}
+
+.evento__gatilho:focus-visible {
+    outline: 3px solid var(--ev-titulo);
+    outline-offset: -6px;
+}
+
+.evento__saiba:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* ----- Botão de pausa ----- */
+.eventos__pausa {
+    display: block;
+    margin: 1.25rem auto 0;         /* centralizado, 1,25rem abaixo do carrossel */
+    padding: 0.5rem 1.1rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--ev-titulo);
+    background: transparent;
+    border: 2px solid var(--ev-titulo);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.eventos__pausa:hover,
+.eventos__pausa:focus-visible {
+    background: var(--ev-titulo);
+    color: var(--ev-fundo);
+}
+
+
+/* ==========================================================================
+   9. RODAPÉ
+   Fundo verde com ondas desenhadas em <svg> (dentro do próprio <footer>,
+   atrás do conteúdo). A mancha amarela do canto superior esquerdo usa a cor
+   do --ambar.
+   ========================================================================== */
+.site-footer {
+    position: relative;
+    isolation: isolate;     /* prende o z-index negativo das ondas DENTRO do rodapé */
+    overflow: hidden;       /* corta as ondas que passam das bordas */
+    color: var(--branco);
+    font-family: var(--fonte-principal);
+    background: linear-gradient(160deg, #24690f 0%, #1a4e0a 55%, #163808 100%);
+}
+
+/* Ondas decorativas: ficam atrás do conteúdo. */
+.site-footer__decor {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    pointer-events: none;   /* não atrapalham cliques */
+}
+
+/* Peça de cima (mancha amarela) e peça de baixo (ondas verdes). Altura fixa:
+   em tela estreita elas só são cortadas, nunca deformadas. */
+.site-footer__decor--top {
+    top: 0;
+    height: 260px;
+}
+
+.site-footer__decor--bottom {
+    bottom: 0;
+    height: 240px;
+}
+
+.site-footer__container {
+    width: min(1200px, 90%);
+    margin: 0 auto;
+    padding: clamp(72px, 9vw, 120px) 0 28px;    /* topo, laterais, base */
+}
+
+/* ----- Parte de cima: 4 colunas no computador ----- */
+.site-footer__main {
+    display: grid;
+    grid-template-columns: auto minmax(220px, 1.3fr) minmax(130px, 0.7fr) minmax(200px, 1fr);
+    align-items: start;
+    gap: 40px clamp(24px, 4vw, 56px);
+}
+
+/* ----- Coluna 1: marca ----- */
+.site-footer__brand {
+    display: inline-flex;
+    flex-direction: column;     /* logo em cima, nome embaixo */
+    align-items: flex-start;
+    gap: 14px;
+    color: var(--branco);
+    text-decoration: none;
+}
+
+.site-footer__logo {
+    width: 160px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.site-footer__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.site-footer__brand-top {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+.site-footer__brand-name {
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+
+/* ----- Coluna 2: apresentação (com linha vertical à esquerda) ----- */
+.site-footer__about {
+    padding-left: clamp(20px, 3vw, 36px);
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.site-footer__about-title {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.site-footer__about p {
+    margin: 0 0 20px;
+    max-width: 34ch;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--ambar);
+    color: var(--tinta);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.site-footer__button .material-symbols-rounded {
+    font-size: 20px;
+}
+
+.site-footer__button:hover {
+    background: #ffc45c;
+    transform: translateY(-2px);
+}
+
+/* ----- Colunas 3 e 4 (Navegação e Siga-nos) ----- */
+.site-footer__col-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 20px;
+    color: var(--ambar);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.site-footer__col-title .material-symbols-rounded {
+    font-size: 24px;
+    font-variation-settings: "FILL" 1;  /* ícone preenchido (não só o contorno) */
+}
+
+.site-footer__list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer__list a,
+.site-footer__contact a {
+    color: inherit;                 /* usa a cor do texto em volta */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site-footer__list a {
+    font-size: 0.92rem;
+}
+
+.site-footer__list a:hover,
+.site-footer__contact a:hover {
+    color: var(--ambar);
+    text-decoration: underline;
+    text-underline-offset: 3px;     /* afasta o sublinhado do texto */
+}
+
+/* ----- Redes sociais ----- */
+.site-footer__social-text {
+    margin: 0 0 18px;
+    max-width: 26ch;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer__social {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Botão redondo de cada rede. */
+.site-footer__social a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--branco);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.site-footer__social svg {
+    width: 22px;
+    height: 22px;
+}
+
+.site-footer__social a:hover {
+    background: var(--ambar);
+    color: var(--tinta);
+    transform: translateY(-3px);
+}
+
+/* ----- Linha de baixo: contato e direitos autorais ----- */
+.site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px 32px;
+    margin-top: clamp(40px, 5vw, 56px);
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.site-footer__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px clamp(24px, 3.5vw, 48px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer__contact li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer__contact strong {
+    display: block;                 /* o título fica numa linha e o valor na de baixo */
+    color: var(--branco);
+    font-weight: 700;
+}
+
+/* Círculo com o ícone de cada contato. */
+.site-footer__contact-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--branco);
+    font-size: 22px;
+}
+
+.site-footer__contact-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.site-footer__copy {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+/* ----- Tablet: 2 colunas ----- */
+@media (max-width: 960px) {
+    .site-footer__main {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .site-footer__brand {
+        grid-column: 1 / -1;        /* a marca ocupa a linha toda */
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .site-footer__about {
+        padding-left: 0;
+        border-left: 0;             /* tira a linha vertical */
+    }
+}
+
+/* ----- Celular: tudo em uma coluna ----- */
+@media (max-width: 600px) {
+    .site-footer__decor--top {
+        height: 190px;
+    }
+
+    .site-footer__decor--bottom {
+        height: 200px;
+    }
+
+    .site-footer__main {
+        grid-template-columns: 1fr;
+    }
+
+    .site-footer__bottom,
+    .site-footer__contact {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* ==========================================================================
+   10. PREFERÊNCIA POR MENOS MOVIMENTO (acessibilidade)
+   Quem ativou "reduzir movimento" no sistema não vê animações.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;              /* rolagem instantânea */
+    }
+
+    * {
+        transition-duration: 0.01ms !important; /* praticamente sem transições */
+    }
+
+    /* Carrossel de eventos: para de deslizar e vira uma faixa rolável com o dedo. */
+    .eventos__trilho {
+        animation: none;
+    }
+
+    .eventos__janela {
+        overflow-x: auto;
+    }
+
+    .eventos__pausa {
+        display: none;                      /* o botão de pausa perde o sentido */
+    }
+
+    /* Rodapé: botões sem movimento. */
+    .site-footer__button,
+    .site-footer__social a {
+        transition: none;
+        transform: none !important;
+    }
+}

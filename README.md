@@ -1,55 +1,32 @@
-# site-pantanal-paulista
+# Site Região Turística Pantanal Paulista
 
-Site Web para o grupo Pantanal Paulista (Região Turística Pantanal Paulista).
+Site estático (HTML, CSS e JavaScript puro). Abra o `index.html` no navegador.
 
 ## Estrutura
 
 ```
-index.html               página única com todas as seções
-header-hero.css          cabeçalho, hero e carrossel de Eventos
-cidades-quem-somos.css   Cidades, mapas/informações e Quem somos
-index.js                 menu, link ativo e carrossel de Eventos
-assets/img/
-├── banner.png           imagem do hero
-├── cidades/             fotos dos cards das cidades
-├── fundos/              fundos bege/branco (só back-bege.png está em uso)
-└── quem-somos/          foto da seção Quem somos
+index.html   página única, com comentários explicando cada seção
+style.css    todos os estilos, com sumário numerado no topo
+index.js     menu, link ativo, carrossel de Eventos e ano do rodapé
+img/         todas as imagens (sem subpastas)
 ```
 
-## Seções (ordem no `index.html`)
+## Seções (ordem no `index.html`) e onde está o estilo
 
-| Seção          | id            | Estilo                   |
-| -------------- | ------------- | ------------------------ |
-| Hero           | `#inicio`     | `header-hero.css`        |
-| Quem somos     | `#quem-somos` | `cidades-quem-somos.css` |
-| Cidades        | `#cidades`    | `cidades-quem-somos.css` |
-| Info + mapas   | `#mapas`      | `cidades-quem-somos.css` |
-| Eventos        | `#eventos`    | `header-hero.css`        |
-| Contato        | `#contato`    | (a fazer, fora do menu)  |
-| Rodapé         | `.site-footer`| (a fazer – Kauê)         |
+| Seção        | id            | Seção do `style.css`        |
+| ------------ | ------------- | --------------------------- |
+| Cabeçalho    | `.site-header`| 3. Cabeçalho e menu         |
+| Hero         | `#inicio`     | 4. Hero (100% da tela)      |
+| Quem somos   | `#quem-somos` | 5. Quem somos               |
+| Cidades      | `#cidades`    | 6. Cidades                  |
+| Info + mapa  | `#mapas`      | 7. Informações da cidade    |
+| Eventos      | `#eventos`    | 8. Eventos                  |
+| Rodapé       | `.site-footer`| 9. Rodapé                   |
 
-Menu: Início, Quem somos, Cidades, Eventos (mesma ordem da página).
+Cores, fontes e medidas do site todo ficam na seção 1 do `style.css` (variáveis em `:root`).
 
-## Padrões do site (editar em um lugar só)
+## Manutenção rápida
 
-No `:root` do `header-hero.css`:
-
-- `--fonte-principal`: fonte do site inteiro (hoje Outfit).
-- `--titulo-*`: tamanho, peso, inclinação, espaçamento e cor de todos os títulos de seção.
-- Fundo bege: classe `.content-section` (vale para toda seção abaixo do hero).
-
-## Observações para o time
-
-- Todo o código tem comentários explicando o que cada propriedade faz e o que
-  acontece se for alterada.
-- O reset global (`* { margin:0; padding:0; text-align:center }`) e a fonte
-  Inter do código original de Cidades/Quem somos agora valem **só** dentro de
-  `#cidades`, `#mapas` e `#quem-somos`, para não quebrar o cabeçalho e os Eventos.
-- A seção `#mapas` fica escondida e só aparece quando o link do card aponta
-  para `#mapa-<cidade>` (usa `:target`).
-- Nomes de imagens foram renomeados sem espaços/maiúsculas
-  (ex.: `Back bege.png` → `assets/img/fundos/back-bege.png`).
-
-## Como abrir
-
-Abra o `index.html` no navegador (ou use a extensão Live Server do VS Code).
+- **Novo evento:** edite a lista `EVENTOS` no `index.js` (seção 2.1) e coloque a arte em `img/`.
+- **Nova cidade:** copie um card em `#cidades` e um bloco `<article class="mapa-cidade">` em `#mapas`, trocando o `id`.
+- **Redes sociais do rodapé:** `https://www.instagram.com/rtpantanal/`, `https://www.facebook.com/rtpantanalpaulista/`, e-mail `rtpantanalpaulista@gmail.com`.
