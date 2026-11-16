@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+    =====================================================================
+    PEIXES.HTML - GUIA DE PEIXES E PESCA
+    ---------------------------------------------------------------------
+    SUMÁRIO
+      A. <head> ............ configurações invisíveis da página
+      B. CABEÇALHO ......... logo e menu
+      C. #peixes ........... introdução, 3 bacias hidrográficas e guia de espécies
+           - .bacia ......... um bloco por bacia (título + texto + etiquetas de peixes)
+           - #guia-especies . lista de cartões (um <li class="especie"> por peixe)
+           - .peixes-preservacao  aviso final sobre preservação
+      D. RODAPÉ
+
+    PARA ADICIONAR UM PEIXE: copie um <li class="especie"> inteiro, troque id, nome,
+    nome científico e texto. A foto vem de img/peixes/<id>.jpg.
+    =====================================================================
+-->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Peixes da Região Turística Pantanal Paulista: espécies por bacia hidrográfica e informações de cada peixe." />
+        <meta name="theme-color" content="#163808" />
+        <title>Peixes | Pantanal Paulista</title>
+
+        <!-- Avisa o CSS de que o JavaScript está ativo (usado pelo menu de celular). -->
+        <script>
+            document.documentElement.classList.add("js-ativo");
+        </script>
+
+        <!-- Mesmas fontes, mesmo CSS e mesmo JS da página inicial. -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script src="index.js" defer></script>
+    </head>
+
+    <body>
+        <a class="link-salto" href="#conteudo-principal"> Pular para o conteúdo principal </a>
+
+        <!-- CABEÇALHO: igual ao da página inicial (links apontam para index.html). -->
+        <header class="cabecalho">
+            <div class="cabecalho__conteudo">
+                <!-- Logo + nome: clicar leva ao início da página. -->
+                <a
+                    class="cabecalho__marca"
+                    href="index.html"
+                    aria-label="Pantanal Paulista - início"
+                >
+                    <img class="cabecalho__logo" src="img/logo.png" alt="" width="75" height="75" />
+                    <span class="cabecalho__marca-texto">
+                        <span class="cabecalho__marca-nome">Pantanal Paulista</span>
+                        <!-- Slogan (veio do site do Kauê). -->
+                        <span class="cabecalho__slogan">Sua viagem começa aqui!</span>
+                    </span>
+                </a>
+
+                <!-- Botão do menu de celular (o index.js troca o ícone e o aria-expanded). -->
+                <button
+                    class="botao-menu"
+                    type="button"
+                    aria-controls="menu-principal"
+                    aria-expanded="false"
+                >
+                    <span class="botao-menu__icone material-symbols-rounded" aria-hidden="true"
+                        >menu</span
+                    >
+                    <span class="botao-menu__rotulo">Menu</span>
+                </button>
+
+                <!--
+                    MENU PRINCIPAL
+                    Os itens aparecem na MESMA ordem em que estão aqui. Para
+                    mudar a ordem, recorte um bloco <li>...</li> inteiro e cole
+                    em outra posição. Cada href (ex.: "#cidades") deve ser o id
+                    de uma seção do <main>. A ordem do menu acompanha a ordem
+                    da página: Início, Quem somos, Cidades e Eventos.
+                -->
+                <nav class="menu-navegacao" id="menu-principal" aria-label="Navegação principal">
+                    <ul class="menu-navegacao__lista">
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">home</span>
+                                <span class="menu-navegacao__texto">Início</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html#quem-somos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">groups</span>
+                                <span class="menu-navegacao__texto">Quem somos</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="cidades.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">map</span>
+                                <span class="menu-navegacao__texto">Cidades</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="peixes.html" aria-current="location">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">phishing</span>
+                                <span class="menu-navegacao__texto">Peixes</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html#eventos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">event</span>
+                                <span class="menu-navegacao__texto">Eventos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <!-- ======== FIM: CABEÇALHO ======== -->
+
+        <main id="conteudo-principal">
+            <!-- ============ PEIXES (id="peixes") ============
+                 Bacias hidrográficas com as espécies de cada rio. Clicar em uma etiqueta leva
+                 ao cartão da espécie no guia (abaixo). Foto: coloque o arquivo em img/peixes/ com
+                 o mesmo id do cartão (ex.: img/peixes/dourado.jpg). Estilo: style.css, bloco "10. PÁGINA DE PEIXES". -->
+            <section class="secao-conteudo" id="peixes" aria-labelledby="titulo-peixes">
+                <h1 class="titulo-secao" id="titulo-peixes">PEIXES DA REGIÃO</h1>
+                <p class="peixes-intro">
+                    A Região Turística Pantanal Paulista é privilegiada por grandes rios de águas
+                    cristalinas. Confira o levantamento das espécies de peixes presentes em cada
+                    um dos nossos rios.
+                </p>
+
+                <div class="peixes__conteudo">
+            <!-- ===== COMO É UMA BACIA =====
+                 <article class="bacia"> = um bloco com a foto/capa, o título, um texto e as
+                 etiquetas dos peixes (<ul class="bacia__etiquetas">). Cada etiqueta é um link
+                 (#id-do-peixe) que leva ao cartão da espécie mais abaixo.
+                 Cores, tamanhos e espaços: style.css, seção 10 (PÁGINA DE PEIXES). -->
+            <!-- BACIA: Rio Paraná e Rio Tietê -->
+            <article class="bacia">
+                <img class="bacia__capa" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80" alt="" loading="lazy" />
+                <div class="bacia__corpo">
+                    <div class="bacia__cabecalho">
+                        <h2 class="bacia__titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">water</span>
+                            Rio Paraná e Rio Tietê
+                        </h2>
+                        <span class="bacia__contagem">13 espécies catalogadas</span>
+                    </div>
+                    <p class="bacia__texto">As principais bacias de navegação e pesca de grande porte da região concentram grande variedade de peixes nobres e de couro:</p>
+                    <ul class="bacia__etiquetas">
+                        <li><a class="etiqueta-peixe" href="#barbado"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Barbado</a></li>
+                        <li><a class="etiqueta-peixe" href="#corvina"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Corvina</a></li>
+                        <li><a class="etiqueta-peixe" href="#dourado"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Dourado</a></li>
+                        <li><a class="etiqueta-peixe" href="#lambari"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Lambaris</a></li>
+                        <li><a class="etiqueta-peixe" href="#pacu-caranha"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Pacu Caranha</a></li>
+                        <li><a class="etiqueta-peixe" href="#pacu-prata"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Pacu-Prata</a></li>
+                        <li><a class="etiqueta-peixe" href="#piapara"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piapara</a></li>
+                        <li><a class="etiqueta-peixe" href="#piau"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piau</a></li>
+                        <li><a class="etiqueta-peixe" href="#piracanjuba"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piracanjuba</a></li>
+                        <li><a class="etiqueta-peixe" href="#piranha"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piranha</a></li>
+                        <li><a class="etiqueta-peixe" href="#porquinho"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Porquinho</a></li>
+                        <li><a class="etiqueta-peixe" href="#tucunare"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Tucunaré</a></li>
+                        <li><a class="etiqueta-peixe" href="#traira"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Traíra</a></li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- BACIA: Rio São José dos Dourados -->
+            <article class="bacia">
+                <img class="bacia__capa" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="" loading="lazy" />
+                <div class="bacia__corpo">
+                    <div class="bacia__cabecalho">
+                        <h2 class="bacia__titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">waves</span>
+                            Rio São José dos Dourados
+                        </h2>
+                        <span class="bacia__contagem">10 espécies catalogadas</span>
+                    </div>
+                    <p class="bacia__texto">Corredeiras límpidas e braços de rio perfeitos para a prática da pesca esportiva e ecoturismo:</p>
+                    <ul class="bacia__etiquetas">
+                        <li><a class="etiqueta-peixe" href="#corvina"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Corvina</a></li>
+                        <li><a class="etiqueta-peixe" href="#dourado-cachorro"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Dourado Cachorro</a></li>
+                        <li><a class="etiqueta-peixe" href="#lambari"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Lambaris</a></li>
+                        <li><a class="etiqueta-peixe" href="#pacu-caranha"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Pacu Caranha</a></li>
+                        <li><a class="etiqueta-peixe" href="#pacu-prata"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Pacu Prata</a></li>
+                        <li><a class="etiqueta-peixe" href="#piau"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piau</a></li>
+                        <li><a class="etiqueta-peixe" href="#porquinho"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Porquinho</a></li>
+                        <li><a class="etiqueta-peixe" href="#tilapia"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Tilápias</a></li>
+                        <li><a class="etiqueta-peixe" href="#tucunare"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Tucunaré</a></li>
+                        <li><a class="etiqueta-peixe" href="#traira"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Traíra</a></li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- BACIA: Rio Grandinho e Rio Pântano -->
+            <article class="bacia">
+                <img class="bacia__capa" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80" alt="" loading="lazy" />
+                <div class="bacia__corpo">
+                    <div class="bacia__cabecalho">
+                        <h2 class="bacia__titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">sailing</span>
+                            Rio Grandinho e Rio Pântano
+                        </h2>
+                        <span class="bacia__contagem">9 espécies catalogadas</span>
+                    </div>
+                    <p class="bacia__texto">Afluentes preservados e calmos que alimentam a rica biodiversidade aquática da rota:</p>
+                    <ul class="bacia__etiquetas">
+                        <li><a class="etiqueta-peixe" href="#corvina"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Corvina</a></li>
+                        <li><a class="etiqueta-peixe" href="#dourado-cachorro"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Dourado Cachorro</a></li>
+                        <li><a class="etiqueta-peixe" href="#pacu-prata"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Pacu Prata</a></li>
+                        <li><a class="etiqueta-peixe" href="#piau"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piau</a></li>
+                        <li><a class="etiqueta-peixe" href="#piranha"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Piranha</a></li>
+                        <li><a class="etiqueta-peixe" href="#porquinho"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Porquinho</a></li>
+                        <li><a class="etiqueta-peixe" href="#tilapia"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Tilápias</a></li>
+                        <li><a class="etiqueta-peixe" href="#tucunare"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Tucunaré</a></li>
+                        <li><a class="etiqueta-peixe" href="#traira"><span class="material-symbols-rounded" aria-hidden="true">set_meal</span>Traíra</a></li>
+                    </ul>
+                </div>
+            </article>
+
+                    <!-- GUIA DAS ESPÉCIES
+                         Cada <li class="especie" id="..."> é um cartão de peixe:
+                         foto, nome, nome científico, onde ocorre e um texto curto.
+                         Para mudar a foto: coloque img/peixes/<id>.jpg (o id do cartão).
+                         Para a grade ter mais/menos colunas: style.css, ".especies" (grid-template-columns). -->
+                    <h2 class="titulo-secao guia-especies__titulo" id="guia-especies">GUIA DAS ESPÉCIES</h2>
+                    <p class="guia-especies__aviso">
+                        Resumo de cada peixe da região. Nomes populares mudam de
+                        rio para rio; quando uma espécie não pôde ser confirmada, isso está dito.
+                    </p>
+                    <ul class="especies">
+                    <li class="especie" id="dourado">
+                        <div class="especie__foto">
+                            <img src="img/peixes/dourado.jpg" alt="Dourado" loading="lazy" data-remoto="https://commons.wikimedia.org/wiki/Special:FilePath/Dourado no Rio da Prata.JPG?width=800" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Dourado</h3>
+                            <p class="especie__cientifico">Salminus brasiliensis</p>
+                            <span class="especie__selo">Predador de topo</span>
+                            <p class="especie__texto">Um dos maiores peixes de escamas da América do Sul: pode passar de 1 metro e de 30 kg. O nome vem do brilho dourado do corpo. É um predador que se alimenta de outros peixes e um dos troféus mais cobiçados da pesca esportiva.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacias dos rios Paraná, Paraguai e Uruguai.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="dourado-cachorro">
+                        <div class="especie__foto">
+                            <img src="img/peixes/dourado-cachorro.jpg" alt="Dourado Cachorro" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Dourado Cachorro</h3>
+                            <p class="especie__cientifico">identificação científica não confirmada</p>
+                            <span class="especie__selo">Nome regional</span>
+                            <p class="especie__texto">Nome popular usado na região nos levantamentos do Pantanal Paulista. Não encontramos fonte científica que ligue este nome a uma espécie específica, então preferimos não arriscar um nome científico nem uma descrição. Se você conhece a espécie, ela pode ser corrigida pela área administrativa.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Citado para o Rio São José dos Dourados e para os rios Grandinho e Pântano.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="pacu-caranha">
+                        <div class="especie__foto">
+                            <img src="img/peixes/pacu-caranha.jpg" alt="Pacu Caranha" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Pacu Caranha</h3>
+                            <p class="especie__cientifico">Piaractus mesopotamicus</p>
+                            <span class="especie__selo">Quase ameaçado (IUCN)</span>
+                            <p class="especie__texto">Peixe robusto, de corpo alto e achatado, cinza-escuro a prateado, com o peito amarelado. Adulto, entra nas matas alagadas para comer frutos e sementes que caem das árvores. Chega a cerca de 50 cm e até 20 kg e é muito usado em pesca esportiva e piscicultura.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacia Paraguai-Paraná.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="pacu-prata">
+                        <div class="especie__foto">
+                            <img src="img/peixes/pacu-prata.jpg" alt="Pacu-Prata" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Pacu-Prata</h3>
+                            <p class="especie__cientifico">gênero Myloplus (e parentes)</p>
+                            <span class="especie__selo">Nome popular amplo</span>
+                            <p class="especie__texto">“Pacu-prata” é um nome popular dado a pacus de corpo prateado e achatado, e não a uma única espécie. Em estudo recente com a bacia do Prata (Paraná e Paraguai), só duas espécies do gênero Myloplus foram reconhecidas: M. tiete e M. levis. Ambas têm descrições antigas e muito parecidas entre si.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacia do Prata (Paraná-Paraguai).</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="piapara">
+                        <div class="especie__foto">
+                            <img src="img/peixes/piapara.jpg" alt="Piapara" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Piapara</h3>
+                            <p class="especie__cientifico">Megaleporinus elongatus</p>
+                            <span class="especie__selo">Peixe de piracema</span>
+                            <p class="especie__texto">Peixe de corpo alongado da família dos piaus, que migra rio acima para se reproduzir (potamódromo). Pode chegar a cerca de 50 cm. Está classificado como “pouco preocupante” pela IUCN.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacias do Paraná e do Prata, segundo o FishBase.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="piau">
+                        <div class="especie__foto">
+                            <img src="img/peixes/piau.jpg" alt="Piau" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Piau</h3>
+                            <p class="especie__cientifico">gêneros Leporinus e Megaleporinus</p>
+                            <span class="especie__selo">Nome popular amplo</span>
+                            <p class="especie__texto">“Piau” (ou “piava”) é o nome popular de vários peixes de corpo alongado, muitos com manchas escuras, da família Anostomidae. O nome “piavuçu”, por exemplo, indica um piau grande. Por isso, o piau do seu rio pode ser de espécies diferentes das de outro rio.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Alto rio Paraná (para o piavuçu, Megaleporinus piavussu, endêmico do alto Paraná).</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="lambari">
+                        <div class="especie__foto">
+                            <img src="img/peixes/lambari.jpg" alt="Lambaris" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Lambaris</h3>
+                            <p class="especie__cientifico">gênero Astyanax e parentes</p>
+                            <span class="especie__selo">Nome popular amplo</span>
+                            <p class="especie__texto">Peixes pequenos, de cardume, muito comuns em rios e lagoas. São a base da cadeia alimentar: alimentam peixes maiores, como a traíra. “Lambari” cobre muitas espécies, sobretudo do gênero Astyanax.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Presente em quase todos os rios da região.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="barbado">
+                        <div class="especie__foto">
+                            <img src="img/peixes/barbado.jpg" alt="Barbado" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Barbado</h3>
+                            <p class="especie__cientifico">bagres de barbilhões longos (família Pimelodidae)</p>
+                            <span class="especie__selo">Nome popular amplo</span>
+                            <p class="especie__texto">Nome popular de bagres da família Pimelodidae, reconhecidos pelos barbilhões compridos perto da boca. Esses peixes de couro vivem perto do fundo. Como o nome muda de rio para rio, o FishBase é usado aqui como referência de uma espécie parente (Pimelodus maculatus).</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacia do Paraná.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="corvina">
+                        <div class="especie__foto">
+                            <img src="img/peixes/corvina.jpg" alt="Corvina" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Corvina</h3>
+                            <p class="especie__cientifico">Plagioscion squamosissimus</p>
+                            <span class="especie__selo">Não nativa do alto Paraná</span>
+                            <p class="especie__texto">Chamada de pescada em partes da Amazônia, é predadora e come peixes. Chega a cerca de 80 cm. Sua origem é amazônica e do Orinoco: no alto rio Paraná ela é considerada não nativa, introduzida por sua importância comercial.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Amazonas, Orinoco, Paraná, Paraguai e São Francisco (hoje espalhada por reservatórios).</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="piracanjuba">
+                        <div class="especie__foto">
+                            <img src="img/peixes/piracanjuba.jpg" alt="Piracanjuba" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Piracanjuba</h3>
+                            <p class="especie__cientifico">Brycon orbignyanus</p>
+                            <span class="especie__selo especie__selo--alerta">Criticamente em perigo — pesca proibida</span>
+                            <p class="especie__texto">O nome vem do tupi e quer dizer “peixe de cabeça amarela”. É uma espécie migratória, só encontrada nas bacias do Paraná e do Uruguai, com carne rosada. A população caiu pelo menos 80% em 30 anos, sobretudo por causa das barragens. Hoje está na lista nacional de espécies ameaçadas: capturar, transportar e vender exemplares silvestres é proibido.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacias dos rios Paraná e Uruguai.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="piranha">
+                        <div class="especie__foto">
+                            <img src="img/peixes/piranha.jpg" alt="Piranha" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Piranha</h3>
+                            <p class="especie__cientifico">Serrasalmus maculatus (piranha-amarela)</p>
+                            <span class="especie__selo">Cuidado ao entrar na água</span>
+                            <p class="especie__texto">A piranha-amarela vive em pequenos grupos, perto da vegetação, e come principalmente pedaços de nadadeiras e músculo de outros peixes. Chega a cerca de 26 cm. Costuma haver mordidas em banhistas em represas na época de reprodução, quando os adultos defendem os ninhos e os filhotes.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Bacias amazônica e Paraguai-Paraná.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="porquinho">
+                        <div class="especie__foto">
+                            <img src="img/peixes/porquinho.jpg" alt="Porquinho" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Porquinho</h3>
+                            <p class="especie__cientifico">identificação científica não confirmada</p>
+                            <span class="especie__selo">Nome regional</span>
+                            <p class="especie__texto">Nome regional usado nos levantamentos das bacias da região. Não encontramos fonte científica que ligue este nome a uma única espécie, então não colocamos nome científico nem descrição inventada. A informação pode ser completada pela área administrativa.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Citado para as três bacias da região.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="tucunare">
+                        <div class="especie__foto">
+                            <img src="img/peixes/tucunare.jpg" alt="Tucunaré" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Tucunaré</h3>
+                            <p class="especie__cientifico">Cichla kelberi e Cichla piquiti</p>
+                            <span class="especie__selo">Introduzido</span>
+                            <p class="especie__texto">Peixe amazônico, lutador, muito procurado na pesca esportiva. Nos rios e represas da bacia do Paraná ele foi introduzido: estudos genéticos confirmaram duas espécies, o tucunaré-amarelo (C. kelberi) e o tucunaré-azul (C. piquiti), e também híbridos entre elas.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Nativo da Amazônia; introduzido na bacia do Paraná.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="traira">
+                        <div class="especie__foto">
+                            <img src="img/peixes/traira.jpg" alt="Traíra" loading="lazy" data-remoto="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias malabaricus2.jpg?width=800" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Traíra</h3>
+                            <p class="especie__cientifico">Hoplias malabaricus</p>
+                            <span class="especie__selo">Pouco preocupante (IUCN)</span>
+                            <p class="especie__texto">Predadora de emboscada, de corpo alongado e dentes fortes, que passa o dia entre a vegetação e caça à noite. Os machos cuidam do ninho mesmo depois de os ovos eclodirem. Chega a cerca de 65 cm e mais de 3 kg e é um peixe de pesca esportiva e comercial. Peixe vivo exige cuidado ao manusear: dentes afiados e corpo escorregadio.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Quase todas as bacias, da Costa Rica à Argentina.</p>
+                        </div>
+                    </li>
+                    <li class="especie" id="tilapia">
+                        <div class="especie__foto">
+                            <img src="img/peixes/tilapia.jpg" alt="Tilápia" loading="lazy" />
+                            <span class="especie__foto-vazia" aria-hidden="true"><span class="material-symbols-rounded">set_meal</span>Foto em breve</span>
+                        </div>
+                        <div class="especie__corpo">
+                            <h3 class="especie__nome">Tilápia</h3>
+                            <p class="especie__cientifico">Oreochromis niloticus (tilápia-do-nilo)</p>
+                            <span class="especie__selo especie__selo--alerta">Introduzida (invasora)</span>
+                            <p class="especie__texto">Origem africana. É a tilápia mais criada no mundo, mas em rios e represas brasileiras ela é espécie introduzida e pode competir com os peixes nativos. Por isso não deve ser solta em rios e lagoas.</p>
+                            <p class="especie__onde"><strong>Onde ocorre:</strong> Nativa da África e do Oriente Médio; introduzida em muitos países.</p>
+                        </div>
+                    </li>
+                    </ul>
+
+                    <!-- FAIXA DE PRESERVAÇÃO -->
+                    <aside class="peixes-preservacao">
+                        <h2>Pesca esportiva e preservação ambiental</h2>
+                        <p>
+                            A prática da pesca no Pantanal Paulista incentiva a modalidade do
+                            “Pesque e Solte”, preservando a maturação das espécies nativas e
+                            mantendo viva a biodiversidade dos rios paulistas para os futuros
+                            visitantes. Antes de pescar, confira os períodos de defeso (piracema),
+                            os tamanhos mínimos e as espécies protegidas junto aos órgãos
+                            ambientais.
+                        </p>
+                    </aside>
+                </div>
+            </section>
+            <!-- ======== FIM: SEÇÃO #peixes ======== -->
+        </main>
+        <!-- ======== FIM: CONTEÚDO PRINCIPAL ======== -->
+
+        <!-- RODAPÉ: igual ao da página inicial. -->
+        <footer class="rodape">
+            <!-- Ondas decorativas do fundo (só enfeite: o leitor de tela ignora).
+                 Duas peças: uma presa ao topo (mancha amarela) e outra à base. -->
+            <svg
+                class="rodape__decoracao rodape__decoracao--cima"
+                viewBox="0 0 1440 260"
+                preserveAspectRatio="xMinYMin slice"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <path
+                    fill="#143a08"
+                    opacity=".55"
+                    d="M820 0H1440V250C1360 215 1290 150 1190 140C1050 126 960 190 890 130C850 96 835 45 820 0Z"
+                />
+                <path
+                    fill="#fbb230"
+                    d="M0 0H620C560 28 500 52 420 64C300 82 150 60 70 88C36 100 12 112 0 128Z"
+                />
+            </svg>
+            <svg
+                class="rodape__decoracao rodape__decoracao--baixo"
+                viewBox="0 0 1440 240"
+                preserveAspectRatio="xMaxYMax slice"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <path
+                    fill="#2a6a14"
+                    opacity=".75"
+                    d="M520 240C640 160 760 190 880 150C1010 106 1100 50 1210 60C1300 68 1370 30 1440 0V240Z"
+                />
+                <path
+                    fill="#357a1c"
+                    opacity=".55"
+                    d="M0 240V150C120 110 230 170 360 190C450 204 500 225 520 240Z"
+                />
+            </svg>
+
+            <div class="rodape__conteudo">
+                <!-- Parte de cima: 4 colunas (marca, apresentação, navegação, redes) -->
+                <div class="rodape__principal">
+                    <!-- Coluna 1: marca (clicar leva ao início) -->
+                    <a
+                        class="rodape__marca"
+                        href="index.html"
+                        aria-label="Pantanal Paulista - voltar ao início"
+                    >
+                        <img class="rodape__logo" src="img/logo.png" alt="" width="160" height="160" />
+                        <span class="rodape__marca-texto">
+                            <span class="rodape__marca-topo">Região Turística</span>
+                            <span class="rodape__marca-nome">Pantanal Paulista</span>
+                        </span>
+                    </a>
+
+                    <!-- Coluna 2: apresentação + botão -->
+                    <div class="rodape__sobre">
+                        <h2 class="rodape__sobre-titulo">Descubra o Pantanal Paulista</h2>
+                        <p>
+                            Cidades do extremo noroeste paulista, onde os rios Tietê, Paraná e
+                            Aguapeí se encontram: pesca esportiva, praias de água doce, natureza
+                            preservada e cultura para toda a família.
+                        </p>
+                        <a class="rodape__botao" href="index.html#quem-somos">
+                            Saiba mais
+                            <span class="material-symbols-rounded" aria-hidden="true"
+                                >arrow_forward</span
+                            >
+                        </a>
+                    </div>
+
+                    <!-- Coluna 3: navegação (mesmos destinos do menu do topo) -->
+                    <nav class="rodape__coluna" aria-labelledby="rodape-nav-titulo">
+                        <h2 class="rodape__coluna-titulo" id="rodape-nav-titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+                            Navegação
+                        </h2>
+                        <ul class="rodape__lista">
+                            <li><a href="index.html">Início</a></li>
+                            <li><a href="index.html#quem-somos">Quem somos</a></li>
+                            <li><a href="cidades.html">Cidades</a></li>
+                            <li><a href="peixes.html">Peixes</a></li>
+                            <li><a href="index.html#eventos">Eventos</a></li>
+                            <li><a href="admin.html" class="rodape__admin">Área administrativa (login)</a></li>
+                        </ul>
+                    </nav>
+
+                    <!-- Coluna 4: redes sociais (links reais da Região Turística) -->
+                    <div class="rodape__coluna">
+                        <h2 class="rodape__coluna-titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+                            Siga-nos
+                        </h2>
+                        <p class="rodape__redes-texto">
+                            Acompanhe nossas redes sociais e fique por dentro das novidades.
+                        </p>
+                        <ul class="rodape__redes">
+                            <li>
+                                <a
+                                    href="https://www.instagram.com/rtpantanal/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Instagram @rtpantanal (abre em nova aba)"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+                                        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+                                        <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.facebook.com/rtpantanalpaulista/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Facebook Região Turística Pantanal Paulista (abre em nova aba)"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path
+                                            fill="currentColor"
+                                            d="M13.6 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.3H7.7V13h2.7v8z"
+                                        />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Para ADICIONAR outra rede (quando existir o perfil oficial),
+                                 copie um <li> acima, troque o href e o aria-label e coloque
+                                 o <svg> do ícone da rede. -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Linha de baixo: contato e direitos autorais -->
+                <div class="rodape__base">
+                    <ul class="rodape__contato">
+                        <li>
+                            <span
+                                class="rodape__contato-icone material-symbols-rounded"
+                                aria-hidden="true"
+                                >location_on</span
+                            >
+                            <span>
+                                <strong>Região Turística Pantanal Paulista</strong>
+                                Extremo noroeste de São Paulo • Brasil
+                            </span>
+                        </li>
+                        <li>
+                            <span
+                                class="rodape__contato-icone material-symbols-rounded"
+                                aria-hidden="true"
+                                >mail</span
+                            >
+                            <span>
+                                <strong>E-mail</strong>
+                                <a id="exibe-email" href="mailto:rtpantanalpaulista@gmail.com"
+                                    >rtpantanalpaulista@gmail.com</a
+                                >
+                            </span>
+                        </li>
+                        <li>
+                            <span class="rodape__contato-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" focusable="false">
+                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Instagram</strong>
+                                <a id="exibe-redes"
+                                    href="https://www.instagram.com/rtpantanal/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    >@rtpantanal</a
+                                >
+                            </span>
+                        </li>
+                        <li id="rodape-telefone" hidden>
+                            <span class="rodape__contato-icone material-symbols-rounded" aria-hidden="true">call</span>
+                            <span>
+                                <strong>Telefone</strong>
+                                <span id="exibe-telefone"></span>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <!-- O ano é atualizado sozinho pelo index.js (2026 é só o valor de reserva). -->
+                    <p class="rodape__direitos">
+                        © <span id="rodape-ano">2026</span> Região Turística Pantanal Paulista.<br />
+                        Todos os direitos reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <!-- ======== FIM: RODAPÉ ======== -->
+    </body>
+</html>

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+    =====================================================================
+    CIDADES.HTML - MUNICÍPIOS INTEGRANTES
+    ---------------------------------------------------------------------
+    SUMÁRIO
+      A. <head> ............ configurações invisíveis da página
+      B. CABEÇALHO ......... logo e menu
+      C. #cidades .......... busca + cartões com foto de cada cidade
+      D. #mapas ............ guia de cada cidade (aparece ao clicar no cartão)
+      E. RODAPÉ
+
+    COMO FUNCIONA O GUIA: cada cartão de #cidades tem um link como
+    href="#guia-andradina". Ao clicar, a página vai até o <article id="guia-andradina">
+    e o CSS mostra SÓ esse guia (truque do ":target"; veja o CSS, seção 7).
+
+    PARA ADICIONAR UMA CIDADE: copie um cartão de #cidades e um <article> de #mapas,
+    troque os nomes/ids (guia-..., descricao-...) e acrescente o nome na lista CIDADES
+    do index.js (seção 5) para que o painel admin possa editar o texto dela.
+    =====================================================================
+-->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Conheça os municípios da Região Turística Pantanal Paulista: atrativos, história e passeios de cada cidade." />
+        <meta name="theme-color" content="#163808" />
+        <title>Cidades | Pantanal Paulista</title>
+
+        <!-- Avisa o CSS de que o JavaScript está ativo (usado pelo menu de celular). -->
+        <script>
+            document.documentElement.classList.add("js-ativo");
+        </script>
+
+        <!-- Mesmas fontes, mesmo CSS e mesmo JS da página inicial. -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script src="index.js" defer></script>
+    </head>
+
+    <body>
+        <a class="link-salto" href="#conteudo-principal"> Pular para o conteúdo principal </a>
+
+        <!-- CABEÇALHO: igual ao da página inicial (links apontam para index.html). -->
+        <header class="cabecalho">
+            <div class="cabecalho__conteudo">
+                <!-- Logo + nome: clicar leva ao início da página. -->
+                <a
+                    class="cabecalho__marca"
+                    href="index.html"
+                    aria-label="Pantanal Paulista - início"
+                >
+                    <img class="cabecalho__logo" src="img/logo.png" alt="" width="75" height="75" />
+                    <span class="cabecalho__marca-texto">
+                        <span class="cabecalho__marca-nome">Pantanal Paulista</span>
+                        <!-- Slogan (veio do site do Kauê). -->
+                        <span class="cabecalho__slogan">Sua viagem começa aqui!</span>
+                    </span>
+                </a>
+
+                <!-- Botão do menu de celular (o index.js troca o ícone e o aria-expanded). -->
+                <button
+                    class="botao-menu"
+                    type="button"
+                    aria-controls="menu-principal"
+                    aria-expanded="false"
+                >
+                    <span class="botao-menu__icone material-symbols-rounded" aria-hidden="true"
+                        >menu</span
+                    >
+                    <span class="botao-menu__rotulo">Menu</span>
+                </button>
+
+                <!--
+                    MENU PRINCIPAL
+                    Os itens aparecem na MESMA ordem em que estão aqui. Para
+                    mudar a ordem, recorte um bloco <li>...</li> inteiro e cole
+                    em outra posição. Cada href (ex.: "#cidades") deve ser o id
+                    de uma seção do <main>. A ordem do menu acompanha a ordem
+                    da página: Início, Quem somos, Cidades e Eventos.
+                -->
+                <nav class="menu-navegacao" id="menu-principal" aria-label="Navegação principal">
+                    <ul class="menu-navegacao__lista">
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">home</span>
+                                <span class="menu-navegacao__texto">Início</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html#quem-somos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">groups</span>
+                                <span class="menu-navegacao__texto">Quem somos</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="cidades.html" aria-current="location">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">map</span>
+                                <span class="menu-navegacao__texto">Cidades</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="peixes.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">phishing</span>
+                                <span class="menu-navegacao__texto">Peixes</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="index.html#eventos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">event</span>
+                                <span class="menu-navegacao__texto">Eventos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <!-- ======== FIM: CABEÇALHO ======== -->
+
+        <main id="conteudo-principal">
+            <!-- ============ CIDADES (id="cidades") ============
+                 Página com todos os municípios: campo de busca, cards com foto e,
+                 ao clicar em "Saiba mais", o guia completo da cidade (seção #mapas).
+                 Para editar um card: foto em "src", texto no <p>, nome no <h3>.
+                 O "href" do botão deve ser igual ao id do guia (ex.: #guia-castilho).
+                 Estilo: style.css, blocos "6. CIDADES" e "7. INFORMAÇÕES DA CIDADE". -->
+            <section class="secao-conteudo" id="cidades" aria-labelledby="titulo-cidades">
+                <h1 class="titulo-secao" id="titulo-cidades">CIDADES</h1>
+                <p class="cidades-intro">
+                    Nada supera a paz que a natureza nos transmite. Conheça os atrativos, a
+                    história e os passeios inesquecíveis das cidades do noroeste paulista.
+                </p>
+
+                <!-- Campo de busca: filtra os cards por cidade ou atrativo (index.js, bloco 4). -->
+                <div class="cidades-busca">
+                    <label class="cidades-busca__label" for="campo-filtro-cidades">Buscar cidade ou atrativo</label>
+                    <div class="cidades-busca__campo">
+                        <span class="cidades-busca__icone material-symbols-rounded" aria-hidden="true">search</span>
+                        <input
+                            class="cidades-busca__campo-texto"
+                            type="search"
+                            id="campo-filtro-cidades"
+                            placeholder="Ex.: Castilho, pesca, igreja..."
+                            autocomplete="off"
+                        />
+                    </div>
+                    <p class="cidades-busca__vazio" id="cidades-vazio" hidden>Nenhuma cidade encontrada para essa busca.</p>
+                </div>
+
+                <div class="lista-cartoes" id="grade-cidades">
+                    <!-- ===== COMO É UM CARD DE CIDADE =====
+                         <div class="cartao-imagem-caixa"> ... é o cartão inteiro.
+                         - data-busca="..." ......... texto invisível usado SÓ pela busca (nome, resumo e
+                                                      atrativos em minúsculas). Se mudar o texto da cidade,
+                                                      atualize aqui também para a busca achar.
+                         - <img src="img/..."> ...... a foto (troque o arquivo para mudar a imagem).
+                         - <p class="cartao-texto"> . o resumo curto.
+                         - <a href="#guia-..."> ..... botão "Saiba mais": o href deve ser IGUAL ao id do guia.
+                         - <h3 class="cartao-titulo"> o nome da cidade (faixa no rodapé do card).
+                         Tamanho/cor/sombra do card: style.css, seção 6 (CIDADES). -->
+                    <!-- CARD: Andradina -->
+                    <div class="cartao-imagem-caixa" data-busca="andradina a terra do rei do gado está a 640 km da capital e tem como uma de suas principais fontes de economia a pecuária. destino turístico a terra do rei do gado está a 640 km da capital e tem como uma de suas principais fontes de economia a pecuária, com o gado de leite e de corte. é uma cidade em pleno desenvolvimento, que conta com várias empresas e indústrias. andradina tem características das grandes metrópoles sem perder o charme e aconchego, típicos de cidades interioranas. você irá se apaixonar pelo lugar todas as vezes em que pisar lá. centro comercial oeste plaza shopping centro histórico cultural pioneiros de andradina andradina tênis clube igrejas complexo turístico thermas acqualinda: parque aquático e parque dos dinossauros, diversão para toda a família casa da cultura cora coralina zoológico municipal, com mata nativa preservada dentro da área urbana centro cultural pioneiros de andradina, instalado na antiga estação ferroviária praça moura andrade (a praça central, com esculturas de personagens importantes da cidade) e memorial adélio sarro igreja matriz de são sebastião e igreja nossa senhora das graças, no roteiro do turismo religioso fazenda são francisco / bufalare cavalgare: cavalgadas e trilha off road para bike expoan, a exposição agropecuária de andradina, maior evento do calendário da cidade">
+                        <img class="cartao-imagem" src="img/andra.jpg" alt="Foto de Andradina" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">A Terra do Rei do Gado está a 640 km da capital e tem como uma de suas principais fontes de economia a pecuária.</p>
+                            <a class="cartao-botao" href="#guia-andradina">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Andradina</h3>
+                    </div>
+                    <!-- CARD: Castilho -->
+                    <div class="cartao-imagem-caixa" data-busca="castilho localizado no extremo noroeste paulista, castilho é conhecida como o paraíso do pescador. paraíso do pescador os passeios são imperdíveis, afinal, além de ser muito bonita, a cidade carrega consigo diversas características históricas... é simplesmente um passeio inesquecível! se você está na região do noroeste paulista, não pode perder a oportunidade de conhecer castilho. alambique estância são joão pesqueiro piapara usina hidroelétrica eng. souza dias (jupiá) capela bom jesus da lapa aulas de mergulho rio aguapeí igreja matriz são josé rio paraná e represa da usina hidrelétrica de jupiá (engenheiro souza dias): pesca e passeios de barco foz do rio tietê e rio aguapeí: pesca esportiva e observação da fauna do bioma pantaneiro rppn foz do aguapeí, área protegida que, junto com o parque estadual do aguapeí, forma o pantanal paulista prainha municipal pontes ferroviária (francisco sá) e rodoviária sobre o rio paraná, com vista impressionante do rio estação ferroviária alfredo de castilho, igreja matriz de são josé e capela bom jesus da lapa alambique estância são joão e orquidário torneios de pesca esportiva ao longo do ano">
+                        <img class="cartao-imagem" src="img/castilho.jpg" alt="Foto de Castilho" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Localizado no extremo noroeste paulista, Castilho é conhecida como O Paraíso do Pescador.</p>
+                            <a class="cartao-botao" href="#guia-castilho">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Castilho</h3>
+                    </div>
+                    <!-- CARD: Guaraçaí -->
+                    <div class="cartao-imagem-caixa" data-busca="guaraçaí capital do abacaxi e cidade presépio no noroeste paulista com atrativos naturais e culturais. capital do abacaxi capital do abacaxi do estado de são paulo e cidade presépio, unindo o turismo rural e a tranquilidade do interior. festa do abacaxi, evento anual que reúne turistas para saborear pratos e doces feitos com a fruta (17ª edição em 2023) cavalgada entre amigos, criada em 2008 e principal atrativo do turismo rural cachoeira maraní, em propriedade particular aberta a visitantes plantações de abacaxi, que fazem da cidade referência estadual na produção da fruta parque estadual do aguapeí, unidade de conservação que abrange também o território de guaraçaí">
+                        <img class="cartao-imagem" src="img/guaracai.webp" alt="Foto de Guaraçaí" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Capital do Abacaxi e Cidade Presépio no Noroeste Paulista com atrativos naturais e culturais.</p>
+                            <a class="cartao-botao" href="#guia-guaracai">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Guaraçaí</h3>
+                    </div>
+                    <!-- CARD: Ilha Solteira -->
+                    <div class="cartao-imagem-caixa" data-busca="ilha solteira um lugar charmoso onde o povo, a cultura e a história a tornam singular e estância turística. estância turística um lugar charmoso onde o povo, a cultura e a história a tornam singular. com pouco mais de 26 mil habitantes, o município está localizado ao noroeste do estado, divisa com mato grosso do sul. classificada como estância turística. usina hidrelétrica ilha solteira praias marina e catarina ciclovias piratas da ilha parque da mantiqueira &quot;ley leite bueno&quot; zoológico usina hidrelétrica de ilha solteira: visita guiada à maior usina do estado, com 3.444 mw de capacidade e barragem de 5,6 km praia catarina (a prainha), no rio paraná, ótima para relaxar e ver o pôr do sol praia marina, no rio são josé dos dourados, famosa pelo windsurf e pelo jet-ski parque da mantiqueira – cidade das crianças centro de conservação da fauna silvestre e parque das nações indígenas mirante do rio paraná canal de pereira barreto, obra de engenharia que liga os reservatórios de três irmãos e de ilha solteira festas e festivais, como a fapic (em outubro, mês do aniversário da cidade), o festival do chopp e o festival do peixe">
+                        <img class="cartao-imagem" src="img/ilha.jpg" alt="Foto de Ilha Solteira" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Um lugar charmoso onde o povo, a cultura e a história a tornam singular e Estância Turística.</p>
+                            <a class="cartao-botao" href="#guia-ilha-solteira">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Ilha Solteira</h3>
+                    </div>
+                    <!-- CARD: Itapura -->
+                    <div class="cartao-imagem-caixa" data-busca="itapura a cidade é recheada de atrações e abençoada por um clima tropical com pesca e mergulho. paraíso tropical a cidade é recheada de atrações! quem gosta de viajar em busca de uma boa pescaria, esse é o lugar. banhada por clima tropical, com ótimas opções de mergulho e banho. turismo de mergulho encontro dos rios tietê e paraná pesca esportiva foz do rio tietê no rio paraná, paisagem de cartão-postal naufrágio do vapor tamandathay (comprado por dom pedro ii em 1860 e afundado em 1883), a cerca de 20 metros de profundidade, nos roteiros de mergulho ruínas submersas da antiga vila, da usina eloy chaves e dos saltos de itapura e urubupungá prainha municipal cachoeira do córrego da onça palácio do imperador e ruínas da antiga colônia militar, patrimônio histórico do período imperial festa do peão e torneio de pesca ao tucunaré (tucuna free)">
+                        <img class="cartao-imagem" src="img/itapura.jfif" alt="Foto de Itapura" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">A cidade é recheada de atrações e abençoada por um clima tropical com pesca e mergulho.</p>
+                            <a class="cartao-botao" href="#guia-itapura">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Itapura</h3>
+                    </div>
+                    <!-- CARD: Mirandópolis -->
+                    <div class="cartao-imagem-caixa" data-busca="mirandópolis berço histórico com forte tradição cultural, religiosidade e comunidade acolhedora. tradição japonesa comunidade yuba de tradição japonesa, rica herança cultural e a histórica igreja de são joão batista. igreja de são joão batista (praça papa joão xxiii), cartão-postal da cidade comunidade yuba e a cultura japonesa, com forte presença da colônia nipônica bosque municipal zoológico municipal, atração popular entre as famílias">
+                        <img class="cartao-imagem" src="img/mirandopolis.jfif" alt="Foto de Mirandópolis" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Berço histórico com forte tradição cultural, religiosidade e comunidade acolhedora.</p>
+                            <a class="cartao-botao" href="#guia-mirandopolis">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Mirandópolis</h3>
+                    </div>
+                    <!-- CARD: Murutinga do Sul -->
+                    <div class="cartao-imagem-caixa" data-busca="murutinga do sul tradições sertanejas marcantes e acolhimento típico do interior paulista. cultura sertaneja tradições sertanejas, festividades de rodeio e aconchego em meio à natureza. festa do peão de boiadeiro, realizada em maio no clube de rodeio sela de prata (completou 30 anos em 2026) cavalgada regional, em celebração da tradição sertaneja carnaval de rua (carnamuru) festa junina comunitária, famosa pelo frango assado no forno de lenha">
+                        <img class="cartao-imagem" src="img/murutinga.jfif" alt="Foto de Murutinga do Sul" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Tradições sertanejas marcantes e acolhimento típico do interior paulista.</p>
+                            <a class="cartao-botao" href="#guia-murutinga">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Murutinga do Sul</h3>
+                    </div>
+                    <!-- CARD: Nova Independência -->
+                    <div class="cartao-imagem-caixa" data-busca="nova independência sede de reservas ecológicas e santuário preservado da fauna pantaneira. santuário ecológico sede do parque estadual do aguapeí, refúgio de preservação ambiental da fauna do pantanal paulista. parque estadual do aguapeí, com mais de 9 mil hectares, que protege a planície de inundação do rio aguapeí cervo-do-pantanal, um dos símbolos da fauna do parque trilhas autoguiadas, com entrada gratuita passeios de barco e praias de água doce no rio aguapeí turismo rural em meio à natureza do pantanal paulista">
+                        <img class="cartao-imagem" src="img/nova.jpg" alt="Foto de Nova Independência" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Sede de reservas ecológicas e santuário preservado da fauna pantaneira.</p>
+                            <a class="cartao-botao" href="#guia-nova-independencia">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Nova Independência</h3>
+                    </div>
+                    <!-- CARD: Pereira Barreto -->
+                    <div class="cartao-imagem-caixa" data-busca="pereira barreto charme e natureza preservada na incrível península encravada nas águas do rio tietê. a península verde charme e natureza preservada na incrível península encravada nas águas límpidas da foz do rio tietê. fundada por imigrantes japoneses, guarda fortes traços culturais na culinária e nos monumentos. praia pôr do sol canal de pereira barreto museu histórico da colonização stand up paddle (sup) go-ju-no-to pesca esportiva relojão praia municipal pôr do sol, praia artificial no rio tietê com águas cristalinas, 328 metros de areia e um pôr do sol inesquecível canal de pereira barreto, com 9,6 km de extensão navegável, que liga os reservatórios de três irmãos e ilha solteira (obras iniciadas em 1980) usina hidrelétrica de três irmãos e eclusa museu histórico da colonização (criado em 2001), que conta a história da imigração japonesa ponte novo oriente: a original, de 1935, está submersa desde 1990 e é visitada por mergulhadores; a atual tem cerca de 2,16 km festa das nações e pesca ao tucunaré">
+                        <img class="cartao-imagem" src="img/barreto.jpg" alt="Foto de Pereira Barreto" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Charme e natureza preservada na incrível península encravada nas águas do Rio Tietê.</p>
+                            <a class="cartao-botao" href="#guia-pereira-barreto">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Pereira Barreto</h3>
+                    </div>
+                    <!-- CARD: Sud Mennucci -->
+                    <div class="cartao-imagem-caixa" data-busca="sud mennucci localização privilegiada repleta de natureza exuberante e município de interesse turístico. terra do tucunaré azul repleta de natureza exuberante, reconhecida como município de interesse turístico. oferece experiências divertidas, relaxantes ou radicais para toda a família. rio tietê &amp; turismo fluvial pesca ao tucunaré paróquia nossa senhora aparecida fazenda triunfo parque da saúde e recanto das águas rio tietê: pesca esportiva e de lazer, esportes náuticos e pôr do sol à beira do rio encontro de pesca esportiva do tucunaré rio são josé dos dourados, que também corta o município parque recanto das águas, revitalizado com portaria, vestiário e estacionamento">
+                        <img class="cartao-imagem" src="img/sud.jfif" alt="Foto de Sud Mennucci" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Localização privilegiada repleta de natureza exuberante e Município de Interesse Turístico.</p>
+                            <a class="cartao-botao" href="#guia-sud-mennucci">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Sud Mennucci</h3>
+                    </div>
+                    <!-- CARD: Suzanápolis -->
+                    <div class="cartao-imagem-caixa" data-busca="suzanápolis a cidade que tornará a sua viagem inesquecível pelo noroeste paulista. aconchego do interior considerada uma das mais graciosas cidades de pequeno porte (cerca de 3 mil habitantes). seus atrativos naturais, culturais, religiosos e eventos fazem dela um roteiro obrigatório. praça salvador ferreira &amp; igreja matriz estádio municipal gervásio durigan trilhas rurais &amp; mata da suzana casa de momentos rio são josé dos dourados (75,7 km dentro do município): pesca de tucunaré, corvina, tilápia e pacu, banhos e passeios de barco mata da suzana, reserva florestal com cerca de 1.900 hectares, rica em fauna e flora fazenda tapir, antiga fazenda do coronel ernesto schmidt, e o projeto safari no córrego tapir casa de momentos, referência do turismo cultural praça e igreja do bairro são jorge, palco de eventos religiosos durante o ano">
+                        <img class="cartao-imagem" src="img/suzanapolis.webp" alt="Foto de Suzanápolis" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">A cidade que tornará a sua viagem inesquecível pelo Noroeste Paulista.</p>
+                            <a class="cartao-botao" href="#guia-suzanapolis">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Suzanápolis</h3>
+                    </div>
+                    <!-- CARD: Valparaíso -->
+                    <div class="cartao-imagem-caixa" data-busca="valparaíso trilhas de moto, cultura oriental e praças aconchegantes no interior. aventura e praças trilhas de moto, fortes traços de cultura oriental e a aprazível praça matriz com fonte luminosa. praça oscar de arruda, com o coreto criativo que traz a estátua de um bandeirante e shows em datas comemorativas estação ferroviária de valparaíso (inaugurada em 1932) festa do peão de boiadeiro, que movimenta a cidade em maio trilhas para motos, queridas pelos motociclistas cultura oriental presente na cidade">
+                        <img class="cartao-imagem" src="img/valparaiso.jpg" alt="Foto de Valparaíso" loading="lazy" />
+                        <div class="cartao-conteudo">
+                            <p class="cartao-texto">Trilhas de moto, cultura oriental e praças aconchegantes no interior.</p>
+                            <a class="cartao-botao" href="#guia-valparaiso">Saiba mais</a>
+                        </div>
+                        <h3 class="cartao-titulo">Valparaíso</h3>
+                    </div>
+                </div>
+            </section>
+            <!-- ======== FIM: SEÇÃO #cidades ======== -->
+
+            <!-- ============ GUIA COMPLETO DE DESTINOS (id="mapas") ============
+                 Escondido até clicar em um card; o CSS (:target) mostra só a cidade escolhida. -->
+            <section class="secao-conteudo" id="mapas">
+                <h2 class="titulo-secao">GUIA COMPLETO DE DESTINOS</h2>
+
+                <!-- ===== COMO É O GUIA DE UMA CIDADE =====
+                     <article class="mapa-cidade" id="guia-..."> ... é o guia inteiro (escondido até o clique).
+                     - <span class="guia__tag"> ........ etiqueta pequena acima do nome.
+                     - "Sobre a cidade" ............... texto de história; o <div id="descricao-..."> pode ser
+                                                        substituído pelo texto salvo no painel admin.
+                     - "Atrativos" .................... lista: cada <li class="guia__atrativo"> tem o nome
+                                                        (título verde em MAIÚSCULAS) e a descrição.
+                                                        Para ADICIONAR um atrativo, copie um <li> inteiro.
+                     - "Mapa" ......................... <iframe> do Google Maps (troque o src para mudar o local).
+                     - Botões ......................... "Site oficial" e "Voltar às cidades".
+                     Estilo: style.css, seção 7 (INFORMAÇÕES DA CIDADE). -->
+
+                <!-- ===== ANDRADINA ===== -->
+                <article class="mapa-cidade" id="guia-andradina" aria-labelledby="guia-andradina-titulo">
+                    <span class="guia__tag">Destino Turístico</span>
+                    <h2 class="mapa-titulo" id="guia-andradina-titulo">Andradina</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-andradina">
+                                <p class="info-descricao">Andradina é uma cidade em pleno desenvolvimento, que conta com várias empresas e indústrias.</p>
+                                <p class="info-descricao">Andradina tem características das grandes metrópoles sem perder o charme e aconchego, típicos de cidades interioranas. Você irá se apaixonar pelo lugar todas as vezes em que pisar lá.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Andradina">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CENTRO COMERCIAL</h4>
+                                    <p class="info-descricao">Localizado na Rua Paes Leme, possui aproximadamente 150 lojas de varejo com artigos variados. A Prefeitura fecha as ruas no final do ano, decorando-as com o famoso e esperado "Natal Iluminado", criando um grande e belo calçadão, para comodidade e conforto do consumidor.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">OESTE PLAZA SHOPPING</h4>
+                                    <p class="info-descricao">Instagram: @oesteplazashopping. Na entrada da cidade, o shopping possui um espaço para 70 lojas, duas salas de cinema e um hipermercado em anexo. Para o cliente que merece o melhor atendimento e comodidade, o local também conta com um hotel no pátio de seu estacionamento.</p>
+                                    <p class="guia__meta"><em>Funcionamento:</em> Todos os dias. De segunda a sábado: das 10h às 22h. Aos domingos: das 13h às 19h.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CENTRO HISTÓRICO CULTURAL PIONEIROS DE ANDRADINA</h4>
+                                    <p class="info-descricao">Restaurado, o Centro Histórico Cultural foi o primeiro prédio tombado como patrimônio histórico da cidade, por ser a antiga estação ferroviária do N.O.B., que praticamente deu origem ao município. O prédio abriga a Secretaria da Cultura, a Casa do Artesão, a Aliança dos Literatos de Andradina (Aliandra) e conta com obras do famoso artista plástico Adélio Sarro, além de anfiteatro e arena ao ar livre. Hoje, o Centro é considerado um dos principais cartões postais da cidade.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">ANDRADINA TÊNIS CLUBE</h4>
+                                    <p class="info-descricao">O ATC é uma excelente opção para passar um dia agradável com a família, por ser um ambiente de lazer com piscinas, quadras de tênis, áreas de recreação infantil, academia, sauna e muitas outras opções para diversão. O clube também conta com campo de futebol e quiosques de aluguel para aniversários ou confraternizações.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">IGREJAS</h4>
+                                    <p class="info-descricao">Com arquiteturas que inspiram, tanto a Igreja Matriz São Sebastião (que possui um estilo inglês da época do café) quanto a Paróquia Nossa Senhora das Graças (construída em 1965) são destinos indispensáveis para os amantes de passeios culturais.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Andradina,SP,Brasil&output=embed"
+                            title="Mapa de Andradina"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.andradina.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: ANDRADINA ===== -->
+                <!-- ===== CASTILHO ===== -->
+                <article class="mapa-cidade" id="guia-castilho" aria-labelledby="guia-castilho-titulo">
+                    <span class="guia__tag">Paraíso do Pescador</span>
+                    <h2 class="mapa-titulo" id="guia-castilho-titulo">Castilho</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-castilho">
+                                <p class="info-descricao">Os passeios são imperdíveis, afinal, além de ser muito bonita, a cidade carrega consigo diversas características históricas... É simplesmente um passeio inesquecível! Se você está na região do Noroeste Paulista, não pode perder a oportunidade de conhecer Castilho.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Castilho">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">ALAMBIQUE ESTÂNCIA SÃO JOÃO</h4>
+                                    <p class="info-descricao">E que tal uma visita guiada para conhecer o processo da produção de cachaça? Lá você encontra os seguintes sabores: coco, canela, pequi, abacaxi, hortelã, limão, mel, gengibre e frutas vermelhas, além de cachaça artesanal envelhecida.</p>
+                                    <p class="guia__meta"><em>Endereço:</em> Estância São João, nº 1 - Bairro 17 | <em>Telefone:</em> (18) 99619-6300 | (18) 99630-2229.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PESQUEIRO PIAPARA</h4>
+                                    <p class="info-descricao">O Pesqueiro Piapara é o lugar perfeito para quem busca um programa de lazer para toda a família, já que conta com estrutura completa para o atendimento dos visitantes e amantes de pesca.</p>
+                                    <p class="guia__meta"><em>Endereço:</em> Rua Taro Morimoto, nº 323 - Bairro Beira Rio | <em>Telefone:</em> (18) 99679-9489 | (67) 9907-4467.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">USINA HIDROELÉTRICA ENG. SOUZA DIAS (JUPIÁ)</h4>
+                                    <p class="info-descricao">A Usina Hidrelétrica Engenheiro Souza Dias (Jupiá) está situada sobre o Rio Paraná, na intersecção com o rio Sucuriú, no ponto chamado Jupiá, entre as cidades de Três Lagoas (Mato Grosso do Sul) e Castilho (São Paulo).</p>
+                                    <p class="guia__meta"><em>Endereço:</em> Rodovia Marechal Rondon - KM 667 - nº 1 | <em>Telefone:</em> (67) 3509-2365 | (67) 3509-2706.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CAPELA BOM JESUS DA LAPA</h4>
+                                    <p class="info-descricao">Foi uma das primeiras capelas do município. Construída em 1957 e oficialmente considerada capela da paróquia de São José a partir de 01 de janeiro de 1959. Sua arquitetura original foi mantida.</p>
+                                    <p class="guia__meta"><em>Endereço:</em> Rua Bento da Cruz, nº 0, Bairro Laranjeiras | <em>Telefone:</em> (18) 3741-1158.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">AULAS DE MERGULHO</h4>
+                                    <p class="info-descricao">O mergulho o levará para destinos exuberantes! Conta com aventuras das mais relaxantes até as mais radicais, de acordo com seu perfil e gosto.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">RIO AGUAPEÍ</h4>
+                                    <p class="info-descricao">O Aguapeí, também conhecido como Rio dos Aguapeís, é um rio que banha o estado de São Paulo, nascendo no município de Gália.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">IGREJA MATRIZ SÃO JOSÉ</h4>
+                                    <p class="info-descricao">Inaugurada em 1959, com última reforma iniciada em 2015. A igreja faz parte dos atrativos históricos e culturais do município.</p>
+                                    <p class="guia__meta"><em>Endereço:</em> Praça da Matriz, nº 301, Bairro Centro | <em>Telefone:</em> (18) 3741-1158.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Castilho,SP,Brasil&output=embed"
+                            title="Mapa de Castilho"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="http://castilho.sp.gov.br" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: CASTILHO ===== -->
+                <!-- ===== GUARAÇAÍ ===== -->
+                <article class="mapa-cidade" id="guia-guaracai" aria-labelledby="guia-guaracai-titulo">
+                    <span class="guia__tag">Capital do Abacaxi</span>
+                    <h2 class="mapa-titulo" id="guia-guaracai-titulo">Guaraçaí</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-guaracai">
+                                <p class="info-descricao">A região foi ocupada a partir de 1925, na Fazenda João Machado, e se desenvolveu com a chegada da Estrada de Ferro Noroeste do Brasil, em 1936. Virou município em 1948 e hoje une a tradição da fruticultura (abacaxi e polpa de frutas) ao turismo rural, à natureza e ao ritmo tranquilo do interior.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Guaraçaí">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Festa do Abacaxi</h4>
+                                    <p class="info-descricao">Evento anual que reúne turistas para saborear pratos e doces feitos com a fruta (17ª edição em 2023).</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Cavalgada entre amigos</h4>
+                                    <p class="info-descricao">Criada em 2008 e principal atrativo do turismo rural.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Cachoeira Maraní</h4>
+                                    <p class="info-descricao">Em propriedade particular aberta a visitantes.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Plantações de abacaxi</h4>
+                                    <p class="info-descricao">Que fazem da cidade referência estadual na produção da fruta.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Parque Estadual do Aguapeí</h4>
+                                    <p class="info-descricao">Unidade de conservação que abrange também o território de Guaraçaí.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Guaraçaí,SP,Brasil&output=embed"
+                            title="Mapa de Guaraçaí"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.guaracai.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: GUARAÇAÍ ===== -->
+                <!-- ===== ILHA SOLTEIRA ===== -->
+                <article class="mapa-cidade" id="guia-ilha-solteira" aria-labelledby="guia-ilha-solteira-titulo">
+                    <span class="guia__tag">Estância Turística</span>
+                    <h2 class="mapa-titulo" id="guia-ilha-solteira-titulo">Ilha Solteira</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-ilha-solteira">
+                                <p class="info-descricao">Ilha Solteira é uma das poucas cidades planejadas do Brasil: nasceu para abrigar os trabalhadores da Usina Hidrelétrica de Ilha Solteira, cujas obras começaram em 1965, e ganhou o nome de uma ilha localizada logo abaixo da barragem. Cercada pelos rios Paraná, Tietê e São José dos Dourados, tem praias artificiais, pesca esportiva, esportes náuticos e um calendário cheio de festas e festivais.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Ilha Solteira">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">USINA HIDRELÉTRICA ILHA SOLTEIRA</h4>
+                                    <p class="info-descricao">Situada no encontro dos Rios Paraná e São José dos Dourados, é considerada a maior usina já construída pela CESP. A CTG Brasil iniciou a operação em julho de 2016.</p>
+                                    <p class="guia__meta"><em>Atividades:</em> Visita Técnica (Segunda a Sexta-feira, às 10h e 15h) | <em>Contato:</em> CTG Brasil (18) 3743-7010.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PRAIAS MARINA E CATARINA</h4>
+                                    <p class="info-descricao">Praia Catarina oferece quiosques, churrasqueiras, restaurantes, área de camping, campo de futebol e duchas. A Praia Marina é ideal para esportes aquáticos.</p>
+                                    <p class="guia__meta"><em>Entrada gratuita</em> (Todos os dias das 8h às 23h) | <em>Contato:</em> (18) 3743-6088.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CICLOVIAS</h4>
+                                    <p class="info-descricao">São 5.740 metros de ciclovia que interligam a Zona Norte à Zona Sul, passando pelo Centro de Conservação da Fauna Silvestre em direção à Torre de TV. Aluguel de bikes na "Bicikletaria do Gordo" (Passeio Niterói, 105 - Tel: 18 3742-7260).</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PIRATAS DA ILHA</h4>
+                                    <p class="info-descricao">Passeios de veleiro que levam o visitante a descobrir praias desertas e ilhotas localizadas nos diferentes rios que cruzam o município.</p>
+                                    <p class="guia__meta"><em>Responsável:</em> Prof. Marco Chiquiteli | <em>Contato:</em> (18) 99135-4662.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PARQUE DA MANTIQUEIRA "LEY LEITE BUENO"</h4>
+                                    <p class="info-descricao">Conhecido como Cidade da Criança, possui casas de bonecas, brinquedos, "Sítio do Pica-Pau-Amarelo", pista de skate, quadra de tênis e academia ao ar livre.</p>
+                                    <p class="guia__meta"><em>Funcionamento:</em> Todos os dias das 8h às 20h | <em>Contato:</em> (18) 3743-6026.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">ZOOLÓGICO</h4>
+                                    <p class="info-descricao">Centro de Conservação da Fauna Silvestre, abriga vários animais e tem o maior e mais rico acervo regional de espécies próprias do noroeste paulista.</p>
+                                    <p class="guia__meta"><em>Funcionamento:</em> Sábado e domingo das 9h às 16h | <em>Telefone:</em> (18) 3742-2916.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Ilha+Solteira,SP,Brasil&output=embed"
+                            title="Mapa de Ilha Solteira"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="http://ilhasolteira.sp.gov.br" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: ILHA SOLTEIRA ===== -->
+                <!-- ===== ITAPURA ===== -->
+                <article class="mapa-cidade" id="guia-itapura" aria-labelledby="guia-itapura-titulo">
+                    <span class="guia__tag">Paraíso Tropical</span>
+                    <h2 class="mapa-titulo" id="guia-itapura-titulo">Itapura</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-itapura">
+                                <p class="info-descricao">É em Itapura que o Rio Tietê termina, encontrando o Rio Paraná. A cidade nasceu em 1858 como Colônia Militar, criada pelo Império para proteger a fronteira durante a Guerra do Paraguai, junto aos saltos de Itapura (“salto das pedras”) e Urubupungá, hoje cobertos pela represa de Jupiá. A antiga vila foi refeita em um ponto mais alto e, hoje, Itapura atrai pescadores, mergulhadores e quem gosta de natureza: águas limpas, cachoeiras e aves como tucanos, araras e garças.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Itapura">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">TURISMO DE MERGULHO</h4>
+                                    <p class="info-descricao">A usina "Eloy Chaves" encontra-se submersa junto às águas do rio Tietê desde 1960. No mergulho, visualiza-se escadarias e locais das turbinas. Outro ponto é o vapor Tamandatay, submerso desde 1883 a 20 metros de profundidade.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">ENCONTRO DOS RIOS TIETÊ E PARANÁ</h4>
+                                    <p class="info-descricao">Próximo ao encontro dos rios, formando uma das mais belas vistas do interior paulista, excelente para lazer e pesca esportiva.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PESCA ESPORTIVA</h4>
+                                    <p class="info-descricao">&lt;strong&gt;Contatos:&lt;/strong&gt; Prefeitura Municipal: (18) 3745-9020 | Secretaria de Turismo: (18) 3745-1340 - turismo@itapura.sp.gov.br</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Itapura,SP,Brasil&output=embed"
+                            title="Mapa de Itapura"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="http://itapura.sp.gov.br" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: ITAPURA ===== -->
+                <!-- ===== MIRANDÓPOLIS ===== -->
+                <article class="mapa-cidade" id="guia-mirandopolis" aria-labelledby="guia-mirandopolis-titulo">
+                    <span class="guia__tag">Tradição Japonesa</span>
+                    <h2 class="mapa-titulo" id="guia-mirandopolis-titulo">Mirandópolis</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-mirandopolis">
+                                <p class="info-descricao">Mirandópolis surgiu por volta de 1920, com o avanço da Estrada de Ferro Noroeste do Brasil, foi emancipada em 1944 e instalada como município em 1º de janeiro de 1945. Tem como cartão-postal a Igreja de São João Batista, considerada um dos mais belos templos católicos do interior paulista, e abriga uma forte colônia japonesa, representada pela comunidade Yuba, que mantém viva a cultura oriental na cidade.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Mirandópolis">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Igreja de São João Batista (Praça Papa João XXIII)</h4>
+                                    <p class="info-descricao">Cartão-postal da cidade.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Comunidade Yuba e a cultura japonesa</h4>
+                                    <p class="info-descricao">Com forte presença da colônia nipônica.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Bosque Municipal</h4>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Zoológico Municipal</h4>
+                                    <p class="info-descricao">Atração popular entre as famílias.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Mirandópolis,SP,Brasil&output=embed"
+                            title="Mapa de Mirandópolis"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.mirandopolis.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: MIRANDÓPOLIS ===== -->
+                <!-- ===== MURUTINGA DO SUL ===== -->
+                <article class="mapa-cidade" id="guia-murutinga" aria-labelledby="guia-murutinga-titulo">
+                    <span class="guia__tag">Cultura Sertaneja</span>
+                    <h2 class="mapa-titulo" id="guia-murutinga-titulo">Murutinga do Sul</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-murutinga">
+                                <p class="info-descricao">Pequena e acolhedora, Murutinga do Sul nasceu em 1937, quando Pedro Storti, vindo de Araçatuba, fundou um povoado na região; no mesmo ano chegou a estação da Estrada de Ferro Noroeste do Brasil. Foi distrito de Andradina com o nome de Algodoal e se emancipou em 30 de dezembro de 1953. O nome vem do tupi “moritinga” (“muito branco”), e o “do Sul” serve para diferenciá-la de uma cidade homônima no Amazonas. As tradições sertanejas são o grande destaque.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Murutinga do Sul">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Festa do Peão de Boiadeiro</h4>
+                                    <p class="info-descricao">Realizada em maio no Clube de Rodeio Sela de Prata (completou 30 anos em 2026).</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Cavalgada Regional</h4>
+                                    <p class="info-descricao">Em celebração da tradição sertaneja.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Carnaval de Rua (Carnamuru)</h4>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Festa Junina Comunitária</h4>
+                                    <p class="info-descricao">Famosa pelo frango assado no forno de lenha.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Murutinga+do+Sul,SP,Brasil&output=embed"
+                            title="Mapa de Murutinga do Sul"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.murutingadosul.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: MURUTINGA DO SUL ===== -->
+                <!-- ===== NOVA INDEPENDÊNCIA ===== -->
+                <article class="mapa-cidade" id="guia-nova-independencia" aria-labelledby="guia-nova-independencia-titulo">
+                    <span class="guia__tag">Santuário Ecológico</span>
+                    <h2 class="mapa-titulo" id="guia-nova-independencia-titulo">Nova Independência</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-nova-independencia">
+                                <p class="info-descricao">A povoação de Nova Independência nasceu de uma pousada de boiadeiros na beira da estrada, e o reconhecido fundador é João Theodoro Batista. Virou distrito de Andradina em 1948 e município em 1964. Hoje é conhecida por abrigar a sede do Parque Estadual do Aguapeí, parte do Pantanal Paulista e um dos últimos lugares do Estado onde o cervo-do-pantanal ainda vive em liberdade, perfeito para quem busca natureza, turismo rural e tranquilidade.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Nova Independência">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Parque Estadual do Aguapeí</h4>
+                                    <p class="info-descricao">Com mais de 9 mil hectares, que protege a planície de inundação do Rio Aguapeí.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Cervo-do-pantanal</h4>
+                                    <p class="info-descricao">Um dos símbolos da fauna do parque.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Trilhas autoguiadas</h4>
+                                    <p class="info-descricao">Com entrada gratuita.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Passeios de barco e praias de água doce no Rio Aguapeí</h4>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Turismo rural em meio à natureza do Pantanal Paulista</h4>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Nova+Independência,SP,Brasil&output=embed"
+                            title="Mapa de Nova Independência"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.novaindependencia.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: NOVA INDEPENDÊNCIA ===== -->
+                <!-- ===== PEREIRA BARRETO ===== -->
+                <article class="mapa-cidade" id="guia-pereira-barreto" aria-labelledby="guia-pereira-barreto-titulo">
+                    <span class="guia__tag">A Península Verde</span>
+                    <h2 class="mapa-titulo" id="guia-pereira-barreto-titulo">Pereira Barreto</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-pereira-barreto">
+                                <p class="info-descricao">Pereira Barreto é um marco da imigração japonesa no Brasil. Fundada em 11 de agosto de 1928 com o nome de Novo Oriente, quando a Sociedade Colonizadora do Brasil adquiriu parte das terras, tornou-se município em 1938 e recebeu o nome do médico e cientista Luiz Pereira Barreto. Hoje é Estância Turística, banhada pelo Rio Tietê no reservatório da Usina de Três Irmãos, e famosa pela pesca ao tucunaré e pela Festa das Nações.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Pereira Barreto">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PRAIA PÔR DO SOL</h4>
+                                    <p class="info-descricao">Conhecida pela bela paisagem, água limpa, areia clarinha, restaurante, sorveteria, playground e aquário municipal com peixes da região. Possui quiosques completos para aluguel com churrasqueira.</p>
+                                    <p class="guia__meta"><em>Entrada Gratuita. Aquário:</em> Terça a sexta das 14h às 19h; Sábados das 9h às 12h.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CANAL DE PEREIRA BARRETO</h4>
+                                    <p class="info-descricao">O segundo maior canal artificial de água doce do mundo: 9.600 metros de comprimento, 50 metros de largura e 12 metros de profundidade. Navegação e pesca esportiva permitidas.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">MUSEU HISTÓRICO DA COLONIZAÇÃO</h4>
+                                    <p class="info-descricao">Abriga arena de sumô, carroça da década de 50, máquina a vapor de 1930 e painel do artista James Kudo.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">STAND UP PADDLE (SUP)</h4>
+                                    <p class="info-descricao">Prática de esporte de remo em pé na Praia Pôr do Sol, permitindo contato direto com a natureza.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">GO-JU-NO-TO</h4>
+                                    <p class="info-descricao">Construído pelo eng. Risaburo Murai e inaugurado em setembro de 1958 na Praça da Bandeira. Templo de madeira de cinco andares.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PESCA ESPORTIVA</h4>
+                                    <p class="info-descricao">Procurada por pescadores do mundo todo, com foco na pesca de Tucunaré.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">RELOJÃO</h4>
+                                    <p class="info-descricao">Monumento Relógio Quatro Faces construído em 1958 no centro da cidade.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Pereira+Barreto,SP,Brasil&output=embed"
+                            title="Mapa de Pereira Barreto"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="http://pereirabarreto.sp.gov.br" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: PEREIRA BARRETO ===== -->
+                <!-- ===== SUD MENNUCCI ===== -->
+                <article class="mapa-cidade" id="guia-sud-mennucci" aria-labelledby="guia-sud-mennucci-titulo">
+                    <span class="guia__tag">Terra do Tucunaré Azul</span>
+                    <h2 class="mapa-titulo" id="guia-sud-mennucci-titulo">Sud Mennucci</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-sud-mennucci">
+                                <p class="info-descricao">Sud Mennucci é uma cidade tranquila às margens do Rio Tietê, que ali tem cerca de 30 km dentro do município e chega com águas limpas, repletas de peixes como tucunaré, corvina, pacu e piau. Nasceu como o povoado de Bacuri, ligado a Pereira Barreto, virou distrito em 1948 e município em 1959 (instalado em 1960). Faz parte da Região Turística Pantanal Paulista, é um paraíso para a pesca esportiva e de lazer e tem um pôr do sol de impressionar nas margens do Tietê.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Sud Mennucci">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">RIO TIETÊ &amp; TURISMO FLUVIAL</h4>
+                                    <p class="info-descricao">Rio limpo com grande variedade de peixes. Oferta de ranchos para locação, passeios de barco e esportes náuticos.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PESCA AO TUCUNARÉ</h4>
+                                    <p class="info-descricao">Sede anual do "Tucuna Free", campeonato de pesca esportiva que atrai centenas de pessoas de vários estados.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PARÓQUIA NOSSA SENHORA APARECIDA</h4>
+                                    <p class="info-descricao">Igreja matriz forrada por madeira, climatizada, com capacidade para 300 pessoas.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">FAZENDA TRIUNFO</h4>
+                                    <p class="info-descricao">Construção centenária (mais de 100 anos), antiga dona de férias da apresentadora Hebe Camargo. Possui pista de pouso para aviões.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PARQUE DA SAÚDE E RECANTO DAS ÁGUAS</h4>
+                                    <p class="info-descricao">Espaços públicos com quadras esportivas, piscinas, quiosques com churrasqueira e áreas de camping às margens do rio Tietê.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Sud+Mennucci,SP,Brasil&output=embed"
+                            title="Mapa de Sud Mennucci"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="http://sudmennucci.sp.gov.br" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: SUD MENNUCCI ===== -->
+                <!-- ===== SUZANÁPOLIS ===== -->
+                <article class="mapa-cidade" id="guia-suzanapolis" aria-labelledby="guia-suzanapolis-titulo">
+                    <span class="guia__tag">Aconchego do Interior</span>
+                    <h2 class="mapa-titulo" id="guia-suzanapolis-titulo">Suzanápolis</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-suzanapolis">
+                                <p class="info-descricao">Considerada uma das mais graciosas cidades de pequeno porte (cerca de 3 mil habitantes). Seus atrativos naturais, culturais, religiosos e eventos fazem dela um roteiro obrigatório.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Suzanápolis">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">PRAÇA SALVADOR FERREIRA &amp; IGREJA MATRIZ</h4>
+                                    <p class="info-descricao">Ponto de encontro tranquilo com bancos e jardins. A Igreja Matriz é forrada de madeira, climatizada (capacidade para 200 pessoas) e recebe a tradicional chegada dos reis.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">ESTÁDIO MUNICIPAL GERVÁSIO DURIGAN</h4>
+                                    <p class="info-descricao">Um dos melhores campos da região, casa oficial do Esporte Clube Treze de Junho.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">TRILHAS RURAIS &amp; MATA DA SUZANA</h4>
+                                    <p class="info-descricao">Aproximadamente 110km de estradas não pavimentadas para Mountain Bike e Motocross. A Mata da Suzana possui 2000 hectares de abrigo para a fauna e flora.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">CASA DE MOMENTOS</h4>
+                                    <p class="info-descricao">Propriedade privada do artista Antônio Carvalho dos Santos (Nenzinho), construída inteiramente com materiais recicláveis e aberta para visitação.</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Suzanápolis,SP,Brasil&output=embed"
+                            title="Mapa de Suzanápolis"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.suzanapolis.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: SUZANÁPOLIS ===== -->
+                <!-- ===== VALPARAÍSO ===== -->
+                <article class="mapa-cidade" id="guia-valparaiso" aria-labelledby="guia-valparaiso-titulo">
+                    <span class="guia__tag">Aventura e Praças</span>
+                    <h2 class="mapa-titulo" id="guia-valparaiso-titulo">Valparaíso</h2>
+
+                    <div class="cidade__grade">
+                        <section class="vidro cidade__sobre guia__sobre">
+                            <h3 class="info-subtitulo">Sobre a cidade</h3>
+                            <div id="descricao-valparaiso">
+                                <p class="info-descricao">Valparaíso foi fundada em 1927 por pioneiros que viram na região, abrigada em um vale, um verdadeiro “paraíso”: daí o nome. A Estação Ferroviária foi inaugurada em 1932 e o município foi criado em 1937. Hoje é um dos maiores municípios da região, conhecido pela tradicional Festa do Peão de Boiadeiro, pelas trilhas para motos e pela cultura oriental presente na cidade, e tem aniversário em 30 de maio.</p>
+                            </div>
+                        </section>
+                        <section class="vidro guia__atrativos" aria-label="Atrativos de Valparaíso">
+                            <h3 class="info-subtitulo">Atrativos</h3>
+                            <ul class="guia__lista">
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Praça Oscar de Arruda</h4>
+                                    <p class="info-descricao">Com o coreto criativo que traz a estátua de um bandeirante e shows em datas comemorativas.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Estação Ferroviária de Valparaíso (inaugurada em 1932)</h4>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Festa do Peão de Boiadeiro</h4>
+                                    <p class="info-descricao">Que movimenta a cidade em maio.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Trilhas para motos</h4>
+                                    <p class="info-descricao">Queridas pelos motociclistas.</p>
+                                </li>
+                                <li class="guia__atrativo">
+                                    <h4 class="guia__atrativo-nome">Cultura oriental presente na cidade</h4>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <section class="vidro cidade__mapa">
+                        <h3 class="info-subtitulo">Localização</h3>
+                        <iframe
+                            src="https://www.google.com/maps?q=Valparaíso,SP,Brasil&output=embed"
+                            title="Mapa de Valparaíso"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </section>
+
+                    <a class="cartao-botao cidade__voltar" href="https://www.valparaiso.sp.gov.br/" target="_blank" rel="noopener noreferrer">Visitar site oficial ↗</a>
+                    <a class="cartao-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
+                </article>
+                <!-- ===== FIM: VALPARAÍSO ===== -->
+            </section>
+            <!-- ======== FIM: SEÇÃO #mapas ======== -->
+        </main>
+        <!-- ======== FIM: CONTEÚDO PRINCIPAL ======== -->
+
+        <!-- RODAPÉ: igual ao da página inicial. -->
+        <footer class="rodape">
+            <!-- Ondas decorativas do fundo (só enfeite: o leitor de tela ignora).
+                 Duas peças: uma presa ao topo (mancha amarela) e outra à base. -->
+            <svg
+                class="rodape__decoracao rodape__decoracao--cima"
+                viewBox="0 0 1440 260"
+                preserveAspectRatio="xMinYMin slice"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <path
+                    fill="#143a08"
+                    opacity=".55"
+                    d="M820 0H1440V250C1360 215 1290 150 1190 140C1050 126 960 190 890 130C850 96 835 45 820 0Z"
+                />
+                <path
+                    fill="#fbb230"
+                    d="M0 0H620C560 28 500 52 420 64C300 82 150 60 70 88C36 100 12 112 0 128Z"
+                />
+            </svg>
+            <svg
+                class="rodape__decoracao rodape__decoracao--baixo"
+                viewBox="0 0 1440 240"
+                preserveAspectRatio="xMaxYMax slice"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <path
+                    fill="#2a6a14"
+                    opacity=".75"
+                    d="M520 240C640 160 760 190 880 150C1010 106 1100 50 1210 60C1300 68 1370 30 1440 0V240Z"
+                />
+                <path
+                    fill="#357a1c"
+                    opacity=".55"
+                    d="M0 240V150C120 110 230 170 360 190C450 204 500 225 520 240Z"
+                />
+            </svg>
+
+            <div class="rodape__conteudo">
+                <!-- Parte de cima: 4 colunas (marca, apresentação, navegação, redes) -->
+                <div class="rodape__principal">
+                    <!-- Coluna 1: marca (clicar leva ao início) -->
+                    <a
+                        class="rodape__marca"
+                        href="index.html"
+                        aria-label="Pantanal Paulista - voltar ao início"
+                    >
+                        <img class="rodape__logo" src="img/logo.png" alt="" width="160" height="160" />
+                        <span class="rodape__marca-texto">
+                            <span class="rodape__marca-topo">Região Turística</span>
+                            <span class="rodape__marca-nome">Pantanal Paulista</span>
+                        </span>
+                    </a>
+
+                    <!-- Coluna 2: apresentação + botão -->
+                    <div class="rodape__sobre">
+                        <h2 class="rodape__sobre-titulo">Descubra o Pantanal Paulista</h2>
+                        <p>
+                            Cidades do extremo noroeste paulista, onde os rios Tietê, Paraná e
+                            Aguapeí se encontram: pesca esportiva, praias de água doce, natureza
+                            preservada e cultura para toda a família.
+                        </p>
+                        <a class="rodape__botao" href="index.html#quem-somos">
+                            Saiba mais
+                            <span class="material-symbols-rounded" aria-hidden="true"
+                                >arrow_forward</span
+                            >
+                        </a>
+                    </div>
+
+                    <!-- Coluna 3: navegação (mesmos destinos do menu do topo) -->
+                    <nav class="rodape__coluna" aria-labelledby="rodape-nav-titulo">
+                        <h2 class="rodape__coluna-titulo" id="rodape-nav-titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+                            Navegação
+                        </h2>
+                        <ul class="rodape__lista">
+                            <li><a href="index.html">Início</a></li>
+                            <li><a href="index.html#quem-somos">Quem somos</a></li>
+                            <li><a href="cidades.html">Cidades</a></li>
+                            <li><a href="peixes.html">Peixes</a></li>
+                            <li><a href="index.html#eventos">Eventos</a></li>
+                            <li><a href="admin.html" class="rodape__admin">Área administrativa (login)</a></li>
+                        </ul>
+                    </nav>
+
+                    <!-- Coluna 4: redes sociais (links reais da Região Turística) -->
+                    <div class="rodape__coluna">
+                        <h2 class="rodape__coluna-titulo">
+                            <span class="material-symbols-rounded" aria-hidden="true">eco</span>
+                            Siga-nos
+                        </h2>
+                        <p class="rodape__redes-texto">
+                            Acompanhe nossas redes sociais e fique por dentro das novidades.
+                        </p>
+                        <ul class="rodape__redes">
+                            <li>
+                                <a
+                                    href="https://www.instagram.com/rtpantanal/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Instagram @rtpantanal (abre em nova aba)"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+                                        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+                                        <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.facebook.com/rtpantanalpaulista/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Facebook Região Turística Pantanal Paulista (abre em nova aba)"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path
+                                            fill="currentColor"
+                                            d="M13.6 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.3H7.7V13h2.7v8z"
+                                        />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- Para ADICIONAR outra rede (quando existir o perfil oficial),
+                                 copie um <li> acima, troque o href e o aria-label e coloque
+                                 o <svg> do ícone da rede. -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Linha de baixo: contato e direitos autorais -->
+                <div class="rodape__base">
+                    <ul class="rodape__contato">
+                        <li>
+                            <span
+                                class="rodape__contato-icone material-symbols-rounded"
+                                aria-hidden="true"
+                                >location_on</span
+                            >
+                            <span>
+                                <strong>Região Turística Pantanal Paulista</strong>
+                                Extremo noroeste de São Paulo • Brasil
+                            </span>
+                        </li>
+                        <li>
+                            <span
+                                class="rodape__contato-icone material-symbols-rounded"
+                                aria-hidden="true"
+                                >mail</span
+                            >
+                            <span>
+                                <strong>E-mail</strong>
+                                <a id="exibe-email" href="mailto:rtpantanalpaulista@gmail.com"
+                                    >rtpantanalpaulista@gmail.com</a
+                                >
+                            </span>
+                        </li>
+                        <li>
+                            <span class="rodape__contato-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" focusable="false">
+                                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Instagram</strong>
+                                <a id="exibe-redes"
+                                    href="https://www.instagram.com/rtpantanal/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    >@rtpantanal</a
+                                >
+                            </span>
+                        </li>
+                        <li id="rodape-telefone" hidden>
+                            <span class="rodape__contato-icone material-symbols-rounded" aria-hidden="true">call</span>
+                            <span>
+                                <strong>Telefone</strong>
+                                <span id="exibe-telefone"></span>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <!-- O ano é atualizado sozinho pelo index.js (2026 é só o valor de reserva). -->
+                    <p class="rodape__direitos">
+                        © <span id="rodape-ano">2026</span> Região Turística Pantanal Paulista.<br />
+                        Todos os direitos reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <!-- ======== FIM: RODAPÉ ======== -->
+    </body>
+</html>

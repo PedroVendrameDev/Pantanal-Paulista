@@ -2,27 +2,49 @@
    STYLE.CSS - ARQUIVO ÚNICO DE ESTILOS DO SITE
    --------------------------------------------------------------------------
    O HTML diz O QUE aparece; o CSS diz COMO aparece (cores, tamanhos,
-   posições e efeitos). Cada bloco começa com um "seletor" (ex.: .hero) que
-   indica QUAL elemento do HTML recebe as regras. Em CSS os comentários
-   ficam entre barra-asterisco e asterisco-barra, como este: o navegador
-   ignora esse texto.
+   posições e efeitos). Cada bloco começa com um "seletor" (ex.: .banner)
+   que indica QUAL elemento do HTML recebe as regras. Dentro das chaves { }
+   ficam as "propriedades", uma por linha, no formato  propriedade: valor;
+   Em CSS os comentários ficam entre barra-asterisco e asterisco-barra,
+   como este: o navegador ignora esse texto.
 
-   SUMÁRIO (na mesma ordem em que as seções aparecem na página)
-     1. Variáveis (cores, fontes e medidas do site inteiro)
-     2. Base (reset, corpo, rolagem, foco, fundo bege, títulos)
-     3. Cabeçalho e menu
-     4. Hero (banner inicial, 100% da tela)
-     5. Quem somos
-     6. Cidades (cards com foto)
-     7. Informações da cidade (painéis de vidro + mapa)
-     8. Eventos (carrossel)
-     9. Rodapé
-    10. Preferência por menos movimento (acessibilidade)
+   SUMÁRIO (na ordem em que as seções aparecem no arquivo)
+      1. Variáveis (cores, fontes e medidas do site inteiro)
+      2. Base (reset, corpo, rolagem, foco, fundo bege, títulos)
+      3. Cabeçalho e menu
+      4. Banner (faixa inicial com foto, 100% da tela)
+      5. Quem somos
+      6. Cidades (cards com foto)
+      7. Informações da cidade (painéis de vidro + mapa)
+      8. Eventos (carrossel)
+      9. Página de cidades (busca e guia das cidades)
+     10. Página de peixes (bacias e guia das espécies)
+     11. Área administrativa (login e painel)
+     12. Rodapé
+     13. Preferência por menos movimento (acessibilidade)
+   Procure pelo número e o nome da seção (Ctrl+F) para ir direto até ela.
 
    COMO USAR ESTE ARQUIVO
      - Quer trocar uma COR ou FONTE do site todo? Mexa só na seção 1.
-     - Quer mexer em UMA parte da página? Use o sumário acima e procure o
-       número da seção (ex.: "7. INFORMAÇÕES DA CIDADE").
+     - Quer mexer em UMA parte da página? Use o sumário acima.
+     - Quase todo valor tem um comentário ao lado explicando o que ele faz.
+
+   RECEITAS RÁPIDAS (o que mudar para conseguir cada efeito)
+     - Trocar a cor do texto ............ color: ...;
+     - Trocar a cor de fundo ............ background-color: ...;
+     - Aumentar/diminuir a letra ........ font-size: ...;  (maior número = letra maior)
+     - Trocar a fonte ................... font-family: ...;
+     - Deixar em negrito ................ font-weight: 700;
+     - Aumentar uma imagem .............. width: ...; e height: ...;
+     - Afastar um item do outro ......... gap: ...;  ou  margin: ...;
+     - Dar mais "respiro" dentro da caixa  padding: ...;
+     - Arredondar os cantos ............. border-radius: ...;
+     - Esconder um item ................. display: none;
+
+   UNIDADES DE MEDIDA
+     px  = pixel (tamanho fixo).   rem = múltiplo do tamanho de letra padrão
+     (1rem = 16px).   %  = porcentagem do espaço do elemento pai.
+     vw / vh = 1% da largura / altura da tela.   em = múltiplo da letra do próprio elemento.
    ========================================================================== */
 
 
@@ -33,31 +55,31 @@
    ========================================================================== */
 :root {
     /* ----- Cores do projeto ----- */
-    --verde: #163808;           /* verde principal: cabeçalho, títulos, rodapé */
-    --verde-escuro: #1f4a14;    /* verde mais claro, usado em textos de destaque */
-    --ambar: #fbb230;           /* amarelo: botões, ícone ativo, detalhes */
-    --laranja: #f9a51a;         /* laranja dos botões dos cards e das faixas */
-    --tinta: #102117;           /* quase preto esverdeado: texto sobre fundo claro */
-    --branco: #fff;             /* branco */
+    --verde: #163808;         /* verde principal: cabeçalho, títulos, rodapé */
+    --verde-escuro: #1f4a14;  /* verde mais claro, usado em textos de destaque */
+    --ambar: #fbb230;         /* amarelo: botões, ícone ativo, detalhes */
+    --laranja: #f9a51a;       /* laranja dos botões dos cards e das faixas */
+    --tinta: #102117;         /* quase preto esverdeado: texto sobre fundo claro */
+    --branco: #fff;           /* branco */
 
     /* ----- Medidas ----- */
-    --altura-header: 84px;      /* altura do cabeçalho (o hero desconta isto para ocupar a tela toda) */
+    --altura-header: 84px;  /* altura do cabeçalho (o banner desconta isto para ocupar a tela toda) */
 
     /* ----- Fontes -----
        Uma fonte só para o site inteiro (Outfit). Para trocar: mude o nome
        aqui E o link do Google Fonts no <head> do index.html.
        "sans-serif" é a reserva, usada se a fonte principal não carregar. */
-    --fonte-principal: "Outfit", sans-serif;
-    --fonte-titulo: var(--fonte-principal);  /* fonte dos títulos */
-    --fonte-texto: var(--fonte-principal);   /* fonte dos textos corridos */
+    --fonte-principal: "Outfit", sans-serif;  /* valor reutilizado pelo site (variável) */
+    --fonte-titulo: var(--fonte-principal);   /* fonte dos títulos */
+    --fonte-texto: var(--fonte-principal);    /* fonte dos textos corridos */
 
     /* ----- Padrão dos títulos grandes das seções -----
        Valem para QUEM SOMOS, CIDADES, INFORMAÇÕES E LOCALIZAÇÃO e EVENTOS. */
-    --titulo-tamanho: clamp(2.2rem, 7vw, 4rem); /* clamp(mínimo, ideal, máximo) */
-    --titulo-peso: 700;                         /* 400 normal, 700 negrito, 800 extranegrito */
-    --titulo-estilo: italic;                    /* "italic" inclina; "normal" deixa reto */
-    --titulo-espaco-letras: 0.02em;             /* espaço entre as letras (0 = normal) */
-    --titulo-cor: var(--verde);                 /* cor dos títulos */
+    --titulo-tamanho: clamp(2.2rem, 7vw, 4rem);  /* clamp(mínimo, ideal, máximo) */
+    --titulo-peso: 700;                          /* 400 normal, 700 negrito, 800 extranegrito */
+    --titulo-estilo: italic;                     /* "italic" inclina; "normal" deixa reto */
+    --titulo-espaco-letras: 0.02em;              /* espaço entre as letras (0 = normal) */
+    --titulo-cor: var(--verde);                  /* cor dos títulos */
 }
 
 
@@ -68,18 +90,18 @@
 
 /* Inclui padding e borda no cálculo da largura (evita caixas "estourando"). */
 * {
-    box-sizing: border-box;
+    box-sizing: border-box;  /* borda e padding contam dentro da largura */
 }
 
 html {
-    scroll-behavior: smooth;    /* rolagem suave ao clicar nos links do menu */
-    scroll-padding-top: 96px;   /* o título da seção não fica escondido atrás do cabeçalho fixo */
+    scroll-behavior: smooth;   /* rolagem suave ao clicar nos links do menu */
+    scroll-padding-top: 96px;  /* o título da seção não fica escondido atrás do cabeçalho fixo */
 }
 
 body {
-    margin: 0;                          /* tira a margem padrão do navegador */
-    font-family: var(--fonte-principal);/* fonte padrão da página */
-    overflow-x: clip;                   /* nunca aparece barra de rolagem horizontal */
+    margin: 0;                            /* tira a margem padrão do navegador */
+    font-family: var(--fonte-principal);  /* fonte padrão da página */
+    overflow-x: clip;                     /* nunca aparece barra de rolagem horizontal */
 }
 
 /* Reset restrito às seções Quem somos, Cidades e Informações.
@@ -87,66 +109,66 @@ body {
    qualquer classe do site continua vencendo este reset. */
 :where(#cidades, #mapas, #quem-somos),
 :where(#cidades, #mapas, #quem-somos) * {
-    margin: 0;              /* zera margens */
-    padding: 0;             /* zera espaços internos */
-    box-sizing: border-box; /* mesma regra de caixa do restante do site */
-    text-align: center;     /* textos centralizados por padrão (as classes mudam onde precisar) */
+    margin: 0;               /* zera margens */
+    padding: 0;              /* zera espaços internos */
+    box-sizing: border-box;  /* mesma regra de caixa do restante do site */
+    text-align: center;      /* textos centralizados por padrão (as classes mudam onde precisar) */
 }
 
-:where(#cidades, #mapas, #quem-somos) {
-    font-family: var(--fonte-texto);    /* fonte dos textos das três seções */
-    -webkit-font-smoothing: antialiased;/* letras mais nítidas em Mac/iPhone */
+:where(#cidades, #mapas, #quem-somos, #atalhos) {
+    font-family: var(--fonte-texto);      /* fonte dos textos das três seções */
+    -webkit-font-smoothing: antialiased;  /* letras mais nítidas em Mac/iPhone */
 }
 
 /* Anel amarelo visível para quem navega pelo teclado (tecla Tab). */
 a:focus-visible,
 button:focus-visible {
-    outline: 3px solid var(--ambar);
-    outline-offset: 3px;
+    outline: 3px solid var(--ambar);  /* contorno de foco */
+    outline-offset: 3px;              /* distância do contorno */
 }
 
 /* Link de salto: fica fora da tela e aparece só ao receber foco do teclado. */
 .link-salto {
-    position: absolute;
-    top: -100px;                /* escondido acima da tela */
-    left: 16px;
-    z-index: 100;               /* fica na frente de tudo */
-    padding: 12px 16px;
-    border-radius: 0 0 12px 12px;
-    background: var(--ambar);
-    color: var(--tinta);
-    font-weight: 600;
-    text-decoration: none;
+    position: absolute;            /* solto, posicionado dentro do pai */
+    top: -100px;                   /* escondido acima da tela */
+    left: 16px;                    /* distância da esquerda */
+    z-index: 100;                  /* fica na frente de tudo */
+    padding: 12px 16px;            /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-radius: 0 0 12px 12px;  /* cantos arredondados (aumentar = mais redondo) */
+    background: var(--ambar);      /* fundo (cor e/ou imagem) */
+    color: var(--tinta);           /* cor do texto */
+    font-weight: 600;              /* semi-negrito */
+    text-decoration: none;         /* sem sublinhado */
 }
 
 .link-salto:focus {
-    top: 0;                     /* desce para dentro da tela */
+    top: 0;  /* desce para dentro da tela */
 }
 
-/* ----- Fundo bege (todas as seções abaixo do hero) -----
-   Vale para toda <section class="content-section">. Para uma seção nova
-   receber o fundo, basta colocar essa classe nela. O hero não tem a classe,
+/* ----- Fundo bege (todas as seções abaixo do banner) -----
+   Vale para toda <section class="secao-conteudo">. Para uma seção nova
+   receber o fundo, basta colocar essa classe nela. O banner não tem a classe,
    por isso mantém a foto dele. */
-.content-section {
-    background-image: url("img/back-bege.png"); /* imagem de fundo */
-    background-color: #f3ead7;                  /* cor mostrada enquanto a imagem carrega */
-    background-size: cover;                     /* cobre a seção toda, sem deixar vazios */
-    background-position: center;                /* mantém o meio da imagem visível */
-    background-repeat: no-repeat;               /* não repete em mosaico */
-    background-attachment: fixed;               /* fundo parado enquanto a página rola (efeito parallax) */
+.secao-conteudo {
+    background-image: url("img/back-bege.png");  /* imagem de fundo */
+    background-color: #f3ead7;                   /* cor mostrada enquanto a imagem carrega */
+    background-size: cover;                      /* cobre a seção toda, sem deixar vazios */
+    background-position: center;                 /* mantém o meio da imagem visível */
+    background-repeat: no-repeat;                /* não repete em mosaico */
+    background-attachment: fixed;                /* fundo parado enquanto a página rola (efeito parallax) */
 }
 
 /* ----- Título padrão das seções (CIDADES, INFORMAÇÕES E LOCALIZAÇÃO) ----- */
-.titulos {
-    font-family: var(--fonte-principal);
-    font-size: var(--titulo-tamanho);
-    font-weight: var(--titulo-peso);
-    font-style: var(--titulo-estilo);
-    letter-spacing: var(--titulo-espaco-letras);
-    color: var(--titulo-cor);
-    text-transform: uppercase;  /* sempre em MAIÚSCULAS */
-    text-align: center;
-    line-height: 1.1;           /* títulos de 2 linhas ficam mais juntinhos */
+.titulo-secao {
+    font-family: var(--fonte-principal);          /* fonte (tipo de letra) */
+    font-size: var(--titulo-tamanho);             /* tamanho da letra (aumentar = letra maior) */
+    font-weight: var(--titulo-peso);              /* espessura da letra (400 normal, 700 negrito) */
+    font-style: var(--titulo-estilo);             /* estilo da letra (italic = inclinada) */
+    letter-spacing: var(--titulo-espaco-letras);  /* espaço entre as letras */
+    color: var(--titulo-cor);                     /* cor do texto */
+    text-transform: uppercase;                    /* sempre em MAIÚSCULAS */
+    text-align: center;                           /* texto centralizado */
+    line-height: 1.1;                             /* títulos de 2 linhas ficam mais juntinhos */
 }
 
 
@@ -155,324 +177,347 @@ button:focus-visible {
    ========================================================================== */
 
 /* Barra fixa no topo (sticky = acompanha a rolagem). */
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;                                        /* fica na frente do conteúdo */
-    background-color: var(--verde);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    transition: box-shadow 0.3s ease;                   /* sombra aparece suavemente */
+.cabecalho {
+    position: sticky;                                    /* acompanha a rolagem até grudar */
+    top: 0;                                              /* distância do topo */
+    z-index: 50;                                         /* fica na frente do conteúdo */
+    background-color: var(--verde);                      /* cor de fundo */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);  /* borda de baixo */
+    transition: box-shadow 0.3s ease;                    /* sombra aparece suavemente */
 }
 
-/* A classe is-scrolled é colocada pelo index.js quando a página rola. */
-.site-header.is-scrolled {
-    box-shadow: 0 10px 28px rgba(16, 33, 23, 0.3);
+/* A classe rolado é colocada pelo index.js quando a página rola. */
+.cabecalho.rolado {
+    box-shadow: 0 10px 28px rgba(16, 33, 23, 0.3);  /* sombra da caixa */
 }
 
-.site-header__container {
-    width: min(1200px, 90%);            /* largura máxima de 1200px, com folga nas laterais */
-    min-height: var(--altura-header);
-    margin: 0 auto;                     /* centraliza */
-    display: flex;                      /* logo à esquerda, menu à direita */
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    transition: min-height 0.3s ease;
+.cabecalho__conteudo {
+    width: min(1200px, 90%);           /* largura máxima de 1200px, com folga nas laterais */
+    min-height: var(--altura-header);  /* altura mínima */
+    margin: 0 auto;                    /* centraliza */
+    display: flex;                     /* logo à esquerda, menu à direita */
+    align-items: center;               /* itens centralizados na vertical */
+    justify-content: space-between;    /* itens espalhados, um em cada ponta */
+    gap: 24px;                         /* espaço entre os itens (aumentar = mais afastados) */
+    transition: min-height 0.3s ease;  /* animação suave ao mudar */
 }
 
 /* Ao rolar, o cabeçalho fica mais baixo e ocupa menos espaço. */
-.site-header.is-scrolled .site-header__container {
-    min-height: 68px;
+.cabecalho.rolado .cabecalho__conteudo {
+    min-height: 68px;  /* altura mínima */
 }
 
 /* Marca: logo + nome. */
-.site-header__brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--branco);
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-decoration: none;
+.cabecalho__marca {
+    display: inline-flex;     /* flexbox que ocupa só o necessário */
+    align-items: center;      /* itens centralizados na vertical */
+    gap: 12px;                /* espaço entre os itens (aumentar = mais afastados) */
+    color: var(--branco);     /* cor do texto */
+    font-size: 1.25rem;       /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;         /* negrito */
+    letter-spacing: -0.01em;  /* espaço entre as letras */
+    text-decoration: none;    /* sem sublinhado */
 }
 
-.site-header__logo {
-    flex: none;         /* não encolhe quando falta espaço */
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
+/* Nome do site + slogan empilhados, ao lado do logo. */
+.cabecalho__marca-texto {
+    display: flex;           /* itens lado a lado (flexbox) */
+    flex-direction: column;  /* itens empilhados */
+    text-align: left;        /* texto à esquerda */
+}
+
+.cabecalho__slogan {
+    font-size: 0.75rem;   /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 400;     /* peso normal */
+    line-height: 1;       /* altura da linha (aumentar = linhas mais afastadas) */
+    letter-spacing: 0;    /* espaço entre as letras */
+    color: var(--ambar);  /* cor do texto */
+}
+
+.cabecalho__logo {
+    flex: none;           /* não encolhe quando falta espaço */
+    width: 75px;          /* largura (aumentar = mais largo) */
+    height: 75px;         /* altura (aumentar = mais alto) */
+    object-fit: contain;  /* foto inteira visível, sem cortar */
 }
 
 /* ----- Menu: ícones que se expandem mostrando o texto ----- */
-.main-navigation__list {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;   /* sem bolinhas */
+.menu-navegacao__lista {
+    display: flex;        /* itens lado a lado (flexbox) */
+    align-items: center;  /* itens centralizados na vertical */
+    gap: 8px;             /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0;            /* sem espaço fora */
+    padding: 0;           /* sem espaço dentro */
+    list-style: none;     /* sem bolinhas */
 }
 
 /* Grade de duas colunas: ícone (52px) + texto.
    O texto começa com 0fr (largura zero) e vira 1fr no hover, então o botão
    se ajusta ao tamanho de cada palavra. */
-.main-navigation__link {
-    display: grid;
-    grid-template-columns: 52px 0fr;
-    align-items: center;
-    height: 52px;
-    color: var(--branco);
-    text-decoration: none;
-    border-radius: 18px;
+.menu-navegacao__link {
+    display: grid;                    /* itens em grade (linhas e colunas) */
+    grid-template-columns: 52px 0fr;  /* colunas da grade (quantas e de que tamanho) */
+    align-items: center;              /* itens centralizados na vertical */
+    height: 52px;                     /* altura (aumentar = mais alto) */
+    color: var(--branco);             /* cor do texto */
+    text-decoration: none;            /* sem sublinhado */
+    border-radius: 18px;              /* cantos arredondados (aumentar = mais redondo) */
     transition:
         grid-template-columns 0.35s ease,
         background-color 0.25s ease,
         color 0.25s ease;
 }
 
-.main-navigation__icon {
-    display: grid;
-    place-items: center;
-    width: 52px;
-    font-size: 24px;
+.menu-navegacao__icone {
+    display: grid;        /* itens em grade (linhas e colunas) */
+    place-items: center;  /* centraliza os itens (vertical e horizontal) */
+    width: 52px;          /* largura (aumentar = mais largo) */
+    font-size: 24px;      /* tamanho da letra (aumentar = letra maior) */
 }
 
 /* min-width: 0 + overflow: hidden deixam o texto "caber" em largura zero. */
-.main-navigation__text {
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    font-weight: 500;
-    opacity: 0;                         /* invisível até o hover */
-    transition: opacity 0.2s ease;
+.menu-navegacao__texto {
+    min-width: 0;                   /* largura mínima */
+    overflow: hidden;               /* esconde o que passa da caixa */
+    white-space: nowrap;            /* texto em uma linha só */
+    font-weight: 500;               /* meio-negrito */
+    opacity: 0;                     /* invisível até o hover */
+    transition: opacity 0.2s ease;  /* animação suave ao mudar */
 }
 
 /* Respiro à direita do texto (fica dentro da área recortada). */
-.main-navigation__text::after {
-    content: "";
-    display: inline-block;
-    width: 18px;
+.menu-navegacao__texto::after {
+    content: "";            /* texto/ícone inserido pelo CSS */
+    display: inline-block;  /* caixa na linha, com largura própria */
+    width: 18px;            /* largura (aumentar = mais largo) */
 }
 
-.main-navigation__link:hover,
-.main-navigation__link:focus-visible {
-    grid-template-columns: 52px 1fr;                /* abre o botão */
-    background-color: rgba(255, 255, 255, 0.16);
+.menu-navegacao__link:hover,
+.menu-navegacao__link:focus-visible {
+    grid-template-columns: 52px 1fr;              /* abre o botão */
+    background-color: rgba(255, 255, 255, 0.16);  /* cor de fundo */
 }
 
-.main-navigation__link:hover .main-navigation__text,
-.main-navigation__link:focus-visible .main-navigation__text {
-    opacity: 1;                                     /* mostra o texto */
+.menu-navegacao__link:hover .menu-navegacao__texto,
+.menu-navegacao__link:focus-visible .menu-navegacao__texto {
+    opacity: 1;  /* mostra o texto */
 }
 
 /* Seção atual: botão amarelo e sempre aberto (o index.js marca o link ativo). */
-.main-navigation__link[aria-current="location"] {
-    grid-template-columns: 52px 1fr;
-    background-color: var(--ambar);
-    color: var(--tinta);
+.menu-navegacao__link[aria-current="location"] {
+    grid-template-columns: 52px 1fr;  /* colunas da grade (quantas e de que tamanho) */
+    background-color: var(--ambar);   /* cor de fundo */
+    color: var(--tinta);              /* cor do texto */
 }
 
-.main-navigation__link[aria-current="location"] .main-navigation__text {
-    opacity: 1;
-    font-weight: 600;
+.menu-navegacao__link[aria-current="location"] .menu-navegacao__texto {
+    opacity: 1;        /* totalmente visível */
+    font-weight: 600;  /* semi-negrito */
 }
 
 /* Botão do menu de telas pequenas (escondido no computador). */
-.menu-toggle {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    height: 48px;
-    padding: 0 16px 0 12px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 16px;
-    background: transparent;
-    color: var(--branco);
-    font: inherit;
-    font-weight: 500;
-    cursor: pointer;
+.botao-menu {
+    display: none;                                /* escondido */
+    align-items: center;                          /* itens centralizados na vertical */
+    gap: 6px;                                     /* espaço entre os itens (aumentar = mais afastados) */
+    height: 48px;                                 /* altura (aumentar = mais alto) */
+    padding: 0 16px 0 12px;                       /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border: 1px solid rgba(255, 255, 255, 0.35);  /* borda (espessura, estilo e cor) */
+    border-radius: 16px;                          /* cantos arredondados (aumentar = mais redondo) */
+    background: transparent;                      /* fundo (cor e/ou imagem) */
+    color: var(--branco);                         /* cor do texto */
+    font: inherit;                                /* fonte (herda a do elemento pai) */
+    font-weight: 500;                             /* meio-negrito */
+    cursor: pointer;                              /* mãozinha ao passar o mouse */
 }
 
-.menu-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+.botao-menu:hover {
+    background-color: rgba(255, 255, 255, 0.12);  /* cor de fundo */
 }
 
 /* ----- Celular e tablet (até 820px) ----- */
 @media (max-width: 820px) {
-    .site-header__container {
-        flex-wrap: wrap;
-        min-height: 68px;
+    .cabecalho__conteudo {
+        flex-wrap: wrap;   /* itens quebram para a linha de baixo */
+        min-height: 68px;  /* altura mínima */
     }
 
-    .site-header.is-scrolled .site-header__container {
-        min-height: 60px;
+    .cabecalho.rolado .cabecalho__conteudo {
+        min-height: 60px;  /* altura mínima */
     }
 
-    .site-header__logo {
-        width: 52px;                        /* logo menor para caber no cabeçalho baixo */
-        height: 52px;
+    .cabecalho__logo {
+        width: 52px;   /* logo menor para caber no cabeçalho baixo */
+        height: 52px;  /* altura (aumentar = mais alto) */
     }
 
     /* Marca e botão "Menu" precisam caber lado a lado: gaps e fonte menores. */
-    .site-header__container {
-        gap: 12px;
+    .cabecalho__conteudo {
+        gap: 12px;  /* espaço entre os itens (aumentar = mais afastados) */
     }
 
-    .site-header__brand {
-        gap: 10px;
-        font-size: 1.05rem;
+    .cabecalho__marca {
+        gap: 10px;           /* espaço entre os itens (aumentar = mais afastados) */
+        font-size: 1.05rem;  /* tamanho da letra (aumentar = letra maior) */
     }
 
-    .menu-toggle {
-        display: inline-flex;               /* mostra o botão "Menu" */
+    .botao-menu {
+        display: inline-flex;  /* mostra o botão "Menu" */
     }
 
     /* Sem JavaScript, o menu aparece normalmente abaixo da marca. */
-    .main-navigation {
-        width: 100%;
-        padding-bottom: 16px;
+    .menu-navegacao {
+        width: 100%;           /* largura (aumentar = mais largo) */
+        padding-bottom: 16px;  /* espaço interno, embaixo */
     }
 
     /* Com JavaScript, vira um painel que desce sob o cabeçalho. */
-    .js .main-navigation {
-        position: absolute;
-        top: 100%;                          /* logo abaixo do cabeçalho */
-        left: 0;
-        right: 0;
-        padding: 12px 5% 24px;
-        background: var(--verde);
-        box-shadow: 0 18px 28px rgba(16, 33, 23, 0.3);
-        visibility: hidden;                 /* fechado por padrão */
-        opacity: 0;
-        transform: translateY(-8px);
+    .js-ativo .menu-navegacao {
+        position: absolute;                             /* solto, posicionado dentro do pai */
+        top: 100%;                                      /* logo abaixo do cabeçalho */
+        left: 0;                                        /* distância da esquerda */
+        right: 0;                                       /* distância da direita */
+        padding: 12px 5% 24px;                          /* espaço DENTRO da caixa (aumentar = mais respiro) */
+        background: var(--verde);                       /* fundo (cor e/ou imagem) */
+        box-shadow: 0 18px 28px rgba(16, 33, 23, 0.3);  /* sombra da caixa */
+        visibility: hidden;                             /* fechado por padrão */
+        opacity: 0;                                     /* invisível */
+        transform: translateY(-8px);                    /* move, gira ou aumenta o elemento */
         transition:
             opacity 0.25s ease,
             transform 0.25s ease,
             visibility 0s linear 0.25s;
     }
 
-    /* A classe is-open é colocada pelo index.js ao clicar em "Menu". */
-    .js .main-navigation.is-open {
-        visibility: visible;
-        opacity: 1;
-        transform: none;
+    /* A classe aberto é colocada pelo index.js ao clicar em "Menu". */
+    .js-ativo .menu-navegacao.aberto {
+        visibility: visible;   /* visibilidade */
+        opacity: 1;            /* totalmente visível */
+        transform: none;       /* move, gira ou aumenta o elemento */
         transition-delay: 0s;
     }
 
-    .main-navigation__list {
-        flex-direction: column;             /* itens um embaixo do outro */
-        align-items: stretch;
-        gap: 4px;
+    .menu-navegacao__lista {
+        flex-direction: column;  /* itens um embaixo do outro */
+        align-items: stretch;    /* alinhamento vertical dos itens */
+        gap: 4px;                /* espaço entre os itens (aumentar = mais afastados) */
     }
 
     /* No celular não existe hover: todos os textos ficam visíveis. */
-    .main-navigation__link {
-        grid-template-columns: 52px 1fr;
+    .menu-navegacao__link {
+        grid-template-columns: 52px 1fr;  /* colunas da grade (quantas e de que tamanho) */
     }
 
-    .main-navigation__text {
-        opacity: 1;
-        font-size: 1.05rem;
+    .menu-navegacao__texto {
+        opacity: 1;          /* totalmente visível */
+        font-size: 1.05rem;  /* tamanho da letra (aumentar = letra maior) */
     }
 }
 
 
 /* ==========================================================================
-   4. HERO (banner inicial)
+   4. BANNER (faixa inicial com foto)
    Ocupa 100% da altura da TELA: 100svh menos a altura do cabeçalho (que
-   fica no topo, fora do hero). "svh" = altura visível real da tela no
+   fica no topo, fora do banner). "svh" = altura visível real da tela no
    celular (descontando a barra do navegador).
    ========================================================================== */
-.hero {
-    min-height: calc(100vh - var(--altura-header));     /* reserva para navegadores antigos (sem svh) */
-    min-height: calc(100svh - var(--altura-header));    /* 100% da tela, já descontando o cabeçalho */
-    display: flex;
-    align-items: center;                                /* centraliza o texto na vertical */
-    padding-block: 72px;                                /* respiro em cima e embaixo */
-    background-color: var(--tinta);                     /* cor mostrada enquanto a foto carrega */
+.banner {
+    min-height: calc(100vh - var(--altura-header));   /* reserva para navegadores antigos (sem svh) */
+    min-height: calc(100svh - var(--altura-header));  /* 100% da tela, já descontando o cabeçalho */
+    display: flex;                                    /* itens lado a lado (flexbox) */
+    align-items: center;                              /* centraliza o texto na vertical */
+    padding-block: 72px;                              /* respiro em cima e embaixo */
+    background-color: var(--tinta);                   /* cor mostrada enquanto a foto carrega */
     background-image:
         linear-gradient(90deg, rgba(16, 33, 23, 0.9), rgba(16, 33, 23, 0.1)), /* degradê escuro à esquerda para o texto ler bem */
         url("img/banner.png");                          /* foto do banner */
-    background-size: cover;                             /* foto cobre o hero inteiro */
-    background-position: center;
+    background-size: cover;       /* foto cobre o banner inteiro */
+    background-position: center;  /* posição da imagem de fundo */
 }
 
-.hero__container {
-    width: min(1200px, 90%);
-    margin: 0 auto;
+.banner__contorno {
+    width: min(1200px, 90%);  /* largura (aumentar = mais largo) */
+    margin: 0 auto;           /* centraliza a caixa na horizontal */
 }
 
-.hero__content {
-    max-width: 680px;           /* limita a largura do bloco de texto */
-    color: var(--branco);
+.banner__conteudo {
+    max-width: 680px;      /* limita a largura do bloco de texto */
+    color: var(--branco);  /* cor do texto */
 }
 
 /* Etiqueta pequena acima do título. */
-.hero__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 0 24px;
-    padding: 8px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 999px;                   /* formato de pílula */
-    background: rgba(255, 255, 255, 0.12);  /* branco translúcido */
-    backdrop-filter: blur(6px);             /* desfoca o que está atrás (vidro) */
-    font-size: 0.95rem;
-    font-weight: 500;
+.banner__chamada {
+    display: inline-flex;                         /* flexbox que ocupa só o necessário */
+    align-items: center;                          /* itens centralizados na vertical */
+    gap: 10px;                                    /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0 0 24px;                             /* espaço FORA da caixa */
+    padding: 8px 16px;                            /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border: 1px solid rgba(255, 255, 255, 0.25);  /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                         /* formato de pílula */
+    background: rgba(255, 255, 255, 0.12);        /* branco translúcido */
+    backdrop-filter: blur(6px);                   /* desfoca o que está atrás (vidro) */
+    font-size: 0.95rem;                           /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 500;                             /* meio-negrito */
+}
+
+/* Logozinha dentro da etiqueta (veio do site do Kauê). */
+.banner__chamada-logo {
+    flex: none;           /* não encolhe nem cresce */
+    width: 24px;          /* largura (aumentar = mais largo) */
+    height: 24px;         /* altura (aumentar = mais alto) */
+    object-fit: contain;  /* foto inteira visível, sem cortar */
 }
 
 /* Bolinha amarela antes do texto. */
-.hero__eyebrow::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--ambar);
+.banner__chamada::before {
+    content: "";               /* texto/ícone inserido pelo CSS */
+    width: 8px;                /* largura (aumentar = mais largo) */
+    height: 8px;               /* altura (aumentar = mais alto) */
+    border-radius: 50%;        /* círculo perfeito */
+    background: var(--ambar);  /* fundo (cor e/ou imagem) */
 }
 
-.hero__title {
-    margin: 0 0 20px;
-    font-size: clamp(2.1rem, 5vw, 3.6rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    text-wrap: balance;         /* equilibra o tamanho das linhas do título */
+.banner__titulo {
+    margin: 0 0 20px;                       /* espaço FORA da caixa */
+    font-size: clamp(2.1rem, 5vw, 3.6rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                       /* negrito */
+    line-height: 1.08;                      /* altura da linha (aumentar = linhas mais afastadas) */
+    letter-spacing: -0.02em;                /* espaço entre as letras */
+    text-wrap: balance;                     /* equilibra o tamanho das linhas do título */
 }
 
-.hero__description {
-    max-width: 52ch;            /* ~52 letras por linha: leitura confortável */
-    margin: 0 0 32px;
-    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+.banner__descricao {
+    max-width: 52ch;                            /* ~52 letras por linha: leitura confortável */
+    margin: 0 0 32px;                           /* espaço FORA da caixa */
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;                           /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.9);            /* cor do texto */
 }
 
-/* Botão do hero ("Conheça as cidades"): foi removido do HTML.
+/* Botão do banner ("Conheça as cidades"): foi removido do HTML.
    As regras ficam guardadas caso alguém recoloque o botão (o código para
-   recolocar está comentado no index.html, dentro do hero). */
-.hero__action {
-    display: inline-block;
-    padding: 16px 28px;
-    border-radius: 18px;
-    background: var(--ambar);
-    color: var(--tinta);
-    font-weight: 600;
-    text-decoration: none;
+   recolocar está comentado no index.html, dentro do banner). */
+.banner__acao {
+    display: inline-block;     /* caixa na linha, com largura própria */
+    padding: 16px 28px;        /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-radius: 18px;       /* cantos arredondados (aumentar = mais redondo) */
+    background: var(--ambar);  /* fundo (cor e/ou imagem) */
+    color: var(--tinta);       /* cor do texto */
+    font-weight: 600;          /* semi-negrito */
+    text-decoration: none;     /* sem sublinhado */
     transition:
         transform 0.2s ease,
         background-color 0.2s ease;
 }
 
-.hero__action:hover {
-    background: #ffc45c;
-    transform: translateY(-2px);    /* sobe 2px */
+.banner__acao:hover {
+    background: #ffc45c;          /* fundo (cor e/ou imagem) */
+    transform: translateY(-2px);  /* sobe 2px */
 }
 
 /* Celular: sem degradê lateral, escurece tudo para o texto continuar legível. */
 @media (max-width: 820px) {
-    .hero {
+    .banner {
         background-image:
             linear-gradient(rgba(16, 33, 23, 0.68), rgba(16, 33, 23, 0.68)),
             url("img/banner.png");
@@ -483,99 +528,228 @@ button:focus-visible {
 /* ==========================================================================
    5. QUEM SOMOS
    Texto + foto no topo e quatro cartões de destaque. O fundo bege vem da
-   classe .content-section (seção 2).
+   classe .secao-conteudo (seção 2).
    ========================================================================== */
 #quem-somos {
-    padding: 50px 50px 70px;    /* cima / laterais / baixo */
+    padding: 50px 50px 70px;  /* cima / laterais / baixo */
 }
 
 /* Título "QUEM SOMOS": usa as mesmas variáveis dos demais títulos. */
-.qs-titulo {
-    font-family: var(--fonte-titulo);
-    font-size: var(--titulo-tamanho);
-    font-weight: var(--titulo-peso);
-    font-style: var(--titulo-estilo);
-    letter-spacing: var(--titulo-espaco-letras);
-    color: var(--titulo-cor);
-    text-transform: uppercase;
-    line-height: 1.1;
-    margin-bottom: 24px;        /* espaço entre o título e o texto */
+.quem-somos-titulo {
+    font-family: var(--fonte-titulo);             /* fonte (tipo de letra) */
+    font-size: var(--titulo-tamanho);             /* tamanho da letra (aumentar = letra maior) */
+    font-weight: var(--titulo-peso);              /* espessura da letra (400 normal, 700 negrito) */
+    font-style: var(--titulo-estilo);             /* estilo da letra (italic = inclinada) */
+    letter-spacing: var(--titulo-espaco-letras);  /* espaço entre as letras */
+    color: var(--titulo-cor);                     /* cor do texto */
+    text-transform: uppercase;                    /* TUDO EM MAIÚSCULAS */
+    line-height: 1.1;                             /* altura da linha (aumentar = linhas mais afastadas) */
+    margin-bottom: 24px;                          /* espaço entre o título e o texto */
 }
 
 /* Duas colunas: texto à esquerda, foto à direita. */
-.qs-hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* duas colunas iguais ("3fr 2fr" daria mais espaço ao texto) */
-    align-items: center;            /* alinha texto e foto pelo meio */
-    gap: 40px;                      /* espaço entre as colunas */
-    max-width: 1200px;
-    margin: 0 auto;                 /* centraliza o bloco */
+.quem-somos-topo {
+    display: grid;                   /* itens em grade (linhas e colunas) */
+    grid-template-columns: 1fr 1fr;  /* duas colunas iguais ("3fr 2fr" daria mais espaço ao texto) */
+    align-items: stretch;            /* a foto estica até acompanhar toda a altura do texto */
+    gap: 40px;                       /* espaço entre as colunas */
+    max-width: 1200px;               /* largura máxima */
+    margin: 0 auto;                  /* centraliza o bloco */
 }
 
-.qs-texto p {
-    font-family: var(--fonte-texto);
-    font-weight: 500;
-    font-size: 17px;
-    line-height: 1.7;               /* respiro entre as linhas */
-    color: #2c3a22;
-    margin-bottom: 16px;            /* espaço entre parágrafos */
+.quem-somos-texto p {
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-weight: 500;                 /* meio-negrito */
+    font-size: 17px;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.7;                 /* respiro entre as linhas */
+    color: #2c3a22;                   /* cor do texto */
+    margin-bottom: 16px;              /* espaço entre parágrafos */
 }
 
 /* Foto do Pantanal (definida aqui no CSS, por isso a div do HTML é vazia).
    Para trocar a foto: substitua o arquivo em img/ ou mude o caminho do url(). */
-.qs-imagem {
-    width: 100%;
-    max-width: 630px;               /* largura máxima da foto */
-    justify-self: center;           /* centraliza dentro da coluna */
-    aspect-ratio: 1.5 / 1;          /* proporção: largura 1,5x a altura */
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+.quem-somos-imagem {
+    width: 100%;                                /* largura (aumentar = mais largo) */
+    min-height: 420px;                          /* altura mínima; normalmente ela acompanha o texto ao lado */
+    border-radius: 16px;                        /* cantos arredondados (aumentar = mais redondo) */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);  /* sombra da caixa */
     background:
-        url("img/paisagem-pantanal-paulista.png") center / cover no-repeat, /* a foto */
+        url("img/paisagem-pantanal-paulista.png") 30% center / cover no-repeat, /* a foto (30% = enquadra mais a capivara) */
         rgba(255, 255, 255, 0.5);                                           /* cor de reserva */
 }
 
-/* Quatro cartões lado a lado (cada um com no mínimo 230px de largura). */
-.qs-destaques {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 60px auto 0;            /* 60px de espaço acima, centralizado */
+/* Convite ao turismo: cartão largo, mesma faixa laranja dos demais cartões. */
+.quem-somos-convite {
+    max-width: 1200px;                           /* largura máxima */
+    margin: 50px auto 0;                         /* espaço FORA da caixa */
+    padding: 28px 32px;                          /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    background: rgba(255, 255, 255, 0.88);       /* fundo (cor e/ou imagem) */
+    border-left: 6px solid var(--laranja);       /* borda da esquerda */
+    border-radius: 14px;                         /* cantos arredondados (aumentar = mais redondo) */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);  /* sombra da caixa */
 }
 
-.qs-card {
-    background: rgba(255, 255, 255, 0.88);  /* branco levemente translúcido */
-    border-top: 6px solid var(--laranja);   /* faixa laranja no topo */
-    border-radius: 14px;
-    padding: 24px 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+.quem-somos-convite p {
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-weight: 500;                 /* meio-negrito */
+    font-size: 16px;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.7;                 /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #2c3a22;                   /* cor do texto */
+    margin-bottom: 12px;              /* espaço fora, embaixo */
 }
 
-.qs-card h3 {
-    font-family: var(--fonte-titulo);
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--verde-escuro);
-    margin-bottom: 10px;
+.quem-somos-convite .quem-somos-convite__destaque {
+    margin-bottom: 0;            /* espaço fora, embaixo */
+    font-weight: 700;            /* negrito */
+    color: var(--verde-escuro);  /* cor do texto */
 }
 
-.qs-card p {
-    font-family: var(--fonte-texto);
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #333;
+/* Cartões de destaque: usam o painel de vidro (classe .vidro) com cantos orgânicos.
+   Flex com quebra de linha: a última linha incompleta fica centralizada. */
+.quem-somos-cartoes,
+.atalhos-lista {
+    position: relative;       /* referência para filhos "absolute" */
+    isolation: isolate;       /* mantém as manchas de fundo presas dentro do bloco */
+    display: flex;            /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;          /* itens quebram para a linha de baixo */
+    justify-content: center;  /* centraliza os cartões da última linha */
+    gap: 20px;                /* espaço entre os itens (aumentar = mais afastados) */
+    max-width: 1200px;        /* largura máxima */
+    margin: 40px auto 0;      /* espaço acima, centralizado */
+}
+
+/* Manchas coloridas desfocadas atrás dos cartões: dão "o que desfocar" ao vidro. */
+.quem-somos-cartoes::before,
+.quem-somos-cartoes::after,
+.atalhos-lista::before,
+.atalhos-lista::after {
+    content: "";           /* texto/ícone inserido pelo CSS */
+    position: absolute;    /* solto, posicionado dentro do pai */
+    z-index: -1;           /* camada (número maior fica na frente) */
+    pointer-events: none;  /* ignora cliques */
+    filter: blur(36px);    /* efeito na imagem (brilho, desfoque...) */
+}
+
+.quem-somos-cartoes::before,
+.atalhos-lista::before {
+    top: 6%;                                           /* distância do topo */
+    left: -4%;                                         /* distância da esquerda */
+    width: 40%;                                        /* largura (aumentar = mais largo) */
+    height: 40%;                                       /* altura (aumentar = mais alto) */
+    background: rgba(61, 140, 40, 0.5);                /* fundo (cor e/ou imagem) */
+    border-radius: 58% 42% 63% 37% / 45% 55% 45% 55%;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.quem-somos-cartoes::after,
+.atalhos-lista::after {
+    right: -4%;                                        /* distância da direita */
+    bottom: 6%;                                        /* distância da base */
+    width: 38%;                                        /* largura (aumentar = mais largo) */
+    height: 38%;                                       /* altura (aumentar = mais alto) */
+    background: rgba(251, 178, 48, 0.5);               /* fundo (cor e/ou imagem) */
+    border-radius: 40% 60% 35% 65% / 55% 40% 60% 45%;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+/* Seção própria dos atalhos (logo acima de Eventos). */
+#atalhos {
+    padding: 50px 50px 30px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+}
+
+#atalhos .atalhos-lista {
+    margin-top: 0;  /* espaço fora, em cima */
+}
+
+/* Quatro cartões por linha (no mínimo 230px cada). */
+.quem-somos-cartao {
+    flex: 1 1 230px;                     /* como o item cresce/encolhe */
+    max-width: calc((100% - 60px) / 4);  /* largura máxima */
+    min-width: 230px;                    /* largura mínima */
+    border-radius: 44px 16px 44px 16px;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+/* Dois cartões de atalho (Cidades e Peixes), lado a lado. */
+.atalho-cartao {
+    flex: 1 1 320px;                     /* como o item cresce/encolhe */
+    display: flex;                       /* itens lado a lado (flexbox) */
+    flex-direction: column;              /* itens empilhados */
+    align-items: center;                 /* itens centralizados na vertical */
+    justify-content: space-between;      /* itens espalhados, um em cada ponta */
+    gap: 16px;                           /* espaço entre os itens (aumentar = mais afastados) */
+    border-radius: 44px 16px 44px 16px;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.atalho-cartao:nth-child(even) {
+    border-radius: 16px 44px 16px 44px;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.atalho-cartao .material-symbols-rounded {
+    font-size: 54px;      /* tamanho da letra (aumentar = letra maior) */
+    color: var(--verde);  /* cor do texto */
+}
+
+.atalho-cartao:nth-child(even) .material-symbols-rounded {
+    color: var(--laranja);  /* cor do texto */
+}
+
+.atalho-cartao h3 {
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 1.6rem;                 /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                  /* extra-negrito */
+    color: var(--verde-escuro);        /* cor do texto */
+    text-transform: uppercase;         /* TUDO EM MAIÚSCULAS */
+}
+
+.atalho-cartao p {
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-weight: 500;                 /* meio-negrito */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;                 /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #333;                      /* cor do texto */
+    text-align: center;               /* texto centralizado */
+}
+
+.quem-somos-cartao h3 {
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 22px;                   /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                  /* extra-negrito */
+    color: var(--verde-escuro);        /* cor do texto */
+    margin-bottom: 10px;               /* espaço fora, embaixo */
+}
+
+.quem-somos-cartao a {
+    font-weight: 700;            /* negrito */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+.quem-somos-cartao p {
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-weight: 500;                 /* meio-negrito */
+    font-size: 15px;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;                 /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #333;                      /* cor do texto */
 }
 
 /* Celular: tudo em uma coluna. */
 @media (max-width: 800px) {
     #quem-somos {
-        padding: 40px 20px 60px;        /* menos espaço lateral */
+        padding: 40px 20px 60px;  /* menos espaço lateral */
     }
 
-    .qs-hero {
-        grid-template-columns: 1fr;     /* texto em cima, foto embaixo */
+    #atalhos {
+        padding: 40px 20px 20px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    }
+
+    .quem-somos-topo {
+        grid-template-columns: 1fr;  /* texto em cima, foto embaixo */
+    }
+
+    .quem-somos-cartao {
+        max-width: 100%;  /* um cartão por linha */
+    }
+
+    .quem-somos-imagem {
+        min-height: 0;          /* altura mínima */
+        aspect-ratio: 1.5 / 1;  /* no celular a foto volta à proporção normal */
     }
 }
 
@@ -586,107 +760,107 @@ button:focus-visible {
    texto e o botão "Saiba mais".
    ========================================================================== */
 #cidades {
-    padding: 40px 50px;     /* 40px em cima/embaixo, 50px nas laterais */
+    padding: 40px 50px;  /* 40px em cima/embaixo, 50px nas laterais */
 }
 
 /* Caixa que alinha os cards lado a lado. */
-.listaCards {
-    display: flex;
-    justify-content: center;    /* centraliza os cards ("flex-start" = esquerda) */
-    flex-wrap: wrap;            /* quebra de linha quando não cabe mais */
-    gap: 50px 35px;             /* espaço vertical / horizontal entre os cards */
-    padding: 30px 7vw 0;        /* topo / laterais (7vw = 7% da largura da tela) / base */
+.lista-cartoes {
+    display: flex;            /* itens lado a lado (flexbox) */
+    justify-content: center;  /* centraliza os cards ("flex-start" = esquerda) */
+    flex-wrap: wrap;          /* quebra de linha quando não cabe mais */
+    gap: 50px 35px;           /* espaço vertical / horizontal entre os cards */
+    padding: 30px 7vw 0;      /* topo / laterais (7vw = 7% da largura da tela) / base */
 }
 
 /* Cada card (foto + texto + nome). */
-.card-imagem-caixa {
-    position: relative;         /* permite colocar a camada de texto por cima da foto */
-    overflow: hidden;           /* esconde o que passa da caixa (o blur vaza nas bordas) */
-    width: 15vw;                /* 15% da largura da tela: o card cresce e encolhe com a tela */
+.cartao-imagem-caixa {
+    position: relative;  /* permite colocar a camada de texto por cima da foto */
+    overflow: hidden;    /* esconde o que passa da caixa (o blur vaza nas bordas) */
+    width: 15vw;         /* 15% da largura da tela: o card cresce e encolhe com a tela */
 }
 
-.imgCard {
-    display: block;             /* remove o espacinho em branco que fica embaixo de imagens */
-    width: 100%;
-    height: 300px;              /* altura maior que a largura = foto em pé (retrato) */
-    object-fit: cover;          /* corta a foto sem deformar */
-    transition: filter 0.4s ease;   /* o desfoque do hover aparece suavemente */
+.cartao-imagem {
+    display: block;                /* remove o espacinho em branco que fica embaixo de imagens */
+    width: 100%;                   /* largura (aumentar = mais largo) */
+    height: 300px;                 /* altura maior que a largura = foto em pé (retrato) */
+    object-fit: cover;             /* corta a foto sem deformar */
+    transition: filter 0.4s ease;  /* o desfoque do hover aparece suavemente */
 }
 
 /* Camada com texto e botão: fica invisível sobre a foto até o hover. */
-.card-conteudo {
-    position: absolute;
-    inset: 0;                   /* ocupa a caixa toda (topo, direita, base e esquerda = 0) */
-    display: flex;
-    flex-direction: column;     /* texto em cima, botão embaixo */
-    justify-content: center;    /* centraliza na vertical */
-    align-items: center;        /* centraliza na horizontal */
-    gap: 12px;                  /* espaço entre texto e botão */
-    padding: 20px;
-    opacity: 0;                 /* invisível */
-    transition: opacity 0.4s ease;
+.cartao-conteudo {
+    position: absolute;             /* solto, posicionado dentro do pai */
+    inset: 0;                       /* ocupa a caixa toda (topo, direita, base e esquerda = 0) */
+    display: flex;                  /* itens lado a lado (flexbox) */
+    flex-direction: column;         /* texto em cima, botão embaixo */
+    justify-content: center;        /* centraliza na vertical */
+    align-items: center;            /* centraliza na horizontal */
+    gap: 12px;                      /* espaço entre texto e botão */
+    padding: 20px;                  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    opacity: 0;                     /* invisível */
+    transition: opacity 0.4s ease;  /* animação suave ao mudar */
 }
 
-.card-texto {
-    margin: 0;
-    color: #fff;
-    font-family: var(--fonte-texto);
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.4;
+.cartao-texto {
+    margin: 0;                        /* sem espaço fora */
+    color: #fff;                      /* cor do texto */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 15px;                  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 500;                 /* meio-negrito */
+    line-height: 1.4;                 /* altura da linha (aumentar = linhas mais afastadas) */
 }
 
 /* Botão laranja ("Saiba mais" e "← Voltar às cidades"). */
-.card-botao {
-    background: var(--laranja);
-    color: #111;
-    padding: 10px 24px;
-    border-radius: 30px;            /* formato de pílula */
-    text-decoration: none;          /* tira o sublinhado do link */
-    font-family: var(--fonte-titulo);
-    font-size: 14px;
-    font-weight: 600;
-    transition: transform 0.3s ease;
+.cartao-botao {
+    background: var(--laranja);        /* fundo (cor e/ou imagem) */
+    color: #111;                       /* cor do texto */
+    padding: 10px 24px;                /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-radius: 30px;               /* formato de pílula */
+    text-decoration: none;             /* tira o sublinhado do link */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 14px;                   /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 600;                  /* semi-negrito */
+    transition: transform 0.3s ease;   /* animação suave ao mudar */
 }
 
-.card-botao:hover {
-    transform: scale(1.1);          /* cresce 10% ao passar o mouse */
+.cartao-botao:hover {
+    transform: scale(1.1);  /* cresce 10% ao passar o mouse */
 }
 
 /* Hover no card: foto desfocada e escurecida... */
-.card-imagem-caixa:hover .imgCard {
-    filter: blur(1.5px) brightness(0.68);   /* blur = desfoque; brightness 0.68 = 32% mais escura */
+.cartao-imagem-caixa:hover .cartao-imagem {
+    filter: blur(1.5px) brightness(0.68);  /* blur = desfoque; brightness 0.68 = 32% mais escura */
 }
 
 /* ...e a camada de texto aparece. */
-.card-imagem-caixa:hover .card-conteudo {
-    opacity: 1;
+.cartao-imagem-caixa:hover .cartao-conteudo {
+    opacity: 1;  /* totalmente visível */
 }
 
 /* Nome da cidade abaixo da foto. */
-.card-titulo {
-    margin-top: 12px;
-    font-family: var(--fonte-titulo);
-    font-size: 18px;
-    font-weight: 700;
-    color: #111;
-    text-transform: uppercase;
+.cartao-titulo {
+    margin-top: 12px;                  /* espaço fora, em cima */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 18px;                   /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                  /* negrito */
+    color: #111;                       /* cor do texto */
+    text-transform: uppercase;         /* TUDO EM MAIÚSCULAS */
 }
 
 /* Tablet e celular: cards maiores para caber 2 por linha (ou 1 em telas bem pequenas). */
 @media (max-width: 1000px) {
-    .card-imagem-caixa {
-        width: min(42vw, 260px);
+    .cartao-imagem-caixa {
+        width: min(42vw, 260px);  /* largura (aumentar = mais largo) */
     }
 }
 
 @media (max-width: 520px) {
     #cidades {
-        padding: 40px 20px;
+        padding: 40px 20px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
     }
 
-    .card-imagem-caixa {
-        width: min(80vw, 300px);
+    .cartao-imagem-caixa {
+        width: min(80vw, 300px);  /* largura (aumentar = mais largo) */
     }
 }
 
@@ -702,68 +876,69 @@ button:focus-visible {
    (os ::before e ::after do .mapa-cidade).
    ========================================================================== */
 #mapas {
-    display: none;              /* escondida por padrão */
-    padding: 40px 50px;
+    display: none;       /* escondida por padrão */
+    overflow-x: clip;    /* as manchas desfocadas do fundo não criam rolagem lateral no celular */
+    padding: 40px 50px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
 }
 
 /* Aparece só quando um dos blocos dentro dela é o alvo do link. */
 #mapas:has(.mapa-cidade:target) {
-    display: block;
+    display: block;  /* ocupa a linha toda */
 }
 
 /* Bloco de UMA cidade. Escondido, a menos que seja o alvo do link. */
 .mapa-cidade {
-    display: none;
-    position: relative;         /* referência para as manchas de fundo */
-    isolation: isolate;         /* mantém as manchas (z-index negativo) presas dentro do bloco */
-    max-width: 1000px;
-    margin: 30px auto 0;        /* centraliza */
-    scroll-margin-top: 20px;    /* ao rolar até o bloco, ele para 20px abaixo do topo */
+    display: none;            /* escondido */
+    position: relative;       /* referência para as manchas de fundo */
+    isolation: isolate;       /* mantém as manchas (z-index negativo) presas dentro do bloco */
+    max-width: 1000px;        /* largura máxima */
+    margin: 30px auto 0;      /* centraliza */
+    scroll-margin-top: 20px;  /* ao rolar até o bloco, ele para 20px abaixo do topo */
 }
 
 .mapa-cidade:target {
-    display: block;
+    display: block;  /* ocupa a linha toda */
 }
 
 /* Manchas coloridas atrás dos painéis: dão "o que desfocar" ao vidro e
    deixam a forma orgânica (nada de caixas retas sobre fundo liso). */
 .mapa-cidade::before,
 .mapa-cidade::after {
-    content: "";
-    position: absolute;
-    z-index: -1;                /* atrás dos painéis */
-    pointer-events: none;       /* o clique atravessa a mancha */
-    filter: blur(36px);         /* borda bem suave */
+    content: "";           /* texto/ícone inserido pelo CSS */
+    position: absolute;    /* solto, posicionado dentro do pai */
+    z-index: -1;           /* atrás dos painéis */
+    pointer-events: none;  /* o clique atravessa a mancha */
+    filter: blur(36px);    /* borda bem suave */
 }
 
 /* Mancha verde, canto superior esquerdo. */
 .mapa-cidade::before {
-    top: 4%;
-    left: -6%;
-    width: 46%;
-    height: 38%;
-    background: rgba(61, 140, 40, 0.55);
-    border-radius: 58% 42% 63% 37% / 45% 55% 45% 55%;   /* forma de "pedra de rio" */
+    top: 4%;                                           /* distância do topo */
+    left: -6%;                                         /* distância da esquerda */
+    width: 46%;                                        /* largura (aumentar = mais largo) */
+    height: 38%;                                       /* altura (aumentar = mais alto) */
+    background: rgba(61, 140, 40, 0.55);               /* fundo (cor e/ou imagem) */
+    border-radius: 58% 42% 63% 37% / 45% 55% 45% 55%;  /* forma de "pedra de rio" */
 }
 
 /* Mancha âmbar, canto inferior direito. */
 .mapa-cidade::after {
-    right: -6%;
-    bottom: 18%;
-    width: 42%;
-    height: 34%;
-    background: rgba(251, 178, 48, 0.5);
-    border-radius: 40% 60% 35% 65% / 55% 40% 60% 45%;
+    right: -6%;                                        /* distância da direita */
+    bottom: 18%;                                       /* distância da base */
+    width: 42%;                                        /* largura (aumentar = mais largo) */
+    height: 34%;                                       /* altura (aumentar = mais alto) */
+    background: rgba(251, 178, 48, 0.5);               /* fundo (cor e/ou imagem) */
+    border-radius: 40% 60% 35% 65% / 55% 40% 60% 45%;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 /* Nome da cidade. */
 .mapa-titulo {
-    margin-bottom: 28px;
-    font-family: var(--fonte-titulo);
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 700;
-    color: var(--verde);
-    letter-spacing: -0.01em;
+    margin-bottom: 28px;                  /* espaço fora, embaixo */
+    font-family: var(--fonte-titulo);     /* fonte (tipo de letra) */
+    font-size: clamp(2rem, 5vw, 3.2rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                     /* negrito */
+    color: var(--verde);                  /* cor do texto */
+    letter-spacing: -0.01em;              /* espaço entre as letras */
 }
 
 /* ----- Grade com os 4 painéis (12 colunas) -----
@@ -771,41 +946,41 @@ button:focus-visible {
    Linha 2: [ Atrações (7 col.) ][ Como chegar (5 col.) ]
    Larguras desiguais deixam o conjunto menos "quadrado" e mais orgânico. */
 .cidade__grade {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
+    display: grid;                           /* itens em grade (linhas e colunas) */
+    grid-template-columns: repeat(12, 1fr);  /* colunas da grade (quantas e de que tamanho) */
+    gap: 20px;                               /* espaço entre os itens (aumentar = mais afastados) */
 }
 
 .cidade__sobre {
-    grid-column: 1 / 8;
+    grid-column: 1 / 8;  /* quantas colunas o item ocupa */
 }
 
 .cidade__dados {
-    grid-column: 8 / 13;
+    grid-column: 8 / 13;  /* quantas colunas o item ocupa */
 }
 
 .cidade__atracoes {
-    grid-column: 1 / 8;
+    grid-column: 1 / 8;  /* quantas colunas o item ocupa */
 }
 
 .cidade__acesso {
-    grid-column: 8 / 13;
-    align-self: start;              /* altura do próprio texto (não estica até o fim da lista ao lado) */
+    grid-column: 8 / 13;  /* quantas colunas o item ocupa */
+    align-self: start;    /* altura do próprio texto (não estica até o fim da lista ao lado) */
 }
 
 /* ----- Painel de vidro (classe base de todos os painéis) ----- */
 .vidro {
-    padding: clamp(20px, 3vw, 32px);
-    text-align: left;                                   /* parágrafos ficam mais fáceis de ler à esquerda */
-    color: var(--tinta);
+    padding: clamp(20px, 3vw, 32px);  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    text-align: left;                 /* parágrafos ficam mais fáceis de ler à esquerda */
+    color: var(--tinta);              /* cor do texto */
     background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.62),                      /* mais claro no canto superior esquerdo... */
         rgba(255, 255, 255, 0.24)                       /* ...e mais transparente no inferior direito */
     );
-    border: 1px solid rgba(255, 255, 255, 0.65);        /* borda clara que imita a quina do vidro */
-    -webkit-backdrop-filter: blur(16px) saturate(140%); /* versão para Safari */
-    backdrop-filter: blur(16px) saturate(140%);         /* desfoca e realça as cores de trás */
+    border: 1px solid rgba(255, 255, 255, 0.65);         /* borda clara que imita a quina do vidro */
+    -webkit-backdrop-filter: blur(16px) saturate(140%);  /* versão para Safari */
+    backdrop-filter: blur(16px) saturate(140%);          /* desfoca e realça as cores de trás */
     box-shadow:
         0 12px 32px rgba(22, 56, 8, 0.14),              /* sombra suave verde */
         inset 0 1px 0 rgba(255, 255, 255, 0.75);        /* brilho na borda de cima */
@@ -814,196 +989,186 @@ button:focus-visible {
 /* Navegadores sem backdrop-filter: fundo quase opaco para o texto continuar legível. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .vidro {
-        background: rgba(255, 255, 255, 0.88);
+        background: rgba(255, 255, 255, 0.88);  /* fundo (cor e/ou imagem) */
     }
 }
 
 /* Cantos diferentes em cada painel (formato orgânico). Ordem dos valores:
    canto superior esquerdo, superior direito, inferior direito, inferior esquerdo. */
 .cidade__sobre {
-    border-radius: 44px 16px 44px 16px;
+    border-radius: 44px 16px 44px 16px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 .cidade__dados {
-    border-radius: 16px 44px 16px 44px;
+    border-radius: 16px 44px 16px 44px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 .cidade__atracoes {
-    border-radius: 16px 40px 16px 40px;
+    border-radius: 16px 40px 16px 40px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 .cidade__acesso {
-    border-radius: 40px 16px 40px 16px;
+    border-radius: 40px 16px 40px 16px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 /* Subtítulo dos painéis: etiqueta pequena com uma "folhinha" antes. */
 .info-subtitulo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    font-family: var(--fonte-titulo);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--verde-escuro);
+    display: flex;                     /* itens lado a lado (flexbox) */
+    align-items: center;               /* itens centralizados na vertical */
+    gap: 10px;                         /* espaço entre os itens (aumentar = mais afastados) */
+    margin-bottom: 14px;               /* espaço fora, embaixo */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 0.85rem;                /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                  /* negrito */
+    letter-spacing: 0.12em;            /* espaço entre as letras */
+    text-transform: uppercase;         /* TUDO EM MAIÚSCULAS */
+    color: var(--verde-escuro);        /* cor do texto */
 }
 
 .info-subtitulo::before {
-    content: "";
-    flex: none;
-    width: 12px;
-    height: 12px;
-    background: var(--laranja);
-    border-radius: 0 100% 0 100%;   /* dois cantos arredondados = formato de folha */
-    transform: rotate(-10deg);
+    content: "";                   /* texto/ícone inserido pelo CSS */
+    flex: none;                    /* não encolhe nem cresce */
+    width: 12px;                   /* largura (aumentar = mais largo) */
+    height: 12px;                  /* altura (aumentar = mais alto) */
+    background: var(--laranja);    /* fundo (cor e/ou imagem) */
+    border-radius: 0 100% 0 100%;  /* dois cantos arredondados = formato de folha */
+    transform: rotate(-10deg);     /* move, gira ou aumenta o elemento */
 }
 
 /* Textos corridos (sobre a cidade e como chegar). */
 .info-descricao {
-    font-family: var(--fonte-texto);
-    font-size: 1rem;
-    line-height: 1.7;               /* linhas bem espaçadas facilitam a leitura */
-    color: #25352a;
-    text-align: left;
-}
-
-/* Primeira letra grande do "Sobre a cidade" (capitular, como em revista). */
-.cidade__sobre .info-descricao::first-letter {
-    float: left;                    /* o texto contorna a letra */
-    margin: 0.06em 0.12em 0 0;
-    font-size: 3.2em;
-    font-weight: 800;
-    line-height: 0.85;
-    color: var(--verde);
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.7;                 /* linhas bem espaçadas facilitam a leitura */
+    color: #25352a;                   /* cor do texto */
+    text-align: left;                 /* texto à esquerda */
 }
 
 /* ----- Dados rápidos: 2 x 2, sem caixinhas, separados por linhas finas ----- */
 .cidade__dados {
-    display: flex;
-    align-items: center;            /* centraliza a lista na altura do painel */
+    display: flex;        /* itens lado a lado (flexbox) */
+    align-items: center;  /* centraliza a lista na altura do painel */
 }
 
 .info-dados {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* duas colunas */
-    gap: 0;
-    width: 100%;
+    display: grid;                   /* itens em grade (linhas e colunas) */
+    grid-template-columns: 1fr 1fr;  /* duas colunas */
+    gap: 0;                          /* espaço entre os itens (aumentar = mais afastados) */
+    width: 100%;                     /* largura (aumentar = mais largo) */
 }
 
 .info-dado {
-    display: flex;
-    flex-direction: column;         /* nome em cima, valor embaixo */
-    gap: 4px;
-    padding: 14px 8px;
-    border-bottom: 1px solid rgba(22, 56, 8, 0.14);     /* linha fina entre os dados */
+    display: flex;                                   /* itens lado a lado (flexbox) */
+    flex-direction: column;                          /* nome em cima, valor embaixo */
+    gap: 4px;                                        /* espaço entre os itens (aumentar = mais afastados) */
+    padding: 14px 8px;                               /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-bottom: 1px solid rgba(22, 56, 8, 0.14);  /* linha fina entre os dados */
 }
 
 /* Remove a linha dos dois últimos (os de baixo). */
 .info-dado:nth-last-child(-n + 2) {
-    border-bottom: 0;
+    border-bottom: 0;  /* borda de baixo */
 }
 
 /* Linha vertical entre as duas colunas. */
 .info-dado:nth-child(odd) {
-    border-right: 1px solid rgba(22, 56, 8, 0.14);
+    border-right: 1px solid rgba(22, 56, 8, 0.14);  /* borda da direita */
 }
 
 .info-dado-titulo {
-    text-align: left;               /* o reset global centraliza; aqui voltamos para a esquerda */
-    font-family: var(--fonte-texto);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #5b6b5f;
+    text-align: left;                 /* o reset global centraliza; aqui voltamos para a esquerda */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 0.72rem;               /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 600;                 /* semi-negrito */
+    letter-spacing: 0.1em;            /* espaço entre as letras */
+    text-transform: uppercase;        /* TUDO EM MAIÚSCULAS */
+    color: #5b6b5f;                   /* cor do texto */
 }
 
 .info-dado-valor {
-    margin: 0;                      /* tira o recuo padrão do <dd> */
-    font-family: var(--fonte-titulo);
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--verde);
-    text-align: left;
+    margin: 0;                         /* tira o recuo padrão do <dd> */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 1.25rem;                /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                  /* negrito */
+    line-height: 1.2;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: var(--verde);               /* cor do texto */
+    text-align: left;                  /* texto à esquerda */
 }
 
 /* ----- Lista de atrações: marcador em forma de folha ----- */
 .info-lista {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* duas colunas de atrações */
-    gap: 8px 20px;
-    list-style: none;               /* tira as bolinhas padrão */
+    display: grid;                   /* itens em grade (linhas e colunas) */
+    grid-template-columns: 1fr 1fr;  /* duas colunas de atrações */
+    gap: 8px 20px;                   /* espaço entre os itens (aumentar = mais afastados) */
+    list-style: none;                /* tira as bolinhas padrão */
 }
 
 .info-lista li {
-    position: relative;
-    padding-left: 22px;             /* espaço para a folhinha */
-    font-family: var(--fonte-texto);
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #25352a;
-    text-align: left;
+    position: relative;               /* referência para filhos "absolute" */
+    padding-left: 22px;               /* espaço para a folhinha */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.5;                 /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #25352a;                   /* cor do texto */
+    text-align: left;                 /* texto à esquerda */
 }
 
 .info-lista li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.45em;                    /* alinha com a primeira linha do texto */
-    width: 10px;
-    height: 10px;
-    background: var(--verde-escuro);
-    border-radius: 0 100% 0 100%;
+    content: "";                      /* texto/ícone inserido pelo CSS */
+    position: absolute;               /* solto, posicionado dentro do pai */
+    left: 0;                          /* distância da esquerda */
+    top: 0.45em;                      /* alinha com a primeira linha do texto */
+    width: 10px;                      /* largura (aumentar = mais largo) */
+    height: 10px;                     /* altura (aumentar = mais alto) */
+    background: var(--verde-escuro);  /* fundo (cor e/ou imagem) */
+    border-radius: 0 100% 0 100%;     /* cantos arredondados (aumentar = mais redondo) */
 }
 
 /* ----- Painel do mapa ----- */
 .cidade__mapa {
-    margin-top: 20px;
-    padding: 14px;
-    border-radius: 16px 52px 16px 52px;
+    margin-top: 20px;                    /* espaço fora, em cima */
+    padding: 14px;                       /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-radius: 16px 52px 16px 52px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 .cidade__mapa .info-subtitulo {
-    margin: 6px 0 12px 10px;
+    margin: 6px 0 12px 10px;  /* espaço FORA da caixa */
 }
 
 .cidade__mapa iframe {
-    display: block;
-    width: 100%;
-    height: 420px;
-    border: 0;                      /* tira a borda padrão feia do iframe */
-    border-radius: 12px 40px 12px 40px;
+    display: block;                      /* ocupa a linha toda */
+    width: 100%;                         /* largura (aumentar = mais largo) */
+    height: 420px;                       /* altura (aumentar = mais alto) */
+    border: 0;                           /* tira a borda padrão feia do iframe */
+    border-radius: 12px 40px 12px 40px;  /* cantos arredondados (aumentar = mais redondo) */
 }
 
 /* Botão "← Voltar às cidades". */
 .cidade__voltar {
-    display: block;
-    width: fit-content;             /* largura = tamanho do texto */
-    margin: 28px auto 0;            /* centraliza */
+    display: block;       /* ocupa a linha toda */
+    width: fit-content;   /* largura = tamanho do texto */
+    margin: 28px auto 0;  /* centraliza */
 }
 
 /* Tablet e celular: painéis empilhados em uma coluna. */
 @media (max-width: 800px) {
     #mapas {
-        padding: 30px 20px;
+        padding: 30px 20px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
     }
 
     .cidade__sobre,
     .cidade__dados,
     .cidade__atracoes,
     .cidade__acesso {
-        grid-column: 1 / -1;        /* cada painel ocupa a linha toda */
+        grid-column: 1 / -1;  /* cada painel ocupa a linha toda */
     }
 
     .info-lista {
-        grid-template-columns: 1fr; /* lista em uma coluna só */
+        grid-template-columns: 1fr;  /* lista em uma coluna só */
     }
 
     .cidade__mapa iframe {
-        height: 320px;
+        height: 320px;  /* altura (aumentar = mais alto) */
     }
 }
 
@@ -1011,51 +1176,51 @@ button:focus-visible {
 /* ==========================================================================
    8. EVENTOS (carrossel infinito)
    Os cards são criados pelo index.js (lista EVENTOS). Para ajustar tamanhos,
-   mexa nas variáveis --ev-* logo abaixo. O fundo bege vem de .content-section.
+   mexa nas variáveis --ev-* logo abaixo. O fundo bege vem de .secao-conteudo.
    ========================================================================== */
 section.eventos {
-    --ev-fundo: #fff;                               /* cor do texto do botão de pausa no hover */
-    --ev-titulo: var(--verde);                      /* cor do título e do botão de pausa */
-    --ev-texto: var(--tinta);                       /* cor dos textos */
-    --ev-destaque: var(--ambar);                    /* cor do botão "saiba mais" */
-    --ev-fonte-titulo: var(--fonte-principal);      /* fonte dos títulos dos cards */
-    --ev-largura-card: clamp(270px, 32vw, 400px);   /* largura de cada card (mín., ideal, máx.) */
-    --ev-altura-card: clamp(340px, 42vw, 500px);    /* altura (proporcional às artes 4:5 do Instagram) */
+    --ev-fundo: #fff;                              /* cor do texto do botão de pausa no hover */
+    --ev-titulo: var(--verde);                     /* cor do título e do botão de pausa */
+    --ev-texto: var(--tinta);                      /* cor dos textos */
+    --ev-destaque: var(--ambar);                   /* cor do botão "saiba mais" */
+    --ev-fonte-titulo: var(--fonte-principal);     /* fonte dos títulos dos cards */
+    --ev-largura-card: clamp(270px, 32vw, 400px);  /* largura de cada card (mín., ideal, máx.) */
+    --ev-altura-card: clamp(340px, 42vw, 500px);   /* altura (proporcional às artes 4:5 do Instagram) */
 
-    color: var(--ev-texto);
-    padding: clamp(2rem, 6vw, 4rem) 0;
-    overflow: hidden;                               /* corta o carrossel nas bordas da tela */
+    color: var(--ev-texto);             /* cor do texto */
+    padding: clamp(2rem, 6vw, 4rem) 0;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    overflow: hidden;                   /* corta o carrossel nas bordas da tela */
 }
 
 /* Título "EVENTOS": mesmas variáveis dos demais títulos do site. */
 .eventos .eventos__titulo {
-    margin: 0 0 clamp(1.5rem, 4vw, 3rem);           /* espaço abaixo do título */
-    text-align: center;
-    font-family: var(--ev-fonte-titulo);
-    font-style: var(--titulo-estilo);
-    font-weight: var(--titulo-peso);
-    font-size: var(--titulo-tamanho);
-    letter-spacing: var(--titulo-espaco-letras);
-    text-transform: uppercase;
-    color: var(--titulo-cor);
+    margin: 0 0 clamp(1.5rem, 4vw, 3rem);         /* espaço abaixo do título */
+    text-align: center;                           /* texto centralizado */
+    font-family: var(--ev-fonte-titulo);          /* fonte (tipo de letra) */
+    font-style: var(--titulo-estilo);             /* estilo da letra (italic = inclinada) */
+    font-weight: var(--titulo-peso);              /* espessura da letra (400 normal, 700 negrito) */
+    font-size: var(--titulo-tamanho);             /* tamanho da letra (aumentar = letra maior) */
+    letter-spacing: var(--titulo-espaco-letras);  /* espaço entre as letras */
+    text-transform: uppercase;                    /* TUDO EM MAIÚSCULAS */
+    color: var(--titulo-cor);                     /* cor do texto */
 }
 
 /* ----- Carrossel ----- */
 
 /* Janela que recorta o trilho. */
 .eventos__janela {
-    position: relative;
-    overflow: hidden;
+    position: relative;  /* referência para filhos "absolute" */
+    overflow: hidden;    /* esconde o que passa da caixa */
 }
 
 /* Trilho: fila de cards que desliza (a animação é a ev-deslizar, abaixo). */
 .eventos__trilho {
-    display: flex;                  /* cards em fila horizontal */
-    width: max-content;             /* largura = soma dos cards */
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    will-change: transform;         /* avisa o navegador que vai animar (fica mais fluido) */
+    display: flex;                                                  /* cards em fila horizontal */
+    width: max-content;                                             /* largura = soma dos cards */
+    margin: 0;                                                      /* sem espaço fora */
+    padding: 0;                                                     /* sem espaço dentro */
+    list-style: none;                                               /* sem bolinhas */
+    will-change: transform;                                         /* avisa o navegador que vai animar (fica mais fluido) */
     animation: ev-deslizar var(--ev-duracao, 30s) linear infinite;  /* duração vem do JS (padrão 30s) */
 }
 
@@ -1070,76 +1235,76 @@ section.eventos {
 /* Movimento para a DIREITA (a distância é calculada pelo index.js). */
 @keyframes ev-deslizar {
     from {
-        transform: translateX(calc(-1 * var(--ev-distancia, 50%)));
+        transform: translateX(calc(-1 * var(--ev-distancia, 50%)));  /* move, gira ou aumenta o elemento */
     }
 
     to {
-        transform: translateX(0);
+        transform: translateX(0);  /* move, gira ou aumenta o elemento */
     }
 }
 
 .eventos__item {
-    flex: 0 0 auto;                         /* não encolhe nem cresce */
-    width: var(--ev-largura-card);
-    padding-inline: clamp(0.4rem, 1.5vw, 1rem); /* espaço entre os cards */
+    flex: 0 0 auto;                              /* não encolhe nem cresce */
+    width: var(--ev-largura-card);               /* largura (aumentar = mais largo) */
+    padding-inline: clamp(0.4rem, 1.5vw, 1rem);  /* espaço entre os cards */
 }
 
 /* ----- Card ----- */
 .evento {
-    margin: 0;
-    text-align: center;
+    margin: 0;           /* sem espaço fora */
+    text-align: center;  /* texto centralizado */
 }
 
 .evento__midia {
-    position: relative;
-    height: var(--ev-altura-card);
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);    /* recorta em paralelogramo (foto E painel) */
+    position: relative;                                   /* referência para filhos "absolute" */
+    height: var(--ev-altura-card);                        /* altura (aumentar = mais alto) */
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);  /* recorta em paralelogramo (foto E painel) */
 }
 
 /* Botão que envolve a foto (clicável no toque e no teclado). */
 .evento__gatilho {
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    border: 0;
-    background: #e3ede4;            /* cor mostrada enquanto a foto carrega */
-    cursor: pointer;
+    display: block;       /* ocupa a linha toda */
+    width: 100%;          /* largura (aumentar = mais largo) */
+    height: 100%;         /* altura (aumentar = mais alto) */
+    padding: 0;           /* sem espaço dentro */
+    border: 0;            /* sem borda */
+    background: #e3ede4;  /* cor mostrada enquanto a foto carrega */
+    cursor: pointer;      /* mãozinha ao passar o mouse */
 }
 
 .evento__imagem {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: block;     /* ocupa a linha toda */
+    width: 100%;        /* largura (aumentar = mais largo) */
+    height: 100%;       /* altura (aumentar = mais alto) */
+    object-fit: cover;  /* foto preenche a caixa, cortando as sobras */
     transition:
         transform 0.5s ease,
         filter 0.5s ease;
 }
 
 .evento__nome {
-    display: block;
-    margin-top: 0.75rem;
-    font-family: var(--ev-fonte-titulo);
-    font-size: clamp(1.2rem, 2.6vw, 1.6rem);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    display: block;                           /* ocupa a linha toda */
+    margin-top: 0.75rem;                      /* espaço fora, em cima */
+    font-family: var(--ev-fonte-titulo);      /* fonte (tipo de letra) */
+    font-size: clamp(1.2rem, 2.6vw, 1.6rem);  /* tamanho da letra (aumentar = letra maior) */
+    letter-spacing: 0.05em;                   /* espaço entre as letras */
+    text-transform: uppercase;                /* TUDO EM MAIÚSCULAS */
 }
 
 /* ----- Painel de informações (aparece sobre a foto) ----- */
 .evento__info {
-    position: absolute;
-    inset: 0;                       /* cobre a foto inteira */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1.5rem 12%;
-    text-align: center;
-    color: #fff;
-    background: linear-gradient(to top, rgba(16, 33, 23, 0.94), rgba(22, 56, 8, 0.86));
-    opacity: 0;                     /* escondido até o hover/toque */
-    visibility: hidden;
+    position: absolute;                                                                  /* solto, posicionado dentro do pai */
+    inset: 0;                                                                            /* cobre a foto inteira */
+    display: flex;                                                                       /* itens lado a lado (flexbox) */
+    flex-direction: column;                                                              /* itens empilhados */
+    justify-content: center;                                                             /* itens centralizados na horizontal */
+    gap: 0.5rem;                                                                         /* espaço entre os itens (aumentar = mais afastados) */
+    padding: 1.5rem 12%;                                                                 /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    text-align: center;                                                                  /* texto centralizado */
+    color: #fff;                                                                         /* cor do texto */
+    background: linear-gradient(to top, rgba(16, 33, 23, 0.94), rgba(22, 56, 8, 0.86));  /* fundo (cor e/ou imagem) */
+    opacity: 0;                                                                          /* escondido até o hover/toque */
+    visibility: hidden;                                                                  /* visibilidade */
     transition:
         opacity 0.4s ease,
         visibility 0s linear 0.4s;
@@ -1147,63 +1312,63 @@ section.eventos {
 
 /* Cada texto do painel começa 14px abaixo e sobe ao aparecer. */
 .evento__info > * {
-    opacity: 0;
-    transform: translateY(14px);
+    opacity: 0;                   /* invisível */
+    transform: translateY(14px);  /* move, gira ou aumenta o elemento */
     transition:
         opacity 0.4s ease,
         transform 0.4s ease;
 }
 
 .evento__subtitulo {
-    margin: 0;
-    font-family: var(--ev-fonte-titulo);
-    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
+    margin: 0;                                /* sem espaço fora */
+    font-family: var(--ev-fonte-titulo);      /* fonte (tipo de letra) */
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                         /* negrito */
+    letter-spacing: 0.04em;                   /* espaço entre as letras */
+    line-height: 1.1;                         /* altura da linha (aumentar = linhas mais afastadas) */
 }
 
 .evento__meta {
-    margin: 0;
-    font-size: clamp(0.75rem, 1.6vw, 0.9rem);
-    font-weight: 600;
-    line-height: 1.35;
+    margin: 0;                                 /* sem espaço fora */
+    font-size: clamp(0.75rem, 1.6vw, 0.9rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 600;                          /* semi-negrito */
+    line-height: 1.35;                         /* altura da linha (aumentar = linhas mais afastadas) */
 }
 
 /* Descrição limitada a 6 linhas (o que passar vira "..."). */
 .evento__descricao {
-    margin: 0;
-    font-size: clamp(0.72rem, 1.5vw, 0.85rem);
-    line-height: 1.4;
-    display: -webkit-box;
+    margin: 0;                                  /* sem espaço fora */
+    font-size: clamp(0.72rem, 1.5vw, 0.85rem);  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.4;                           /* altura da linha (aumentar = linhas mais afastadas) */
+    display: -webkit-box;                       /* tipo de caixa (como os itens se organizam) */
     -webkit-line-clamp: 6;
     line-clamp: 6;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow: hidden;                           /* esconde o que passa da caixa */
 }
 
 .evento__saiba {
-    align-self: center;
-    margin-top: 0.25rem;
-    padding: 0.45rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--ev-texto);
-    background: var(--ev-destaque);
-    border-radius: 999px;
-    text-decoration: none;
+    align-self: center;              /* alinhamento deste item */
+    margin-top: 0.25rem;             /* espaço fora, em cima */
+    padding: 0.45rem 1rem;           /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 0.8rem;               /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                /* negrito */
+    color: var(--ev-texto);          /* cor do texto */
+    background: var(--ev-destaque);  /* fundo (cor e/ou imagem) */
+    border-radius: 999px;            /* formato de pílula (bordas totalmente redondas) */
+    text-decoration: none;           /* sem sublinhado */
 }
 
 .evento__saiba:hover,
 .evento__saiba:focus-visible {
-    background: #ffc85c;
+    background: #ffc85c;  /* fundo (cor e/ou imagem) */
 }
 
 /* ----- Quando o painel aparece (card aberto ou com foco do teclado) ----- */
 .evento--aberto .evento__info,
 .evento:focus-within .evento__info {
-    opacity: 1;
-    visibility: visible;
+    opacity: 1;           /* totalmente visível */
+    visibility: visible;  /* visibilidade */
     transition:
         opacity 0.4s ease,
         visibility 0s;
@@ -1211,34 +1376,34 @@ section.eventos {
 
 .evento--aberto .evento__info > *,
 .evento:focus-within .evento__info > * {
-    opacity: 1;
-    transform: none;
+    opacity: 1;       /* totalmente visível */
+    transform: none;  /* move, gira ou aumenta o elemento */
 }
 
 .evento--aberto .evento__imagem,
 .evento:focus-within .evento__imagem {
-    transform: scale(1.08);         /* foto cresce 8% */
-    filter: blur(2px);              /* e desfoca atrás do painel */
+    transform: scale(1.08);  /* foto cresce 8% */
+    filter: blur(2px);       /* e desfoca atrás do painel */
 }
 
 /* Hover só em dispositivos com mouse (no celular o "hover" ficaria preso após o toque). */
 @media (hover: hover) {
     .evento:hover .evento__info {
-        opacity: 1;
-        visibility: visible;
+        opacity: 1;           /* totalmente visível */
+        visibility: visible;  /* visibilidade */
         transition:
             opacity 0.4s ease,
             visibility 0s;
     }
 
     .evento:hover .evento__info > * {
-        opacity: 1;
-        transform: none;
+        opacity: 1;       /* totalmente visível */
+        transform: none;  /* move, gira ou aumenta o elemento */
     }
 
     .evento:hover .evento__imagem {
-        transform: scale(1.08);
-        filter: blur(2px);
+        transform: scale(1.08);  /* move, gira ou aumenta o elemento */
+        filter: blur(2px);       /* efeito na imagem (brilho, desfoque...) */
     }
 }
 
@@ -1256,383 +1421,977 @@ section.eventos {
 }
 
 .evento__gatilho:focus-visible {
-    outline: 3px solid var(--ev-titulo);
-    outline-offset: -6px;
+    outline: 3px solid var(--ev-titulo);  /* contorno de foco */
+    outline-offset: -6px;                 /* distância do contorno */
 }
 
 .evento__saiba:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
+    outline: 2px solid #fff;  /* contorno de foco */
+    outline-offset: 2px;      /* distância do contorno */
 }
 
 /* ----- Botão de pausa ----- */
 .eventos__pausa {
-    display: block;
-    margin: 1.25rem auto 0;         /* centralizado, 1,25rem abaixo do carrossel */
-    padding: 0.5rem 1.1rem;
-    font: inherit;
-    font-size: 0.9rem;
-    color: var(--ev-titulo);
-    background: transparent;
-    border: 2px solid var(--ev-titulo);
-    border-radius: 999px;
-    cursor: pointer;
+    display: block;                      /* ocupa a linha toda */
+    margin: 1.25rem auto 0;              /* centralizado, 1,25rem abaixo do carrossel */
+    padding: 0.5rem 1.1rem;              /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font: inherit;                       /* fonte (herda a do elemento pai) */
+    font-size: 0.9rem;                   /* tamanho da letra (aumentar = letra maior) */
+    color: var(--ev-titulo);             /* cor do texto */
+    background: transparent;             /* fundo (cor e/ou imagem) */
+    border: 2px solid var(--ev-titulo);  /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                /* formato de pílula (bordas totalmente redondas) */
+    cursor: pointer;                     /* mãozinha ao passar o mouse */
 }
 
 .eventos__pausa:hover,
 .eventos__pausa:focus-visible {
-    background: var(--ev-titulo);
-    color: var(--ev-fundo);
+    background: var(--ev-titulo);  /* fundo (cor e/ou imagem) */
+    color: var(--ev-fundo);        /* cor do texto */
 }
 
 
 /* ==========================================================================
-   9. RODAPÉ
+   9. PÁGINA DE CIDADES (cidades.html)
+   Introdução, campo de busca e guia completo de cada cidade. Reaproveita os
+   cards (seção 6) e os painéis de vidro (seção 7); aqui ficam só as partes
+   novas: busca, etiqueta da cidade e lista de atrativos com endereço.
+   ========================================================================== */
+
+/* Texto de apresentação logo abaixo do título da página. */
+.cidades-intro {
+    max-width: 760px;            /* largura máxima */
+    margin: 14px auto 0;         /* espaço FORA da caixa */
+    padding: 0 20px;             /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 1.1rem;           /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;            /* altura da linha (aumentar = linhas mais afastadas) */
+    text-align: center;          /* texto centralizado */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+/* ----- Campo de busca ----- */
+.cidades-busca {
+    max-width: 520px;     /* largura máxima */
+    margin: 32px auto 0;  /* espaço FORA da caixa */
+    padding: 0 20px;      /* espaço DENTRO da caixa (aumentar = mais respiro) */
+}
+
+/* O rótulo fica escondido da tela, mas continua para leitores de tela. */
+.cidades-busca__label {
+    position: absolute;   /* solto, posicionado dentro do pai */
+    width: 1px;           /* largura (aumentar = mais largo) */
+    height: 1px;          /* altura (aumentar = mais alto) */
+    overflow: hidden;     /* esconde o que passa da caixa */
+    clip: rect(0 0 0 0);  /* recorte */
+    white-space: nowrap;  /* texto em uma linha só */
+}
+
+.cidades-busca__campo {
+    position: relative;  /* referência para filhos "absolute" */
+}
+
+.cidades-busca__icone {
+    position: absolute;           /* solto, posicionado dentro do pai */
+    left: 16px;                   /* distância da esquerda */
+    top: 50%;                     /* distância do topo */
+    transform: translateY(-50%);  /* move, gira ou aumenta o elemento */
+    color: var(--verde);          /* cor do texto */
+    pointer-events: none;         /* ignora cliques */
+}
+
+.cidades-busca__campo-texto {
+    width: 100%;                      /* largura (aumentar = mais largo) */
+    padding: 14px 20px 14px 48px;     /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    color: var(--tinta);              /* cor do texto */
+    background: var(--branco);        /* fundo (cor e/ou imagem) */
+    border: 2px solid var(--verde);   /* borda (espessura, estilo e cor) */
+    border-radius: 999px;             /* formato de pílula */
+}
+
+.cidades-busca__campo-texto:focus-visible {
+    outline: 3px solid var(--ambar);  /* contorno de foco */
+    outline-offset: 2px;              /* distância do contorno */
+}
+
+.cidades-busca__vazio {
+    margin-top: 16px;            /* espaço fora, em cima */
+    text-align: center;          /* texto centralizado */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+/* Card filtrado pela busca: o atributo hidden precisa vencer o display do card. */
+.lista-cartoes .cartao-imagem-caixa[hidden] {
+    display: none;  /* escondido */
+}
+
+/* ----- Guia da cidade: etiqueta acima do nome ----- */
+.guia__tag {
+    display: inline-block;                 /* caixa na linha, com largura própria */
+    margin-bottom: 12px;                   /* espaço fora, embaixo */
+    padding: 6px 14px;                     /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-family: var(--fonte-titulo);      /* fonte (tipo de letra) */
+    font-size: 0.8rem;                     /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                      /* negrito */
+    letter-spacing: 0.08em;                /* espaço entre as letras */
+    text-transform: uppercase;             /* TUDO EM MAIÚSCULAS */
+    color: var(--verde-escuro);            /* cor do texto */
+    background: rgba(251, 178, 48, 0.25);  /* fundo (cor e/ou imagem) */
+    border: 1px solid var(--laranja);      /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                  /* formato de pílula (bordas totalmente redondas) */
+}
+
+/* "Sobre" e "Atrativos" ocupam a largura toda (a grade tem 12 colunas). */
+.guia__sobre,
+.guia__atrativos {
+    grid-column: 1 / -1;  /* quantas colunas o item ocupa */
+}
+
+.guia__atrativos {
+    border-radius: 16px 40px 16px 40px;  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.guia__sobre .info-descricao + .info-descricao {
+    margin-top: 12px;  /* espaço fora, em cima */
+}
+
+/* Lista de atrativos: cada um com nome, descrição e endereço/telefone. */
+.guia__lista {
+    display: grid;                   /* itens em grade (linhas e colunas) */
+    grid-template-columns: 1fr 1fr;  /* colunas da grade (quantas e de que tamanho) */
+    gap: 22px 28px;                  /* espaço entre os itens (aumentar = mais afastados) */
+    list-style: none;                /* sem bolinhas */
+}
+
+.guia__atrativo {
+    padding-left: 16px;                     /* espaço interno, à esquerda */
+    border-left: 3px solid var(--laranja);  /* faixa laranja, igual às faixas do site */
+}
+
+.guia__atrativo-nome {
+    margin-bottom: 6px;                /* espaço fora, embaixo */
+    text-align: left;                  /* texto à esquerda */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 0.95rem;                /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                  /* negrito */
+    letter-spacing: 0.04em;            /* espaço entre as letras */
+    color: var(--verde);               /* cor do texto */
+    text-transform: uppercase;         /* todos os nomes em maiúscula, igual em todas as cidades */
+}
+
+.guia__atrativo .info-descricao {
+    font-size: 0.95rem;  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;    /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #25352a;      /* cor do texto */
+}
+
+.guia__meta {
+    margin-top: 6px;     /* espaço fora, em cima */
+    text-align: left;    /* texto à esquerda */
+    font-size: 0.88rem;  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.5;    /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #5b6b5f;      /* cor do texto */
+}
+
+.guia__meta em {
+    font-style: normal;          /* letra reta */
+    font-weight: 600;            /* semi-negrito */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+@media (max-width: 800px) {
+    .guia__lista {
+        grid-template-columns: 1fr;  /* colunas da grade (quantas e de que tamanho) */
+    }
+}
+
+
+/* ==========================================================================
+   10. PÁGINA DE PEIXES (peixes.html)
+   Bacias com as espécies de cada rio (etiquetas que levam ao guia) e o guia
+   das espécies: cartões com foto, nome científico, descrição e fontes.
+   ========================================================================== */
+.peixes-intro {
+    max-width: 760px;            /* largura máxima */
+    margin: 14px auto 0;         /* espaço FORA da caixa */
+    padding: 0 20px;             /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 1.1rem;           /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;            /* altura da linha (aumentar = linhas mais afastadas) */
+    text-align: center;          /* texto centralizado */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+#peixes {
+    padding: 40px 20px 70px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+}
+
+.peixes__conteudo {
+    max-width: 1100px;  /* largura máxima */
+    margin: 0 auto;     /* centraliza a caixa na horizontal */
+}
+
+/* ----- Bacia: cartão com foto de capa, título e etiquetas ----- */
+.bacia {
+    margin-top: 40px;                            /* espaço fora, em cima */
+    overflow: hidden;                            /* esconde o que passa da caixa */
+    background: rgba(255, 255, 255, 0.92);       /* fundo (cor e/ou imagem) */
+    border-top: 6px solid var(--laranja);        /* borda de cima */
+    border-radius: 18px;                         /* cantos arredondados (aumentar = mais redondo) */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);  /* sombra da caixa */
+}
+
+.bacia__capa {
+    display: block;     /* ocupa a linha toda */
+    width: 100%;        /* largura (aumentar = mais largo) */
+    height: 220px;      /* altura (aumentar = mais alto) */
+    object-fit: cover;  /* foto preenche a caixa, cortando as sobras */
+}
+
+.bacia__corpo {
+    padding: 28px 32px 32px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+}
+
+.bacia__cabecalho {
+    display: flex;                     /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;                   /* itens quebram para a linha de baixo */
+    align-items: center;               /* itens centralizados na vertical */
+    justify-content: space-between;    /* itens espalhados, um em cada ponta */
+    gap: 12px;                         /* espaço entre os itens (aumentar = mais afastados) */
+    margin-bottom: 14px;               /* espaço fora, embaixo */
+    padding-bottom: 14px;              /* espaço interno, embaixo */
+    border-bottom: 2px solid #f3ead7;  /* borda de baixo */
+}
+
+.bacia__titulo {
+    display: flex;                          /* itens lado a lado (flexbox) */
+    align-items: center;                    /* itens centralizados na vertical */
+    gap: 12px;                              /* espaço entre os itens (aumentar = mais afastados) */
+    font-family: var(--fonte-titulo);       /* fonte (tipo de letra) */
+    font-size: clamp(1.4rem, 3vw, 1.8rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                       /* extra-negrito */
+    color: var(--verde);                    /* cor do texto */
+}
+
+.bacia__contagem {
+    padding: 6px 14px;                     /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 0.85rem;                    /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                      /* negrito */
+    color: var(--verde-escuro);            /* cor do texto */
+    background: rgba(251, 178, 48, 0.25);  /* fundo (cor e/ou imagem) */
+    border: 1px solid var(--laranja);      /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                  /* formato de pílula (bordas totalmente redondas) */
+}
+
+.bacia__texto {
+    margin-bottom: 18px;  /* espaço fora, embaixo */
+    font-size: 1rem;      /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;     /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #444;          /* cor do texto */
+}
+
+.bacia__etiquetas {
+    display: flex;     /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;   /* itens quebram para a linha de baixo */
+    gap: 10px;         /* espaço entre os itens (aumentar = mais afastados) */
+    list-style: none;  /* sem bolinhas */
+}
+
+.etiqueta-peixe {
+    display: inline-flex;                                      /* flexbox que ocupa só o necessário */
+    align-items: center;                                       /* itens centralizados na vertical */
+    gap: 8px;                                                  /* espaço entre os itens (aumentar = mais afastados) */
+    padding: 9px 16px;                                         /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 0.95rem;                                        /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 600;                                          /* semi-negrito */
+    color: var(--verde);                                       /* cor do texto */
+    text-decoration: none;                                     /* sem sublinhado */
+    background: #f0f4ee;                                       /* fundo (cor e/ou imagem) */
+    border: 1px solid #c2dbc0;                                 /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                                      /* formato de pílula (bordas totalmente redondas) */
+    transition: background 0.2s ease, border-color 0.2s ease;  /* animação suave ao mudar */
+}
+
+a.etiqueta-peixe:hover,
+a.etiqueta-peixe:focus-visible {
+    background: var(--ambar);    /* fundo (cor e/ou imagem) */
+    border-color: var(--ambar);  /* cor da borda */
+    color: var(--tinta);         /* cor do texto */
+}
+
+/* Etiqueta sem página no guia (ainda sem informações). */
+span.etiqueta-peixe {
+    cursor: default;  /* formato do mouse ao passar por cima */
+    color: #5b6b5f;   /* cor do texto */
+}
+
+.etiqueta-peixe .material-symbols-rounded {
+    font-size: 18px;  /* tamanho da letra (aumentar = letra maior) */
+}
+
+/* ----- Guia das espécies ----- */
+.guia-especies__titulo {
+    margin: 70px 0 12px;  /* espaço FORA da caixa */
+}
+
+.guia-especies__aviso {
+    max-width: 760px;            /* largura máxima */
+    margin: 0 auto 36px;         /* espaço FORA da caixa */
+    padding: 0 20px;             /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    text-align: center;          /* texto centralizado */
+    line-height: 1.6;            /* altura da linha (aumentar = linhas mais afastadas) */
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+.especies {
+    display: grid;                                                 /* itens em grade (linhas e colunas) */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* colunas da grade (quantas e de que tamanho) */
+    gap: 28px;                                                     /* espaço entre os itens (aumentar = mais afastados) */
+    list-style: none;                                              /* sem bolinhas */
+}
+
+.especie {
+    display: flex;                               /* itens lado a lado (flexbox) */
+    flex-direction: column;                      /* itens empilhados */
+    overflow: hidden;                            /* esconde o que passa da caixa */
+    scroll-margin-top: 110px;                    /* o cabeçalho fixo não cobre o cartão ao clicar na etiqueta */
+    background: rgba(255, 255, 255, 0.92);       /* fundo (cor e/ou imagem) */
+    border-radius: 16px;                         /* cantos arredondados (aumentar = mais redondo) */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);  /* sombra da caixa */
+}
+
+.especie:target {
+    outline: 3px solid var(--ambar);  /* contorno de foco */
+    outline-offset: 3px;              /* distância do contorno */
+}
+
+.especie__foto {
+    position: relative;                                     /* referência para filhos "absolute" */
+    aspect-ratio: 16 / 10;                                  /* proporção da caixa (largura / altura) */
+    background: linear-gradient(135deg, #dcebd5, #f3ead7);  /* fundo (cor e/ou imagem) */
+}
+
+.especie__foto img {
+    display: block;     /* ocupa a linha toda */
+    width: 100%;        /* largura (aumentar = mais largo) */
+    height: 100%;       /* altura (aumentar = mais alto) */
+    object-fit: cover;  /* foto preenche a caixa, cortando as sobras */
+}
+
+/* Quando a foto não carrega, o JS esconde a <img> e mostra o ícone. */
+.especie__foto-vazia {
+    position: absolute;          /* solto, posicionado dentro do pai */
+    inset: 0;                    /* distância das 4 bordas */
+    display: none;               /* escondido */
+    flex-direction: column;      /* itens empilhados */
+    align-items: center;         /* itens centralizados na vertical */
+    justify-content: center;     /* itens centralizados na horizontal */
+    gap: 6px;                    /* espaço entre os itens (aumentar = mais afastados) */
+    color: var(--verde-escuro);  /* cor do texto */
+    font-size: 0.85rem;          /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 600;            /* semi-negrito */
+}
+
+.especie__foto-vazia .material-symbols-rounded {
+    font-size: 48px;  /* tamanho da letra (aumentar = letra maior) */
+}
+
+.especie__foto.sem-foto img {
+    display: none;  /* escondido */
+}
+
+.especie__foto.sem-foto .especie__foto-vazia {
+    display: flex;  /* itens lado a lado (flexbox) */
+}
+
+
+.especie__corpo {
+    display: flex;            /* itens lado a lado (flexbox) */
+    flex: 1;                  /* como o item cresce/encolhe */
+    flex-direction: column;   /* itens empilhados */
+    gap: 10px;                /* espaço entre os itens (aumentar = mais afastados) */
+    padding: 18px 20px 22px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    text-align: left;         /* texto à esquerda */
+}
+
+.especie__nome {
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 1.4rem;                 /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                  /* extra-negrito */
+    color: var(--verde);               /* cor do texto */
+}
+
+.especie__cientifico {
+    font-size: 0.9rem;   /* tamanho da letra (aumentar = letra maior) */
+    font-style: italic;  /* letra inclinada */
+    color: #5b6b5f;      /* cor do texto */
+}
+
+.especie__selo {
+    align-self: flex-start;                /* alinhamento deste item */
+    padding: 4px 12px;                     /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 0.75rem;                    /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                      /* negrito */
+    letter-spacing: 0.04em;                /* espaço entre as letras */
+    text-transform: uppercase;             /* TUDO EM MAIÚSCULAS */
+    color: var(--verde-escuro);            /* cor do texto */
+    background: rgba(251, 178, 48, 0.25);  /* fundo (cor e/ou imagem) */
+    border: 1px solid var(--laranja);      /* borda (espessura, estilo e cor) */
+    border-radius: 999px;                  /* formato de pílula (bordas totalmente redondas) */
+}
+
+.especie__selo--alerta {
+    color: #7a1f12;         /* cor do texto */
+    background: #fbe3df;    /* fundo (cor e/ou imagem) */
+    border-color: #d9877c;  /* cor da borda */
+}
+
+.especie__texto {
+    font-size: 0.95rem;  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;    /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #25352a;      /* cor do texto */
+}
+
+.especie__onde {
+    font-size: 0.88rem;  /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.5;    /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #5b6b5f;      /* cor do texto */
+}
+
+.especie__onde strong {
+    color: var(--verde-escuro);  /* cor do texto */
+}
+
+
+
+
+
+/* Faixa de preservação (pesque e solte). */
+.peixes-preservacao {
+    max-width: 1100px;         /* largura máxima */
+    margin: 60px auto 0;       /* espaço FORA da caixa */
+    padding: 32px;             /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    text-align: center;        /* texto centralizado */
+    color: var(--branco);      /* cor do texto */
+    background: var(--verde);  /* fundo (cor e/ou imagem) */
+    border-radius: 18px;       /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.peixes-preservacao h2 {
+    margin-bottom: 12px;               /* espaço fora, embaixo */
+    font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
+    font-size: 1.7rem;                 /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                  /* extra-negrito */
+    color: var(--ambar);               /* cor do texto */
+}
+
+.peixes-preservacao p {
+    max-width: 800px;                  /* largura máxima */
+    margin: 0 auto;                    /* centraliza a caixa na horizontal */
+    line-height: 1.6;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.92);  /* cor do texto */
+}
+
+@media (max-width: 800px) {
+    #peixes {
+        padding: 30px 16px 60px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    }
+
+    .bacia__corpo {
+        padding: 22px 20px 26px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    }
+}
+
+
+/* ==========================================================================
+   11. ÁREA ADMINISTRATIVA (admin.html)
+   Login e painel de edição, no mesmo vidro das demais páginas.
+   ========================================================================== */
+#admin {
+    padding: 60px 20px 80px;  /* espaço DENTRO da caixa (aumentar = mais respiro) */
+}
+
+.admin__caixa {
+    max-width: 760px;     /* largura máxima */
+    margin: 30px auto 0;  /* espaço FORA da caixa */
+}
+
+.admin__caixa[hidden] {
+    display: none;  /* escondido */
+}
+
+.admin__titulo {
+    margin-bottom: 20px;                  /* espaço fora, embaixo */
+    font-family: var(--fonte-titulo);     /* fonte (tipo de letra) */
+    font-size: clamp(1.5rem, 4vw, 2rem);  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;                     /* extra-negrito */
+    color: var(--verde);                  /* cor do texto */
+}
+
+.admin__subtitulo {
+    margin: 28px 0 14px;                             /* espaço FORA da caixa */
+    padding-bottom: 8px;                             /* espaço interno, embaixo */
+    font-family: var(--fonte-titulo);                /* fonte (tipo de letra) */
+    font-size: 1.1rem;                               /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                                /* negrito */
+    color: var(--verde-escuro);                      /* cor do texto */
+    border-bottom: 2px solid rgba(22, 56, 8, 0.15);  /* borda de baixo */
+}
+
+.admin__campo {
+    margin-bottom: 18px;  /* espaço fora, embaixo */
+}
+
+.admin__campo label {
+    display: block;       /* ocupa a linha toda */
+    margin-bottom: 6px;   /* espaço fora, embaixo */
+    font-weight: 600;     /* semi-negrito */
+    color: var(--verde);  /* cor do texto */
+}
+
+.admin__campo input,
+.admin__campo select,
+.admin__campo textarea {
+    width: 100%;                      /* largura (aumentar = mais largo) */
+    padding: 11px 14px;               /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    color: var(--tinta);              /* cor do texto */
+    background: var(--branco);        /* fundo (cor e/ou imagem) */
+    border: 1px solid #b9c4b0;        /* borda (espessura, estilo e cor) */
+    border-radius: 10px;              /* cantos arredondados (aumentar = mais redondo) */
+}
+
+.admin__campo textarea {
+    min-height: 180px;  /* altura mínima */
+    resize: vertical;   /* permite redimensionar */
+}
+
+.admin__campo input:focus-visible,
+.admin__campo select:focus-visible,
+.admin__campo textarea:focus-visible {
+    outline: 3px solid var(--ambar);  /* contorno de foco */
+    outline-offset: 1px;              /* distância do contorno */
+}
+
+.admin__dica {
+    margin-top: 6px;     /* espaço fora, em cima */
+    font-size: 0.85rem;  /* tamanho da letra (aumentar = letra maior) */
+    color: #5b6b5f;      /* cor do texto */
+}
+
+.admin__acoes {
+    display: flex;        /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;      /* itens quebram para a linha de baixo */
+    align-items: center;  /* itens centralizados na vertical */
+    gap: 12px;            /* espaço entre os itens (aumentar = mais afastados) */
+    margin-top: 24px;     /* espaço fora, em cima */
+}
+
+.admin__botao {
+    padding: 12px 26px;               /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-family: var(--fonte-texto);  /* fonte (tipo de letra) */
+    font-size: 1rem;                  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;                 /* negrito */
+    color: var(--tinta);              /* cor do texto */
+    text-decoration: none;            /* sem sublinhado */
+    cursor: pointer;                  /* mãozinha ao passar o mouse */
+    background: var(--laranja);       /* fundo (cor e/ou imagem) */
+    border: none;                     /* sem borda */
+    border-radius: 999px;             /* formato de pílula (bordas totalmente redondas) */
+}
+
+.admin__botao:hover,
+.admin__botao:focus-visible {
+    background: var(--ambar);  /* fundo (cor e/ou imagem) */
+}
+
+.admin__botao--neutro {
+    background: #d8d8d0;  /* fundo (cor e/ou imagem) */
+}
+
+.admin__mensagem {
+    margin-top: 16px;    /* espaço fora, em cima */
+    font-weight: 700;    /* negrito */
+    text-align: center;  /* texto centralizado */
+}
+
+.admin__mensagem--erro {
+    color: #a3200f;  /* cor do texto */
+}
+
+.admin__mensagem--ok {
+    color: #1f6b1f;  /* cor do texto */
+}
+
+.admin__aviso {
+    margin-top: 20px;                     /* espaço fora, em cima */
+    padding: 12px 16px;                   /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    font-size: 0.85rem;                   /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.5;                     /* altura da linha (aumentar = linhas mais afastadas) */
+    color: #5b4a12;                       /* cor do texto */
+    background: rgba(251, 178, 48, 0.2);  /* fundo (cor e/ou imagem) */
+    border-radius: 10px;                  /* cantos arredondados (aumentar = mais redondo) */
+}
+
+/* ----- Rodapé: link da área administrativa e item escondido ----- */
+.rodape__admin {
+    font-weight: 700;     /* negrito */
+    color: var(--ambar);  /* cor do texto */
+}
+
+.rodape__contato li[hidden] {
+    display: none;  /* escondido */
+}
+
+
+/* ==========================================================================
+   12. RODAPÉ
    Fundo verde com ondas desenhadas em <svg> (dentro do próprio <footer>,
    atrás do conteúdo). A mancha amarela do canto superior esquerdo usa a cor
    do --ambar.
    ========================================================================== */
-.site-footer {
-    position: relative;
-    isolation: isolate;     /* prende o z-index negativo das ondas DENTRO do rodapé */
-    overflow: hidden;       /* corta as ondas que passam das bordas */
-    color: var(--branco);
-    font-family: var(--fonte-principal);
-    background: linear-gradient(160deg, #24690f 0%, #1a4e0a 55%, #163808 100%);
+.rodape {
+    position: relative;                                                          /* referência para filhos "absolute" */
+    isolation: isolate;                                                          /* prende o z-index negativo das ondas DENTRO do rodapé */
+    overflow: hidden;                                                            /* corta as ondas que passam das bordas */
+    color: var(--branco);                                                        /* cor do texto */
+    font-family: var(--fonte-principal);                                         /* fonte (tipo de letra) */
+    background: linear-gradient(160deg, #24690f 0%, #1a4e0a 55%, #163808 100%);  /* fundo (cor e/ou imagem) */
 }
 
 /* Ondas decorativas: ficam atrás do conteúdo. */
-.site-footer__decor {
-    position: absolute;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    pointer-events: none;   /* não atrapalham cliques */
+.rodape__decoracao {
+    position: absolute;    /* solto, posicionado dentro do pai */
+    left: 0;               /* distância da esquerda */
+    z-index: -1;           /* camada (número maior fica na frente) */
+    width: 100%;           /* largura (aumentar = mais largo) */
+    pointer-events: none;  /* não atrapalham cliques */
 }
 
 /* Peça de cima (mancha amarela) e peça de baixo (ondas verdes). Altura fixa:
    em tela estreita elas só são cortadas, nunca deformadas. */
-.site-footer__decor--top {
-    top: 0;
-    height: 260px;
+.rodape__decoracao--cima {
+    top: 0;         /* distância do topo */
+    height: 260px;  /* altura (aumentar = mais alto) */
 }
 
-.site-footer__decor--bottom {
-    bottom: 0;
-    height: 240px;
+.rodape__decoracao--baixo {
+    bottom: 0;      /* distância da base */
+    height: 240px;  /* altura (aumentar = mais alto) */
 }
 
-.site-footer__container {
-    width: min(1200px, 90%);
-    margin: 0 auto;
-    padding: clamp(72px, 9vw, 120px) 0 28px;    /* topo, laterais, base */
+.rodape__conteudo {
+    width: min(1200px, 90%);                  /* largura (aumentar = mais largo) */
+    margin: 0 auto;                           /* centraliza a caixa na horizontal */
+    padding: clamp(72px, 9vw, 120px) 0 28px;  /* topo, laterais, base */
 }
 
 /* ----- Parte de cima: 4 colunas no computador ----- */
-.site-footer__main {
-    display: grid;
-    grid-template-columns: auto minmax(220px, 1.3fr) minmax(130px, 0.7fr) minmax(200px, 1fr);
-    align-items: start;
-    gap: 40px clamp(24px, 4vw, 56px);
+.rodape__principal {
+    display: grid;                                                                             /* itens em grade (linhas e colunas) */
+    grid-template-columns: auto minmax(220px, 1.3fr) minmax(130px, 0.7fr) minmax(200px, 1fr);  /* colunas da grade (quantas e de que tamanho) */
+    align-items: start;                                                                        /* alinhamento vertical dos itens */
+    gap: 40px clamp(24px, 4vw, 56px);                                                          /* espaço entre os itens (aumentar = mais afastados) */
 }
 
 /* ----- Coluna 1: marca ----- */
-.site-footer__brand {
-    display: inline-flex;
-    flex-direction: column;     /* logo em cima, nome embaixo */
-    align-items: flex-start;
-    gap: 14px;
-    color: var(--branco);
-    text-decoration: none;
+.rodape__marca {
+    display: inline-flex;     /* flexbox que ocupa só o necessário */
+    flex-direction: column;   /* logo em cima, nome embaixo */
+    align-items: flex-start;  /* alinhamento vertical dos itens */
+    gap: 14px;                /* espaço entre os itens (aumentar = mais afastados) */
+    color: var(--branco);     /* cor do texto */
+    text-decoration: none;    /* sem sublinhado */
 }
 
-.site-footer__logo {
-    width: 160px;
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
+.rodape__logo {
+    width: 160px;         /* largura (aumentar = mais largo) */
+    max-width: 100%;      /* largura máxima */
+    height: auto;         /* altura (aumentar = mais alto) */
+    object-fit: contain;  /* foto inteira visível, sem cortar */
 }
 
-.site-footer__brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.05;
+.rodape__marca-texto {
+    display: flex;           /* itens lado a lado (flexbox) */
+    flex-direction: column;  /* itens empilhados */
+    line-height: 1.05;       /* altura da linha (aumentar = linhas mais afastadas) */
 }
 
-.site-footer__brand-top {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+.rodape__marca-topo {
+    font-size: 0.85rem;      /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 500;        /* meio-negrito */
+    letter-spacing: 0.04em;  /* espaço entre as letras */
 }
 
-.site-footer__brand-name {
-    font-size: 1.7rem;
-    font-weight: 800;
+.rodape__marca-nome {
+    font-size: 1.7rem;  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 800;   /* extra-negrito */
 }
 
 /* ----- Coluna 2: apresentação (com linha vertical à esquerda) ----- */
-.site-footer__about {
-    padding-left: clamp(20px, 3vw, 36px);
-    border-left: 1px solid rgba(255, 255, 255, 0.22);
+.rodape__sobre {
+    padding-left: clamp(20px, 3vw, 36px);              /* espaço interno, à esquerda */
+    border-left: 1px solid rgba(255, 255, 255, 0.22);  /* borda da esquerda */
 }
 
-.site-footer__about-title {
-    margin: 0 0 12px;
-    font-size: 1.05rem;
-    font-weight: 700;
+.rodape__sobre-titulo {
+    margin: 0 0 12px;    /* espaço FORA da caixa */
+    font-size: 1.05rem;  /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;    /* negrito */
 }
 
-.site-footer__about p {
-    margin: 0 0 20px;
-    max-width: 34ch;
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.88);
+.rodape__sobre p {
+    margin: 0 0 20px;                  /* espaço FORA da caixa */
+    max-width: 34ch;                   /* largura máxima */
+    font-size: 0.92rem;                /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.7;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.88);  /* cor do texto */
 }
 
-.site-footer__button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: var(--ambar);
-    color: var(--tinta);
-    font-size: 0.92rem;
-    font-weight: 700;
-    text-decoration: none;
+.rodape__botao {
+    display: inline-flex;      /* flexbox que ocupa só o necessário */
+    align-items: center;       /* itens centralizados na vertical */
+    gap: 8px;                  /* espaço entre os itens (aumentar = mais afastados) */
+    padding: 10px 20px;        /* espaço DENTRO da caixa (aumentar = mais respiro) */
+    border-radius: 8px;        /* cantos arredondados (aumentar = mais redondo) */
+    background: var(--ambar);  /* fundo (cor e/ou imagem) */
+    color: var(--tinta);       /* cor do texto */
+    font-size: 0.92rem;        /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;          /* negrito */
+    text-decoration: none;     /* sem sublinhado */
     transition:
         background-color 0.2s ease,
         transform 0.2s ease;
 }
 
-.site-footer__button .material-symbols-rounded {
-    font-size: 20px;
+.rodape__botao .material-symbols-rounded {
+    font-size: 20px;  /* tamanho da letra (aumentar = letra maior) */
 }
 
-.site-footer__button:hover {
-    background: #ffc45c;
-    transform: translateY(-2px);
+.rodape__botao:hover {
+    background: #ffc45c;          /* fundo (cor e/ou imagem) */
+    transform: translateY(-2px);  /* move, gira ou aumenta o elemento */
 }
 
 /* ----- Colunas 3 e 4 (Navegação e Siga-nos) ----- */
-.site-footer__col-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 20px;
-    color: var(--ambar);
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+.rodape__coluna-titulo {
+    display: flex;              /* itens lado a lado (flexbox) */
+    align-items: center;        /* itens centralizados na vertical */
+    gap: 8px;                   /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0 0 20px;           /* espaço FORA da caixa */
+    color: var(--ambar);        /* cor do texto */
+    font-size: 0.95rem;         /* tamanho da letra (aumentar = letra maior) */
+    font-weight: 700;           /* negrito */
+    letter-spacing: 0.06em;     /* espaço entre as letras */
+    text-transform: uppercase;  /* TUDO EM MAIÚSCULAS */
 }
 
-.site-footer__col-title .material-symbols-rounded {
-    font-size: 24px;
+.rodape__coluna-titulo .material-symbols-rounded {
+    font-size: 24px;                    /* tamanho da letra (aumentar = letra maior) */
     font-variation-settings: "FILL" 1;  /* ícone preenchido (não só o contorno) */
 }
 
-.site-footer__list {
-    display: grid;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.rodape__lista {
+    display: grid;     /* itens em grade (linhas e colunas) */
+    gap: 12px;         /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0;         /* sem espaço fora */
+    padding: 0;        /* sem espaço dentro */
+    list-style: none;  /* sem bolinhas */
 }
 
-.site-footer__list a,
-.site-footer__contact a {
-    color: inherit;                 /* usa a cor do texto em volta */
-    text-decoration: none;
-    transition: color 0.2s ease;
+.rodape__lista a,
+.rodape__contato a {
+    color: inherit;               /* usa a cor do texto em volta */
+    text-decoration: none;        /* sem sublinhado */
+    transition: color 0.2s ease;  /* animação suave ao mudar */
 }
 
-.site-footer__list a {
-    font-size: 0.92rem;
+.rodape__lista a {
+    font-size: 0.92rem;  /* tamanho da letra (aumentar = letra maior) */
 }
 
-.site-footer__list a:hover,
-.site-footer__contact a:hover {
-    color: var(--ambar);
-    text-decoration: underline;
-    text-underline-offset: 3px;     /* afasta o sublinhado do texto */
+.rodape__lista a:hover,
+.rodape__contato a:hover {
+    color: var(--ambar);         /* cor do texto */
+    text-decoration: underline;  /* sublinhado (none = sem sublinhado) */
+    text-underline-offset: 3px;  /* afasta o sublinhado do texto */
 }
 
 /* ----- Redes sociais ----- */
-.site-footer__social-text {
-    margin: 0 0 18px;
-    max-width: 26ch;
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.88);
+.rodape__redes-texto {
+    margin: 0 0 18px;                  /* espaço FORA da caixa */
+    max-width: 26ch;                   /* largura máxima */
+    font-size: 0.92rem;                /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.7;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.88);  /* cor do texto */
 }
 
-.site-footer__social {
-    display: flex;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.rodape__redes {
+    display: flex;     /* itens lado a lado (flexbox) */
+    gap: 12px;         /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0;         /* sem espaço fora */
+    padding: 0;        /* sem espaço dentro */
+    list-style: none;  /* sem bolinhas */
 }
 
 /* Botão redondo de cada rede. */
-.site-footer__social a {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
-    color: var(--branco);
+.rodape__redes a {
+    display: grid;                          /* itens em grade (linhas e colunas) */
+    place-items: center;                    /* centraliza os itens (vertical e horizontal) */
+    width: 44px;                            /* largura (aumentar = mais largo) */
+    height: 44px;                           /* altura (aumentar = mais alto) */
+    border-radius: 50%;                     /* círculo perfeito */
+    background: rgba(255, 255, 255, 0.14);  /* fundo (cor e/ou imagem) */
+    color: var(--branco);                   /* cor do texto */
     transition:
         background-color 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease;
 }
 
-.site-footer__social svg {
-    width: 22px;
-    height: 22px;
+.rodape__redes svg {
+    width: 22px;   /* largura (aumentar = mais largo) */
+    height: 22px;  /* altura (aumentar = mais alto) */
 }
 
-.site-footer__social a:hover {
-    background: var(--ambar);
-    color: var(--tinta);
-    transform: translateY(-3px);
+.rodape__redes a:hover {
+    background: var(--ambar);     /* fundo (cor e/ou imagem) */
+    color: var(--tinta);          /* cor do texto */
+    transform: translateY(-3px);  /* move, gira ou aumenta o elemento */
 }
 
 /* ----- Linha de baixo: contato e direitos autorais ----- */
-.site-footer__bottom {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px 32px;
-    margin-top: clamp(40px, 5vw, 56px);
-    padding-top: 28px;
-    border-top: 1px solid rgba(255, 255, 255, 0.22);
+.rodape__base {
+    display: flex;                                    /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;                                  /* itens quebram para a linha de baixo */
+    align-items: center;                              /* itens centralizados na vertical */
+    justify-content: space-between;                   /* itens espalhados, um em cada ponta */
+    gap: 24px 32px;                                   /* espaço entre os itens (aumentar = mais afastados) */
+    margin-top: clamp(40px, 5vw, 56px);               /* espaço fora, em cima */
+    padding-top: 28px;                                /* espaço interno, em cima */
+    border-top: 1px solid rgba(255, 255, 255, 0.22);  /* borda de cima */
 }
 
-.site-footer__contact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px clamp(24px, 3.5vw, 48px);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.rodape__contato {
+    display: flex;                       /* itens lado a lado (flexbox) */
+    flex-wrap: wrap;                     /* itens quebram para a linha de baixo */
+    gap: 20px clamp(24px, 3.5vw, 48px);  /* espaço entre os itens (aumentar = mais afastados) */
+    margin: 0;                           /* sem espaço fora */
+    padding: 0;                          /* sem espaço dentro */
+    list-style: none;                    /* sem bolinhas */
 }
 
-.site-footer__contact li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.82);
+.rodape__contato li {
+    display: flex;                     /* itens lado a lado (flexbox) */
+    align-items: center;               /* itens centralizados na vertical */
+    gap: 12px;                         /* espaço entre os itens (aumentar = mais afastados) */
+    font-size: 0.85rem;                /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.5;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.82);  /* cor do texto */
 }
 
-.site-footer__contact strong {
-    display: block;                 /* o título fica numa linha e o valor na de baixo */
-    color: var(--branco);
-    font-weight: 700;
+.rodape__contato strong {
+    display: block;        /* o título fica numa linha e o valor na de baixo */
+    color: var(--branco);  /* cor do texto */
+    font-weight: 700;      /* negrito */
 }
 
 /* Círculo com o ícone de cada contato. */
-.site-footer__contact-icon {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
-    color: var(--branco);
-    font-size: 22px;
+.rodape__contato-icone {
+    display: grid;                          /* itens em grade (linhas e colunas) */
+    flex: none;                             /* não encolhe nem cresce */
+    place-items: center;                    /* centraliza os itens (vertical e horizontal) */
+    width: 42px;                            /* largura (aumentar = mais largo) */
+    height: 42px;                           /* altura (aumentar = mais alto) */
+    border-radius: 50%;                     /* círculo perfeito */
+    background: rgba(255, 255, 255, 0.14);  /* fundo (cor e/ou imagem) */
+    color: var(--branco);                   /* cor do texto */
+    font-size: 22px;                        /* tamanho da letra (aumentar = letra maior) */
 }
 
-.site-footer__contact-icon svg {
-    width: 20px;
-    height: 20px;
+.rodape__contato-icone svg {
+    width: 20px;   /* largura (aumentar = mais largo) */
+    height: 20px;  /* altura (aumentar = mais alto) */
 }
 
-.site-footer__copy {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.82);
+.rodape__direitos {
+    margin: 0;                         /* sem espaço fora */
+    font-size: 0.85rem;                /* tamanho da letra (aumentar = letra maior) */
+    line-height: 1.6;                  /* altura da linha (aumentar = linhas mais afastadas) */
+    color: rgba(255, 255, 255, 0.82);  /* cor do texto */
 }
 
 /* ----- Tablet: 2 colunas ----- */
 @media (max-width: 960px) {
-    .site-footer__main {
-        grid-template-columns: 1fr 1fr;
+    .rodape__principal {
+        grid-template-columns: 1fr 1fr;  /* colunas da grade (quantas e de que tamanho) */
     }
 
-    .site-footer__brand {
-        grid-column: 1 / -1;        /* a marca ocupa a linha toda */
-        flex-direction: row;
-        align-items: center;
+    .rodape__marca {
+        grid-column: 1 / -1;  /* a marca ocupa a linha toda */
+        flex-direction: row;  /* itens lado a lado */
+        align-items: center;  /* itens centralizados na vertical */
     }
 
-    .site-footer__about {
-        padding-left: 0;
-        border-left: 0;             /* tira a linha vertical */
+    .rodape__sobre {
+        padding-left: 0;  /* espaço interno, à esquerda */
+        border-left: 0;   /* tira a linha vertical */
     }
 }
 
 /* ----- Celular: tudo em uma coluna ----- */
 @media (max-width: 600px) {
-    .site-footer__decor--top {
-        height: 190px;
+    .rodape__decoracao--cima {
+        height: 190px;  /* altura (aumentar = mais alto) */
     }
 
-    .site-footer__decor--bottom {
-        height: 200px;
+    .rodape__decoracao--baixo {
+        height: 200px;  /* altura (aumentar = mais alto) */
     }
 
-    .site-footer__main {
-        grid-template-columns: 1fr;
+    .rodape__principal {
+        grid-template-columns: 1fr;  /* colunas da grade (quantas e de que tamanho) */
     }
 
-    .site-footer__bottom,
-    .site-footer__contact {
-        flex-direction: column;
-        align-items: flex-start;
+    .rodape__base,
+    .rodape__contato {
+        flex-direction: column;   /* itens empilhados */
+        align-items: flex-start;  /* alinhamento vertical dos itens */
     }
 }
 
 
 /* ==========================================================================
-   10. PREFERÊNCIA POR MENOS MOVIMENTO (acessibilidade)
+   13. PREFERÊNCIA POR MENOS MOVIMENTO (acessibilidade)
    Quem ativou "reduzir movimento" no sistema não vê animações.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
     html {
-        scroll-behavior: auto;              /* rolagem instantânea */
+        scroll-behavior: auto;  /* rolagem instantânea */
     }
 
     * {
-        transition-duration: 0.01ms !important; /* praticamente sem transições */
+        transition-duration: 0.01ms !important;  /* praticamente sem transições */
     }
 
     /* Carrossel de eventos: para de deslizar e vira uma faixa rolável com o dedo. */
     .eventos__trilho {
-        animation: none;
+        animation: none;  /* animação em andamento */
     }
 
     .eventos__janela {
-        overflow-x: auto;
+        overflow-x: auto;  /* o que passa na horizontal */
     }
 
     .eventos__pausa {
-        display: none;                      /* o botão de pausa perde o sentido */
+        display: none;  /* o botão de pausa perde o sentido */
     }
 
     /* Rodapé: botões sem movimento. */
-    .site-footer__button,
-    .site-footer__social a {
-        transition: none;
-        transform: none !important;
+    .rodape__botao,
+    .rodape__redes a {
+        transition: none;            /* animação suave ao mudar */
+        transform: none !important;  /* move, gira ou aumenta o elemento */
     }
 }

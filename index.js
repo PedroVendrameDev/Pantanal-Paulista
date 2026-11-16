@@ -2,14 +2,33 @@
    INDEX.JS - ARQUIVO ÚNICO DE JAVASCRIPT DO SITE
    --------------------------------------------------------------------------
    JavaScript é o que dá "comportamento" à página (o HTML é a estrutura e o
-   CSS é a aparência). Este arquivo tem três partes independentes, cada uma
+   CSS é a aparência). Este arquivo tem cinco partes independentes, cada uma
    dentro de uma função que se executa sozinha "(function () { ... })();".
    Isso isola as variáveis de cada parte: uma não atrapalha a outra.
+   Cada parte procura seus elementos pelo id ou pela classe; se a página
+   atual não tiver o elemento (ex.: não há carrossel em peixes.html), a
+   parte simplesmente não faz nada.
 
-   SUMÁRIO
+   SUMÁRIO (procure com Ctrl+F pelo número e nome)
      1. Cabeçalho (sombra ao rolar, menu de celular, link ativo)
      2. Eventos (carrossel infinito) - AQUI se edita a lista de eventos
      3. Rodapé (ano do copyright)
+     4. Página de cidades (busca)
+     5. Dados salvos, área administrativa e fotos dos peixes
+
+   ONDE MEXER NO DIA A DIA
+     - Novo evento ............ seção 2.1, lista EVENTOS (copie e cole um bloco).
+     - Carrossel mais rápido .. seção 2.2, constante VELOCIDADE (maior = mais rápido).
+     - Usuário e senha admin .. seção 5, constantes USUARIO e SENHA.
+     - Nova cidade ............ seção 5, lista CIDADES (use o mesmo nome do id no HTML).
+
+   VOCABULÁRIO RÁPIDO
+     const x = ...      cria uma "caixinha" chamada x que guarda um valor.
+     function nome(){}  cria uma receita que pode ser chamada pelo nome.
+     document.getElementById("a")  encontra o elemento do HTML com id="a".
+     classList.add/remove/toggle   põe, tira ou alterna uma classe CSS.
+     addEventListener("click", ...) executa algo quando a pessoa clica.
+     // texto           comentário de uma linha (o navegador ignora).
    ========================================================================== */
 
 
@@ -21,12 +40,12 @@
    ========================================================================== */
 (function () {
     // Procura o cabeçalho no HTML. Se não existir, encerra a função (return).
-    const header = document.querySelector(".site-header");
+    const header = document.querySelector(".cabecalho");
     if (!header) return;
 
     // Todos os links do menu e a lista dos ids de seção para onde eles apontam.
     // Ex.: href="#cidades" -> .slice(1) tira o "#" -> "cidades".
-    const links = Array.from(document.querySelectorAll(".main-navigation__link"));
+    const links = Array.from(document.querySelectorAll(".menu-navegacao__link"));
     const ids = links.map((link) => link.getAttribute("href").slice(1));
 
     // Marca UM único link como "seção atual" (o CSS pinta de amarelo o que
@@ -43,9 +62,9 @@
 
     /* ----- 1.1 Estado de rolagem ----- */
     function onScroll() {
-        // Depois de rolar 16px, adiciona a classe "is-scrolled" (cabeçalho
+        // Depois de rolar 16px, adiciona a classe "rolado" (cabeçalho
         // mais baixo e com sombra). Voltou ao topo? A classe é removida.
-        header.classList.toggle("is-scrolled", window.scrollY > 16);
+        header.classList.toggle("rolado", window.scrollY > 16); // 16 = pixels rolados até o cabeçalho encolher (aumentar = encolhe mais tarde)
 
         // No fim da página, a última seção pode nunca chegar ao meio da tela.
         // Então, ao chegar no rodapé, o último link do menu fica ativo,
@@ -63,15 +82,15 @@
     window.addEventListener("scroll", onScroll, { passive: true }); // "passive" = rolagem mais fluida
 
     /* ----- 1.2 Menu de celular ----- */
-    const toggle = header.querySelector(".menu-toggle"); // botão "Menu"
+    const toggle = header.querySelector(".botao-menu"); // botão "Menu"
     const nav = document.getElementById("menu-principal"); // painel do menu
 
     if (toggle && nav) {
-        const icon = toggle.querySelector(".menu-toggle__icon");
+        const icon = toggle.querySelector(".botao-menu__icone");
 
         // Abre (open = true) ou fecha (open = false) o menu.
         function setOpen(open) {
-            nav.classList.toggle("is-open", open); // o CSS mostra o painel com esta classe
+            nav.classList.toggle("aberto", open); // o CSS mostra o painel com esta classe
             toggle.setAttribute("aria-expanded", String(open)); // avisa o leitor de tela
             if (icon) icon.textContent = open ? "close" : "menu"; // troca o ícone (X ou 3 linhas)
         }
@@ -111,7 +130,7 @@
                     if (entry.isIntersecting) setActive(entry.target.id);
                 });
             },
-            { rootMargin: "-45% 0px -50% 0px" } // faixa fina no meio da tela
+            { rootMargin: "-45% 0px -50% 0px" } // faixa fina no meio da tela (mexer nesses % muda o ponto em que a seção vira "a atual")
         );
 
         sections.forEach((section) => observer.observe(section));
@@ -216,7 +235,7 @@
     if (!secao || !trilho || !botao) return; // se algum não existir, encerra
 
     const janela = trilho.parentElement; // a "janela" que recorta o trilho
-    const VELOCIDADE = 50; // velocidade do carrossel, em pixels por segundo
+    const VELOCIDADE = 50; // velocidade do carrossel, em pixels por segundo (se AUMENTAR, os cards passam mais rápido; se DIMINUIR, mais devagar)
 
     // Cria uma imagem genérica (SVG embutido) quando "imagem" está vazia.
     function imagemGenerica(indice) {
@@ -413,4 +432,206 @@
 (function () {
     const ano = document.getElementById("rodape-ano");
     if (ano) ano.textContent = new Date().getFullYear();
+})();
+
+
+/* ==========================================================================
+   4. PÁGINA DE CIDADES - busca
+   Só roda em cidades.html (se o campo de busca não existir, encerra).
+   Filtra os cards pelo texto que cada um guarda em data-busca (nome, resumo
+   e atrativos da cidade).
+   ========================================================================== */
+(function () {
+    const campo = document.getElementById("campo-filtro-cidades");
+    const vazio = document.getElementById("cidades-vazio");
+    if (!campo) return;
+
+    const cards = Array.from(document.querySelectorAll("#grade-cidades .cartao-imagem-caixa"));
+
+    // Tira acentos e maiúsculas: "Guaraçaí" é encontrado digitando "guaracai".
+    function normalizar(texto) {
+        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    }
+
+    campo.addEventListener("input", () => {
+        const termo = normalizar(campo.value);
+        let visiveis = 0;
+
+        cards.forEach((card) => {
+            const acha = normalizar(card.dataset.busca || card.textContent).includes(termo);
+            card.hidden = !acha;
+            if (acha) visiveis++;
+        });
+
+        if (vazio) vazio.hidden = visiveis > 0;
+    });
+})();
+
+
+/* ==========================================================================
+   5. DADOS SALVOS, ÁREA ADMINISTRATIVA E FOTOS DOS PEIXES
+   (veio do site do Kauê, reescrito no padrão deste arquivo)
+   - Aplica em qualquer página o contato e os textos de cidade salvos no navegador.
+   - Em admin.html, controla o login e o painel de edição.
+   - Em peixes.html, cuida das fotos que não carregam.
+   ATENÇÃO: usuário e senha abaixo ficam visíveis para quem abrir este arquivo. Isso NÃO
+   é segurança de verdade; serve apenas como porta de entrada simples. Para proteger de
+   verdade é preciso um servidor com login.
+   ========================================================================== */
+(function () {
+    const USUARIO = "admin"; // nome de usuário para entrar no painel (troque aqui)
+    const SENHA = "pantanal2026"; // senha do painel (troque aqui; lembre: não é segurança real)
+    const CIDADES = [
+        "andradina", "castilho", "guaracai", "ilha-solteira", "itapura", "mirandopolis",
+        "murutinga", "nova-independencia", "pereira-barreto", "sud-mennucci", "suzanapolis", "valparaiso"
+    ];
+
+    // Lê e grava no navegador sem quebrar se o armazenamento estiver bloqueado.
+    function ler(chave) {
+        try { return localStorage.getItem(chave); } catch (e) { return null; }
+    }
+    function gravar(chave, valor) {
+        try { localStorage.setItem(chave, valor); return true; } catch (e) { return false; }
+    }
+    function apagar(chave) {
+        try { localStorage.removeItem(chave); } catch (e) { /* sem armazenamento */ }
+    }
+
+    /* ---------- 5.1 Aplicar o que foi salvo (todas as páginas) ---------- */
+    function aplicarDadosSalvos() {
+        const email = ler("pantanal_email");
+        const redes = ler("pantanal_redes");
+        const telefone = ler("pantanal_telefone");
+
+        const elEmail = document.getElementById("exibe-email");
+        if (email && elEmail) {
+            elEmail.textContent = email;
+            elEmail.href = "mailto:" + email;
+        }
+        const elRedes = document.getElementById("exibe-redes");
+        if (redes && elRedes) elRedes.textContent = redes;
+
+        // O telefone só aparece no rodapé quando alguém cadastrou um.
+        const itemTel = document.getElementById("rodape-telefone");
+        const elTel = document.getElementById("exibe-telefone");
+        if (telefone && itemTel && elTel) {
+            elTel.textContent = telefone;
+            itemTel.hidden = false;
+        }
+
+        // Texto das cidades: cada parágrafo vira um <p>, sempre como texto puro (sem HTML).
+        CIDADES.forEach(function (cidade) {
+            const texto = ler("pantanal_desc_" + cidade);
+            const alvo = document.getElementById("descricao-" + cidade);
+            if (!texto || !alvo) return;
+            alvo.textContent = "";
+            texto.split(/\n\s*\n/).forEach(function (paragrafo) {
+                if (!paragrafo.trim()) return;
+                const p = document.createElement("p");
+                p.className = "info-descricao";
+                p.textContent = paragrafo.trim();
+                alvo.appendChild(p);
+            });
+        });
+    }
+    aplicarDadosSalvos();
+
+    /* ---------- 5.2 Área administrativa (admin.html) ---------- */
+    const formLogin = document.getElementById("formulario-login");
+    if (formLogin) {
+        const caixaLogin = document.getElementById("caixa-login");
+        const caixaPainel = document.getElementById("caixa-painel");
+        const erro = document.getElementById("login-erro");
+        const formEdicao = document.getElementById("formulario-edicao");
+        const selectCidade = document.getElementById("seletor-cidade");
+        const txtCidade = document.getElementById("editar-cidade-descricao");
+        const sucesso = document.getElementById("editar-sucesso");
+
+        function mostrarPainel() {
+            caixaLogin.hidden = true;
+            caixaPainel.hidden = false;
+            document.getElementById("editar-telefone").value = ler("pantanal_telefone") || "";
+            document.getElementById("editar-email").value = ler("pantanal_email") || "";
+            document.getElementById("editar-redes").value = ler("pantanal_redes") || "";
+            carregarTextoCidade();
+        }
+        function mostrarLogin() {
+            caixaPainel.hidden = true;
+            caixaLogin.hidden = false;
+        }
+        function carregarTextoCidade() {
+            txtCidade.value = ler("pantanal_desc_" + selectCidade.value) || "";
+        }
+        function avisar(mensagem) {
+            sucesso.textContent = mensagem;
+            setTimeout(function () { sucesso.textContent = ""; }, 4000);
+        }
+
+        // Quem já entrou nesta aba continua dentro até fechar a aba.
+        let logado = false;
+        try { logado = sessionStorage.getItem("admin_logado") === "true"; } catch (e) { /* ignora */ }
+        if (logado) mostrarPainel();
+
+        formLogin.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const usuario = document.getElementById("admin-usuario").value;
+            const senha = document.getElementById("admin-senha").value;
+            if (usuario === USUARIO && senha === SENHA) {
+                try { sessionStorage.setItem("admin_logado", "true"); } catch (err) { /* ignora */ }
+                erro.textContent = "";
+                formLogin.reset();
+                mostrarPainel();
+            } else {
+                erro.textContent = "Usuário ou senha incorretos. Confira e tente de novo.";
+            }
+        });
+
+        selectCidade.addEventListener("change", carregarTextoCidade);
+
+        formEdicao.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const telefone = document.getElementById("editar-telefone").value.trim();
+            const email = document.getElementById("editar-email").value.trim();
+            const redes = document.getElementById("editar-redes").value.trim();
+            const textoCidade = txtCidade.value.trim();
+
+            // Campo vazio = volta ao valor original do site.
+            [["pantanal_telefone", telefone], ["pantanal_email", email], ["pantanal_redes", redes],
+             ["pantanal_desc_" + selectCidade.value, textoCidade]].forEach(function (par) {
+                if (par[1]) gravar(par[0], par[1]); else apagar(par[0]);
+            });
+            avisar("Alterações salvas neste navegador.");
+        });
+
+        document.getElementById("botao-restaurar").addEventListener("click", function () {
+            apagar("pantanal_desc_" + selectCidade.value);
+            txtCidade.value = "";
+            avisar("Texto original da cidade restaurado.");
+        });
+
+        document.getElementById("botao-sair").addEventListener("click", function () {
+            try { sessionStorage.removeItem("admin_logado"); } catch (err) { /* ignora */ }
+            mostrarLogin();
+        });
+    }
+
+    /* ---------- 5.3 Fotos dos peixes (peixes.html) ----------
+       Ordem: 1) foto local em img/peixes/<id>.jpg; 2) foto remota (data-remoto), se existir;
+       3) ícone "Foto em breve". */
+    document.querySelectorAll(".especie__foto img").forEach(function (img) {
+        const caixa = img.closest(".especie__foto");
+        let tentouRemoto = false;
+        function falhou() {
+            const remoto = img.dataset.remoto;
+            if (remoto && !tentouRemoto) {
+                tentouRemoto = true;
+                img.src = remoto;
+            } else {
+                caixa.classList.add("sem-foto");
+            }
+        }
+        img.addEventListener("error", falhou);
+        // Se o erro aconteceu antes de este script rodar:
+        if (img.complete && img.naturalWidth === 0) falhou();
+    });
 })();

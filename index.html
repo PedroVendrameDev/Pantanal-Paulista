@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!--
+    =====================================================================
+    INDEX.HTML - PÁGINA INICIAL
+    ---------------------------------------------------------------------
+    O HTML é o "esqueleto" da página: diz O QUE existe (títulos, textos,
+    fotos, botões). A aparência está em style.css e o comportamento em
+    index.js. Cada pedaço do HTML é uma "tag" que abre <assim> e fecha
+    </assim>; o que fica no meio é o conteúdo. Os comentários (como este)
+    começam com um sinal de menor, exclamação e dois hifens, e terminam com
+    dois hifens e um sinal de maior: o navegador não mostra.
+
+    SUMÁRIO (de cima para baixo; procure com Ctrl+F pelo nome)
+      A. <head> ................. configurações invisíveis (título da aba, fontes, arquivos)
+      B. CABEÇALHO .............. logo, slogan e menu (fixo no topo)
+      C. BANNER (#inicio) ....... primeira tela, com foto de fundo
+      D. QUEM SOMOS (#quem-somos) texto, foto e cartões de vidro
+      E. ATALHOS (#atalhos) ..... cartões que levam às páginas de cidades e peixes
+      F. EVENTOS (#eventos) ..... carrossel (os cards são criados pelo index.js)
+      G. RODAPÉ ................. contatos, redes sociais e direitos autorais
+
+    COMO EDITAR
+      - Trocar um TEXTO: mude só o que está entre as tags (ex.: <p>texto aqui</p>).
+      - Trocar uma FOTO: mude o src="img/arquivo.jpg" (e coloque a foto na pasta img/).
+      - Trocar para onde um LINK/BOTÃO leva: mude o href="DESTINO".
+      - Mudar COR, TAMANHO ou FONTE: isso fica no style.css (veja o bloco indicado
+        no comentário de cada seção).
+      - A palavra class="..." liga o elemento ao seu estilo no style.css;
+        id="..." é um nome único usado por links (#nome) e pelo index.js.
+    =====================================================================
+-->
     <head>
         <!-- Codificação de caracteres: garante acentos e símbolos corretos. -->
         <meta charset="UTF-8" />
@@ -16,16 +46,12 @@
         <!-- Cor da barra do navegador no celular. -->
         <meta name="theme-color" content="#163808" />
 
-        <!-- Ícone da aba do navegador (favicon): usa a logo do Pantanal Paulista. -->
-        <link rel="icon" type="image/png" href="img/logo.png" />
-        <link rel="apple-touch-icon" href="img/logo.png" />
-
         <!-- Título da aba do navegador. -->
         <title>Pantanal Paulista | Turismo e Natureza</title>
 
         <!-- Avisa o CSS de que o JavaScript está ativo (usado pelo menu de celular). -->
         <script>
-            document.documentElement.classList.add("js");
+            document.documentElement.classList.add("js-ativo");
         </script>
 
         <!--
@@ -59,29 +85,33 @@
         <!-- =================================================================
              CABEÇALHO: logo + menu (fica fixo no topo ao rolar a página)
              ================================================================= -->
-        <header class="site-header">
-            <div class="site-header__container">
+        <header class="cabecalho">
+            <div class="cabecalho__conteudo">
                 <!-- Logo + nome: clicar leva ao início da página. -->
                 <a
-                    class="site-header__brand"
+                    class="cabecalho__marca"
                     href="#inicio"
                     aria-label="Pantanal Paulista - início"
                 >
-                    <img class="site-header__logo" src="img/logo.png" alt="" width="75" height="75" />
-                    <span class="site-header__brand-name">Pantanal Paulista</span>
+                    <img class="cabecalho__logo" src="img/logo.png" alt="" width="75" height="75" />
+                    <span class="cabecalho__marca-texto">
+                        <span class="cabecalho__marca-nome">Pantanal Paulista</span>
+                        <!-- Slogan (veio do site do Kauê). -->
+                        <span class="cabecalho__slogan">Sua viagem começa aqui!</span>
+                    </span>
                 </a>
 
                 <!-- Botão do menu de celular (o index.js troca o ícone e o aria-expanded). -->
                 <button
-                    class="menu-toggle"
+                    class="botao-menu"
                     type="button"
                     aria-controls="menu-principal"
                     aria-expanded="false"
                 >
-                    <span class="menu-toggle__icon material-symbols-rounded" aria-hidden="true"
+                    <span class="botao-menu__icone material-symbols-rounded" aria-hidden="true"
                         >menu</span
                     >
-                    <span class="menu-toggle__label">Menu</span>
+                    <span class="botao-menu__rotulo">Menu</span>
                 </button>
 
                 <!--
@@ -92,1179 +122,202 @@
                     de uma seção do <main>. A ordem do menu acompanha a ordem
                     da página: Início, Quem somos, Cidades e Eventos.
                 -->
-                <nav class="main-navigation" id="menu-principal" aria-label="Navegação principal">
-                    <ul class="main-navigation__list">
-                        <li class="main-navigation__item">
-                            <a class="main-navigation__link" href="#inicio" aria-current="location">
-                                <span class="main-navigation__icon material-symbols-rounded" aria-hidden="true">home</span>
-                                <span class="main-navigation__text">Início</span>
+                <nav class="menu-navegacao" id="menu-principal" aria-label="Navegação principal">
+                    <ul class="menu-navegacao__lista">
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="#inicio" aria-current="location">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">home</span>
+                                <span class="menu-navegacao__texto">Início</span>
                             </a>
                         </li>
 
-                        <li class="main-navigation__item">
-                            <a class="main-navigation__link" href="#quem-somos">
-                                <span class="main-navigation__icon material-symbols-rounded" aria-hidden="true">groups</span>
-                                <span class="main-navigation__text">Quem somos</span>
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="#quem-somos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">groups</span>
+                                <span class="menu-navegacao__texto">Quem somos</span>
                             </a>
                         </li>
 
-                        <li class="main-navigation__item">
-                            <a class="main-navigation__link" href="#cidades">
-                                <span class="main-navigation__icon material-symbols-rounded" aria-hidden="true">map</span>
-                                <span class="main-navigation__text">Cidades</span>
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="cidades.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">map</span>
+                                <span class="menu-navegacao__texto">Cidades</span>
                             </a>
                         </li>
 
-                        <li class="main-navigation__item">
-                            <a class="main-navigation__link" href="#eventos">
-                                <span class="main-navigation__icon material-symbols-rounded" aria-hidden="true">event</span>
-                                <span class="main-navigation__text">Eventos</span>
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="peixes.html">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">phishing</span>
+                                <span class="menu-navegacao__texto">Peixes</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-navegacao__item">
+                            <a class="menu-navegacao__link" href="#eventos">
+                                <span class="menu-navegacao__icone material-symbols-rounded" aria-hidden="true">event</span>
+                                <span class="menu-navegacao__texto">Eventos</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </header>
+        <!-- ======== FIM: CABEÇALHO ======== -->
 
         <main id="conteudo-principal">
             <!-- =================================================================
                  ORDEM DAS SEÇÕES DA PÁGINA (de cima para baixo):
-                   1) Hero (banner)            id="inicio"
+                   1) Banner (primeira tela)     id="inicio"
                    2) Quem somos               id="quem-somos"
-                   3) Cidades                  id="cidades"
-                   4) Informações e mapas      id="mapas" (escondida até clicar
-                                               em "Saiba mais" de uma cidade)
-                   5) Eventos                  id="eventos"
+                   3) Atalhos                  id="atalhos"
+                   4) Eventos                  id="eventos"
+                 (As cidades e os peixes têm páginas próprias: cidades.html e peixes.html.)
                  Para mudar a ordem, recorte uma <section> INTEIRA (da abertura
                  até o </section> dela) e cole em outro lugar. Lembre de mudar
                  também a ordem dos itens do menu lá em cima.
-                 Todas as seções abaixo do hero têm class="content-section", que
+                 Todas as seções abaixo do banner têm class="secao-conteudo", que
                  é o que aplica o fundo bege (ver style.css).
                  ================================================================= -->
 
-            <!-- ============ 1) HERO (id="inicio") ============
-                 Ocupa 100% da altura da tela (ver ".hero" no style.css). -->
-            <section class="hero" id="inicio" aria-labelledby="hero-title">
-                <div class="hero__container">
-                    <div class="hero__content">
-                        <!-- Etiqueta pequena acima do título -->
-                        <p class="hero__eyebrow">Região Turística Pantanal Paulista</p>
+            <!-- ============ C. BANNER (id="inicio") ============
+                 Ocupa 100% da altura da tela (ver ".banner" no style.css, seção 4).
+                 No CSS você troca: a FOTO de fundo (background-image), a altura
+                 (min-height) e a cor da faixa escura sobre a foto. -->
+            <section class="banner" id="inicio" aria-labelledby="titulo-banner">
+                <div class="banner__contorno">
+                    <div class="banner__conteudo">
+                        <!-- Etiqueta pequena acima do título (logo + nome da região).
+                             Para trocar o logo, mude src="img/logo.png". -->
+                        <p class="banner__chamada">
+                            <img class="banner__chamada-logo" src="img/logo.png" alt="" width="24" height="24" />
+                            Região Turística Pantanal Paulista
+                        </p>
 
-                        <!-- Título principal da página (só existe UM h1 no site) -->
-                        <h1 class="hero__title" id="hero-title">
+                        <!-- Título principal da página (só existe UM h1 no site).
+                             Aqui você muda o TEXTO. O tamanho/cor da letra ficam em
+                             ".banner__titulo" no style.css (font-size, color). -->
+                        <h1 class="banner__titulo" id="titulo-banner">
                             Pesca esportiva, natureza e aventura no coração do interior paulista.
                         </h1>
 
-                        <p class="hero__description">
+                        <p class="banner__descricao">
                             Descubra destinos, experiências e paisagens que tornam o Pantanal
                             Paulista único.
                         </p>
 
                         <!--
-                            BOTÃO DO HERO (removido).
+                            BOTÃO DO BANNER (removido).
                             Para RECOLOCAR o botão "Conheça as cidades", apague as
                             marcas de comentário ao redor do <a> abaixo. Ele é
-                            estilizado por .hero__action no style.css. Para mudar o
+                            estilizado por .banner__acao no style.css. Para mudar o
                             destino do clique, troque o href (ex.: "#quem-somos").
 
-                        <a class="hero__action" href="#cidades">Conheça as cidades</a>
+                        <a class="banner__acao" href="cidades.html">Conheça as cidades</a>
                         -->
                     </div>
                 </div>
             </section>
+            <!-- ======== FIM: SEÇÃO #inicio ======== -->
 
-            <!-- ============ 2) QUEM SOMOS (id="quem-somos") ============
-                 Estilo: style.css, bloco "6. QUEM SOMOS". -->
+            <!-- ============ D. QUEM SOMOS (id="quem-somos") ============
+                 Estilo: style.css, bloco "5. QUEM SOMOS". -->
             <section
-                class="content-section"
+                class="secao-conteudo"
                 id="quem-somos"
-                aria-labelledby="quem-somos-title"
+                aria-labelledby="titulo-quem-somos"
             >
                 <!-- Apresentação: texto à esquerda, foto à direita -->
-                <div class="qs-hero">
-                    <div class="qs-texto">
-                        <h2 class="qs-titulo" id="quem-somos-title">QUEM SOMOS</h2>
+                <div class="quem-somos-topo">
+                    <div class="quem-somos-texto">
+                        <h2 class="quem-somos-titulo" id="titulo-quem-somos">QUEM SOMOS</h2>
                         <p>O Pantanal Paulista é uma região do extremo noroeste do Estado de São Paulo, na divisa com Mato Grosso do Sul, formada pelos encontros dos rios Tietê, Paraná, Aguapeí e São José dos Dourados. Ali, as grandes represas e as áreas alagadas lembram o Pantanal original, e daí vem o nome. Ele não faz parte oficialmente do bioma Pantanal, mas divide com ele rios, várzeas e uma fauna riquíssima.</p>
                         <p>Reunimos neste site as cidades que integram essa rota, com suas histórias, atrações e dicas de como chegar. A região fica a pelo menos 650 km da capital paulista e ainda é pouco conhecida pelos próprios paulistas: aqui o Tietê chega limpo, com praias de água doce, pesca esportiva, ecoturismo e muita natureza preservada.</p>
+                        <p>A <strong>Região Turística Pantanal Paulista</strong> é a união de sete cidades do interior do Estado de São Paulo: Andradina, Castilho, Itapura, Ilha Solteira, Pereira Barreto, Suzanápolis e Sud Mennucci. Em seu roteiro há praias, parques, pesca esportiva, esportes náuticos, mergulhos e dezenas de outros passeios, além da deliciosa culinária típica do interior.</p>
+                        <p>Ela é a tradução da essência da natureza: muito verde, animais de várias espécies e outras tantas maravilhas que encantam centenas de turistas todos os anos. Feche os olhos e imagine o canto dos pássaros, o som sutil das águas deslizando por entre as pedras e o vento fresco batendo no rosto...</p>
                     </div>
 
-                    <!-- A foto é definida no CSS (classe .qs-imagem), por isso a div é vazia. -->
-                    <div class="qs-imagem" role="img" aria-label="Foto do Pantanal Paulista"></div>
+                    <!-- A foto é definida no CSS (classe .quem-somos-imagem), por isso a div é vazia.
+                         Para TROCAR a foto: no style.css, procure ".quem-somos-imagem" e mude o
+                         background-image: url("img/...").
+                         Para AUMENTAR a foto: mude a altura (min-height) nessa mesma regra. -->
+                    <div class="quem-somos-imagem" role="img" aria-label="Foto do Pantanal Paulista"></div>
                 </div>
 
-                <!-- O Pantanal Paulista em detalhes: 4 cartões lado a lado -->
-                <div class="qs-destaques">
-                    <article class="qs-card">
+                <!-- Convite ao turismo (texto do site do Kauê) -->
+                <aside class="quem-somos-convite">
+                    <p><strong>Viajar será sempre o melhor remédio para relaxar e distrair...</strong> As férias estão chegando, está na hora de escolher o próximo destino e você ainda não sabe pra onde ir? Nada como dar uma fugidinha das atribulações do cotidiano para conhecer novos destinos, culturas e pessoas diferentes. Melhor ainda, se esse lugar for calmo e repleto de belezas naturais, não é mesmo?</p>
+                    <p>O turismo interno ganhou força nos últimos anos e já passou da hora de você conhecer os destinos atrativos que o interior do noroeste paulista tem para oferecer!</p>
+                    <p class="quem-somos-convite__destaque">Curtiu a ideia? Então, conheça as sete maravilhas do interior do Estado e garanta a escolha do lugar ideal para passar as suas férias!</p>
+                </aside>
+
+                <!-- O Pantanal Paulista em detalhes: cartões de vidro lado a lado.
+                         Cada <article class="quem-somos-cartao vidro"> é um cartão.
+                         Para ADICIONAR um: copie um <article> inteiro e cole abaixo.
+                         Para REMOVER: apague o <article> inteiro.
+                         O efeito de vidro (desfoque) vem da classe "vidro" (style.css, seção 5). -->
+                <div class="quem-somos-cartoes">
+                    <article class="quem-somos-cartao vidro">
                         <h3>Onde fica</h3>
                         <p>No noroeste paulista, em cidades como Andradina, Castilho, Ilha Solteira, Itapura, Pereira Barreto, Sud Mennucci e Suzanápolis. A Região Turística reúne cerca de 215 mil habitantes (estimativa de 2021).</p>
                     </article>
-                    <article class="qs-card">
+                    <article class="quem-somos-cartao vidro">
                         <h3>Rios e águas</h3>
-                        <p>Os reservatórios de Jupiá, Ilha Solteira e Três Irmãos, criados pelas usinas do Complexo de Urubupungá, formaram praias fluviais, canais e planícies inundáveis, como a foz do Tietê, em Itapura.</p>
+                        <p>Os rios Tietê, Paraná, Aguapeí e São José dos Dourados se encontram na região e formam cenários ideais para banho e navegação. Os reservatórios de Jupiá, Ilha Solteira e Três Irmãos, criados pelas usinas do Complexo de Urubupungá, formaram praias fluviais, canais e planícies inundáveis, como a foz do Tietê, em Itapura.</p>
                     </article>
-                    <article class="qs-card">
+                    <article class="quem-somos-cartao vidro">
                         <h3>Natureza protegida</h3>
                         <p>O Parque Estadual do Aguapeí e a RPPN Foz do Rio Aguapeí somam cerca de 23 mil hectares e abrigam um dos últimos refúgios do cervo-do-pantanal no Estado, além de aves, capivaras e jacarés.</p>
                     </article>
-                    <article class="qs-card">
+                    <article class="quem-somos-cartao vidro">
+                        <h3>Integrantes do CIENSP</h3>
+                        <p>14 municípios unidos pelo fortalecimento do turismo regional no Consórcio Intermunicipal do Extremo Noroeste Paulista.</p>
+                    </article>
+                    <article class="quem-somos-cartao vidro">
+                        <h3>Pesca esportiva e mergulho</h3>
+                        <p>Águas límpidas ricas em espécies nobres como tucunaré, dourado e pacu, além de pontos históricos de naufrágios submersos. Conheça os peixes da região na <a href="peixes.html">página de peixes</a>.</p>
+                    </article>
+                    <article class="quem-somos-cartao vidro">
                         <h3>Turismo e cultura</h3>
                         <p>Pesca esportiva (principalmente o tucunaré), mergulho, passeios de barco, festas de peão, herança da imigração japonesa e uma história ligada à ferrovia, às usinas e ao Brasil Império.</p>
                     </article>
                 </div>
             </section>
+            <!-- ======== FIM: SEÇÃO #quem-somos ======== -->
 
-            <!-- ============ 3) CIDADES (id="cidades") ============
-                 Cada card mostra a foto da cidade; ao passar o mouse aparecem o
-                 texto e o botão "Saiba mais", que leva às informações dela
-                 (seção #mapas, logo abaixo).
-                 Para editar um card: troque a foto em "src", o texto dentro do
-                 <p> e o nome dentro do <h3>. O "href" do botão deve ser igual ao
-                 id do bloco da cidade em #mapas.
-                 Estilo: style.css, bloco "7. CIDADES". -->
-            <section class="content-section" id="cidades" aria-labelledby="cidades-title">
-                <h2 class="titulos" id="cidades-title">CIDADES</h2>
-
-                <!-- Caixa que agrupa todos os cards e os organiza lado a lado -->
-                <div class="listaCards">
-                    <!-- CARD: Andradina -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/andra.jpg" alt="Foto de Andradina" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Terra do Rei do Gado, banhada pelo Rio Tietê. Turismo religioso, romarias e parque aquático.</p>
-                            <a class="card-botao" href="#mapa-andradina">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Andradina</h3>
-                    </div>
-
-                    <!-- CARD: Castilho -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/castilho.jpg" alt="Foto de Castilho" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Porta de entrada do Pantanal Paulista e Paraíso do Pescador, com rios e o varjão.</p>
-                            <a class="card-botao" href="#mapa-castilho">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Castilho</h3>
-                    </div>
-
-                    <!-- CARD: Guaraçaí -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/guaracai.webp" alt="Foto de Guaraçaí" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Terra do Abacaxi, integra a rota do Pantanal Paulista, com natureza e a tranquilidade do interior.</p>
-                            <a class="card-botao" href="#mapa-guaracai">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Guaraçaí</h3>
-                    </div>
-
-                    <!-- CARD: Ilha Solteira -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/ilha.jpg" alt="Foto de Ilha Solteira" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Estância Turística e paraíso dos esportes aquáticos, com a usina hidrelétrica.</p>
-                            <a class="card-botao" href="#mapa-ilha-solteira">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Ilha Solteira</h3>
-                    </div>
-
-                    <!-- CARD: Itapura -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/itapura.jfif" alt="Foto de Itapura" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Prainha Municipal e Cachoeira do Córrego da Onça, entre os rios Tietê e Paraná.</p>
-                            <a class="card-botao" href="#mapa-itapura">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Itapura</h3>
-                    </div>
-
-                    <!-- CARD: Mirandópolis -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/mirandopolis.jfif" alt="Foto de Mirandópolis" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Igreja de São João Batista, com vitrais e ladrilhos, e a comunidade Yuba de cultura japonesa.</p>
-                            <a class="card-botao" href="#mapa-mirandopolis">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Mirandópolis</h3>
-                    </div>
-
-                    <!-- CARD: Murutinga do Sul -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/murutinga.jfif" alt="Foto de Murutinga do Sul" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Pequena cidade da rota do Pantanal Paulista, ideal para descansar em meio à natureza.</p>
-                            <a class="card-botao" href="#mapa-murutinga">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Murutinga do Sul</h3>
-                    </div>
-
-                    <!-- CARD: Nova Independência -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/nova.jpg" alt="Foto de Nova Independência" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Turismo rural e contato com a natureza no coração da região do Pantanal Paulista.</p>
-                            <a class="card-botao" href="#mapa-nova-independencia">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Nova Independência</h3>
-                    </div>
-
-                    <!-- CARD: Pereira Barreto -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/barreto.jpg" alt="Foto de Pereira Barreto" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Pesca esportiva no Rio Tietê e forte herança da imigração japonesa.</p>
-                            <a class="card-botao" href="#mapa-pereira-barreto">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Pereira Barreto</h3>
-                    </div>
-
-                    <!-- CARD: Sud Mennucci -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/sud.jfif" alt="Foto de Sud Mennucci" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Natureza, turismo rural e pesca esportiva nos rios da região.</p>
-                            <a class="card-botao" href="#mapa-sud-mennucci">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Sud Mennucci</h3>
-                    </div>
-
-                    <!-- CARD: Suzanápolis -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/suzanapolis.webp" alt="Foto de Suzanápolis" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Pesca esportiva e contato com a natureza, com o charme das cidades pequenas.</p>
-                            <a class="card-botao" href="#mapa-suzanapolis">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Suzanápolis</h3>
-                    </div>
-
-                    <!-- CARD: Valparaíso -->
-                    <div class="card-imagem-caixa">
-                        <img class="imgCard" src="img/valparaiso.jpg" alt="Foto de Valparaíso" loading="lazy" />
-
-                        <!-- Camada que aparece ao passar o mouse sobre a foto -->
-                        <div class="card-conteudo">
-                            <p class="card-texto">Trilhas de moto, cultura oriental e a Praça Matriz com fonte luminosa e castelo bonsai.</p>
-                            <a class="card-botao" href="#mapa-valparaiso">Saiba mais</a>
-                        </div>
-
-                        <h3 class="card-titulo">Valparaíso</h3>
-                    </div>
+            <!-- ============ E. ATALHOS (id="atalhos") ============
+                 Dois cartões de vidro que levam às páginas de Cidades e de Peixes.
+                 Estilo: style.css, blocos "5. QUEM SOMOS" (.atalhos-lista) e "2. BASE". -->
+            <section class="secao-conteudo" id="atalhos" aria-label="Atalhos para Cidades e Peixes">
+                <!-- Atalhos para as páginas de Cidades e Peixes (vidro, igual aos cartões acima).
+                         O ícone é o nome do símbolo (ex.: "map", "phishing"); troque a palavra
+                         para mudar o ícone. O botão é o <a class="cartao-botao">: mude o texto
+                         entre as tags e o destino em href="DESTINO". -->
+                <div class="atalhos-lista">
+                    <article class="atalho-cartao vidro">
+                        <span class="material-symbols-rounded" aria-hidden="true">map</span>
+                        <h3>Municípios integrantes</h3>
+                        <p>Explore o roteiro completo dos municípios paulistas. Veja os pontos turísticos, história, passeios e localizações no mapa interativo de cada cidade.</p>
+                        <a class="cartao-botao" href="cidades.html">Ver todas as cidades →</a>
+                    </article>
+                    <article class="atalho-cartao vidro">
+                        <span class="material-symbols-rounded" aria-hidden="true">phishing</span>
+                        <h3>Guia de peixes &amp; pesca</h3>
+                        <p>Conheça as principais espécies nobres como tucunaré, dourado e pacu, além das bacias hidrográficas e boas práticas da pesca esportiva.</p>
+                        <a class="cartao-botao" href="peixes.html">Explorar guia de peixes →</a>
+                    </article>
                 </div>
             </section>
+            <!-- ======== FIM: SEÇÃO #atalhos ======== -->
 
-            <!-- ============ 4) INFORMAÇÕES E MAPAS (id="mapas") ============
-                 Esta seção fica ESCONDIDA quando a página abre. Ao clicar em um
-                 card, o endereço vira "#mapa-nome-da-cidade" e o CSS (:target)
-                 mostra SOMENTE o bloco daquela cidade.
-                 Cada cidade tem: nome, 4 painéis de vidro (sobre, dados, atrações,
-                 como chegar), o mapa do Google e o botão de voltar.
-                 Estilo: style.css, bloco "8. INFORMAÇÕES DA CIDADE". -->
-            <section class="content-section" id="mapas">
-                <h2 class="titulos">INFORMAÇÕES E LOCALIZAÇÃO</h2>
-
-                <!-- ===== ANDRADINA ===== -->
-                <article class="mapa-cidade" id="mapa-andradina" aria-labelledby="mapa-andradina-titulo">
-                    <h2 class="mapa-titulo" id="mapa-andradina-titulo">Andradina</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Andradina é a cidade-polo do extremo noroeste paulista e leva o título de Terra do Rei do Gado. Sua fundação foi idealizada em 1932 pelo fazendeiro Antônio Joaquim de Moura Andrade, o “Rei do Gado”, maior criador de gado do Brasil e nome que a cidade carrega até hoje. Fundada em 11 de julho de 1937 e transformada em município em 1938, é banhada ao norte pelo Rio Tietê e reúne turismo de negócios, turismo religioso (festas e romarias), cultura e lazer em família.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Andradina">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">59.783</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1938</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">964,2 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">andradinense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Complexo Turístico Thermas Acqualinda: parque aquático e Parque dos Dinossauros, diversão para toda a família</li>
-                                <li>Casa da Cultura Cora Coralina</li>
-                                <li>Zoológico Municipal, com mata nativa preservada dentro da área urbana</li>
-                                <li>Centro Cultural Pioneiros de Andradina, instalado na antiga estação ferroviária</li>
-                                <li>Praça Moura Andrade (a praça central, com esculturas de personagens importantes da cidade) e Memorial Adélio Sarro</li>
-                                <li>Igreja Matriz de São Sebastião e Igreja Nossa Senhora das Graças, no roteiro do turismo religioso</li>
-                                <li>Fazenda São Francisco / Bufalare Cavalgare: cavalgadas e trilha off road para bike</li>
-                                <li>EXPOAN, a Exposição Agropecuária de Andradina, maior evento do calendário da cidade</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Andradina fica a cerca de 630 km da capital paulista, no entroncamento da Rodovia Marechal Rondon (SP-300) com a Rodovia Euclides de Oliveira Figueiredo (SP-563). A cidade também tem aeroporto estadual (Paulino Ribeiro de Andrade) e é a principal referência para quem visita as cidades vizinhas do Pantanal Paulista.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Andradina,SP,Brasil&output=embed"
-                            title="Mapa de Andradina"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== CASTILHO ===== -->
-                <article class="mapa-cidade" id="mapa-castilho" aria-labelledby="mapa-castilho-titulo">
-                    <h2 class="mapa-titulo" id="mapa-castilho-titulo">Castilho</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Conhecida como o Paraíso do Pescador e a porta de entrada do Pantanal Paulista, Castilho fica às margens do Rio Paraná, na divisa com Mato Grosso do Sul, e é banhada também pelos rios Tietê e Aguapeí, uma das maiores extensões de águas interiores do país. Emancipada de Andradina em 1953, tem mais de 500 ranchos de pesca e recebe pescadores de todo o Brasil, principalmente atrás do tucunaré, além de quem busca ecoturismo, passeios de barco e a observação da fauna e da flora pantaneiras.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Castilho">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">19.977</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1953</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">1.065,3 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">castilhense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Rio Paraná e represa da Usina Hidrelétrica de Jupiá (Engenheiro Souza Dias): pesca e passeios de barco</li>
-                                <li>Foz do Rio Tietê e Rio Aguapeí: pesca esportiva e observação da fauna do bioma pantaneiro</li>
-                                <li>RPPN Foz do Aguapeí, área protegida que, junto com o Parque Estadual do Aguapeí, forma o Pantanal Paulista</li>
-                                <li>Prainha Municipal</li>
-                                <li>Pontes ferroviária (Francisco Sá) e rodoviária sobre o Rio Paraná, com vista impressionante do rio</li>
-                                <li>Estação Ferroviária Alfredo de Castilho, Igreja Matriz de São José e Capela Bom Jesus da Lapa</li>
-                                <li>Alambique Estância São João e Orquidário</li>
-                                <li>Torneios de pesca esportiva ao longo do ano</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Castilho fica no extremo noroeste paulista, ao lado de Andradina (de onde se emancipou), na margem do Rio Paraná em frente a Três Lagoas (MS), com pontes que ligam os dois estados. A região do Pantanal Paulista está a pelo menos 650 km da capital, então vale planejar a viagem com calma e aproveitar o fim de semana inteiro.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Castilho,SP,Brasil&output=embed"
-                            title="Mapa de Castilho"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== GUARAÇAÍ ===== -->
-                <article class="mapa-cidade" id="mapa-guaracai" aria-labelledby="mapa-guaracai-titulo">
-                    <h2 class="mapa-titulo" id="mapa-guaracai-titulo">Guaraçaí</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Guaraçaí, nome que vem do tupi coaracy (“sol”), é a Capital do Abacaxi do Estado de São Paulo e também é chamada de Cidade Presépio. A região foi ocupada a partir de 1925, na Fazenda João Machado, e se desenvolveu com a chegada da Estrada de Ferro Noroeste do Brasil, em 1936. Virou município em 1948 e hoje une a tradição da fruticultura (abacaxi e polpa de frutas) ao turismo rural, à natureza e ao ritmo tranquilo do interior.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Guaraçaí">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">7.441</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1948</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">569,2 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">guaraçaiense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Festa do Abacaxi, evento anual que reúne turistas para saborear pratos e doces feitos com a fruta (17ª edição em 2023)</li>
-                                <li>Cavalgada entre amigos, criada em 2008 e principal atrativo do turismo rural</li>
-                                <li>Cachoeira Maraní, em propriedade particular aberta a visitantes</li>
-                                <li>Plantações de abacaxi, que fazem da cidade referência estadual na produção da fruta</li>
-                                <li>Parque Estadual do Aguapeí, unidade de conservação que abrange também o território de Guaraçaí</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Guaraçaí fica na microrregião de Andradina e faz divisa com Andradina, Junqueirópolis, Mirandópolis, Murutinga do Sul, Nova Independência e Pereira Barreto. Para chegar, a referência regional é Andradina, a cerca de 630 km de São Paulo pela Rodovia Marechal Rondon (SP-300).</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Guaraçaí,SP,Brasil&output=embed"
-                            title="Mapa de Guaraçaí"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== ILHA SOLTEIRA ===== -->
-                <article class="mapa-cidade" id="mapa-ilha-solteira" aria-labelledby="mapa-ilha-solteira-titulo">
-                    <h2 class="mapa-titulo" id="mapa-ilha-solteira-titulo">Ilha Solteira</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Ilha Solteira é uma das poucas cidades planejadas do Brasil: nasceu para abrigar os trabalhadores da Usina Hidrelétrica de Ilha Solteira, cujas obras começaram em 1965, e ganhou o nome de uma ilha localizada logo abaixo da barragem. Hoje é Estância Turística e conhecida como Capital da Cultura. Cercada pelos rios Paraná, Tietê e São José dos Dourados, tem praias artificiais, pesca esportiva, esportes náuticos e um calendário cheio de festas e festivais.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Ilha Solteira">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">25.549</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1991</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">652,6 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">ilhense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Usina Hidrelétrica de Ilha Solteira: visita guiada à maior usina do Estado, com 3.444 MW de capacidade e barragem de 5,6 km</li>
-                                <li>Praia Catarina (a Prainha), no Rio Paraná, ótima para relaxar e ver o pôr do sol</li>
-                                <li>Praia Marina, no Rio São José dos Dourados, famosa pelo windsurf e pelo jet-ski</li>
-                                <li>Parque da Mantiqueira – Cidade das Crianças</li>
-                                <li>Centro de Conservação da Fauna Silvestre e Parque das Nações Indígenas</li>
-                                <li>Mirante do Rio Paraná</li>
-                                <li>Canal de Pereira Barreto, obra de engenharia que liga os reservatórios de Três Irmãos e de Ilha Solteira</li>
-                                <li>Festas e festivais, como a Fapic (em outubro, mês do aniversário da cidade), o Festival do Chopp e o Festival do Peixe</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Ilha Solteira fica a cerca de 661 km da capital, na divisa com Mato Grosso do Sul. Saindo de São Paulo, o caminho passa pela Rodovia dos Bandeirantes (SP-348) e pela Rodovia Washington Luís (SP-310), que muda de nome ao longo do trajeto.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Ilha+Solteira,SP,Brasil&output=embed"
-                            title="Mapa de Ilha Solteira"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== ITAPURA ===== -->
-                <article class="mapa-cidade" id="mapa-itapura" aria-labelledby="mapa-itapura-titulo">
-                    <h2 class="mapa-titulo" id="mapa-itapura-titulo">Itapura</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">É em Itapura que o Rio Tietê termina, encontrando o Rio Paraná. A cidade nasceu em 1858 como Colônia Militar, criada pelo Império para proteger a fronteira durante a Guerra do Paraguai, junto aos saltos de Itapura (“salto das pedras”) e Urubupungá, hoje cobertos pela represa de Jupiá. A antiga vila foi refeita em um ponto mais alto e, hoje, Itapura atrai pescadores, mergulhadores e quem gosta de natureza: águas limpas, cachoeiras e aves como tucanos, araras e garças.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Itapura">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">3.979</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1964</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">301,7 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">itapurense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Foz do Rio Tietê no Rio Paraná, paisagem de cartão-postal</li>
-                                <li>Naufrágio do vapor Tamandathay (comprado por Dom Pedro II em 1860 e afundado em 1883), a cerca de 20 metros de profundidade, nos roteiros de mergulho</li>
-                                <li>Ruínas submersas da antiga vila, da usina Eloy Chaves e dos saltos de Itapura e Urubupungá</li>
-                                <li>Prainha Municipal</li>
-                                <li>Cachoeira do Córrego da Onça</li>
-                                <li>Palácio do Imperador e ruínas da antiga Colônia Militar, patrimônio histórico do período imperial</li>
-                                <li>Festa do Peão e torneio de pesca ao tucunaré (Tucuna Free)</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Itapura fica a cerca de 670 km da capital, na divisa com Mato Grosso do Sul, no encontro dos rios Tietê e Paraná. É um dos destinos do Pantanal Paulista mais ligados à pesca esportiva, ao mergulho e à história do Brasil Império.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Itapura,SP,Brasil&output=embed"
-                            title="Mapa de Itapura"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== MIRANDÓPOLIS ===== -->
-                <article class="mapa-cidade" id="mapa-mirandopolis" aria-labelledby="mapa-mirandopolis-titulo">
-                    <h2 class="mapa-titulo" id="mapa-mirandopolis-titulo">Mirandópolis</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Mirandópolis surgiu por volta de 1920, com o avanço da Estrada de Ferro Noroeste do Brasil, foi emancipada em 1944 e instalada como município em 1º de janeiro de 1945. Tem como cartão-postal a Igreja de São João Batista, considerada um dos mais belos templos católicos do interior paulista, e abriga uma forte colônia japonesa, representada pela comunidade Yuba, que mantém viva a cultura oriental na cidade.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Mirandópolis">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">27.983</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1944</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">917,7 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">mirandopolense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Igreja de São João Batista (Praça Papa João XXIII), cartão-postal da cidade</li>
-                                <li>Comunidade Yuba e a cultura japonesa, com forte presença da colônia nipônica</li>
-                                <li>Bosque Municipal</li>
-                                <li>Zoológico Municipal, atração popular entre as famílias</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Mirandópolis fica a aproximadamente 600 km da capital paulista e é a segunda maior cidade da Região Turística Pantanal Paulista, o que a torna um bom ponto de apoio para conhecer as cidades vizinhas.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Mirandópolis,SP,Brasil&output=embed"
-                            title="Mapa de Mirandópolis"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== MURUTINGA DO SUL ===== -->
-                <article class="mapa-cidade" id="mapa-murutinga" aria-labelledby="mapa-murutinga-titulo">
-                    <h2 class="mapa-titulo" id="mapa-murutinga-titulo">Murutinga do Sul</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Pequena e acolhedora, Murutinga do Sul nasceu em 1937, quando Pedro Storti, vindo de Araçatuba, fundou um povoado na região; no mesmo ano chegou a estação da Estrada de Ferro Noroeste do Brasil. Foi distrito de Andradina com o nome de Algodoal e se emancipou em 30 de dezembro de 1953. O nome vem do tupi “moritinga” (“muito branco”), e o “do Sul” serve para diferenciá-la de uma cidade homônima no Amazonas. As tradições sertanejas são o grande destaque.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Murutinga do Sul">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">3.737</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1953</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">250,9 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">murutinguense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Festa do Peão de Boiadeiro, realizada em maio no Clube de Rodeio Sela de Prata (completou 30 anos em 2026)</li>
-                                <li>Cavalgada Regional, em celebração da tradição sertaneja</li>
-                                <li>Carnaval de Rua (Carnamuru)</li>
-                                <li>Festa Junina Comunitária, famosa pelo frango assado no forno de lenha</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Murutinga do Sul fica a cerca de 628 km da capital, na região de Andradina, e é vizinha de Guaraçaí. O melhor período para conhecer a cidade é durante a Festa do Peão, em maio, mês do aniversário do município (1º de maio).</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Murutinga+do+Sul,SP,Brasil&output=embed"
-                            title="Mapa de Murutinga do Sul"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== NOVA INDEPENDÊNCIA ===== -->
-                <article class="mapa-cidade" id="mapa-nova-independencia" aria-labelledby="mapa-nova-independencia-titulo">
-                    <h2 class="mapa-titulo" id="mapa-nova-independencia-titulo">Nova Independência</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">A povoação de Nova Independência nasceu de uma pousada de boiadeiros na beira da estrada, e o reconhecido fundador é João Theodoro Batista. Virou distrito de Andradina em 1948 e município em 1964. Hoje é conhecida por abrigar a sede do Parque Estadual do Aguapeí, parte do Pantanal Paulista e um dos últimos lugares do Estado onde o cervo-do-pantanal ainda vive em liberdade, perfeito para quem busca natureza, turismo rural e tranquilidade.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Nova Independência">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">4.609</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1964</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">265,0 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">independentino</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Parque Estadual do Aguapeí, com mais de 9 mil hectares, que protege a planície de inundação do Rio Aguapeí</li>
-                                <li>Cervo-do-pantanal, um dos símbolos da fauna do parque</li>
-                                <li>Trilhas autoguiadas, com entrada gratuita</li>
-                                <li>Passeios de barco e praias de água doce no Rio Aguapeí</li>
-                                <li>Turismo rural em meio à natureza do Pantanal Paulista</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">O Parque Estadual do Aguapeí fica na Rodovia General Euclides de Oliveira Figueiredo, km 161, na zona rural de Nova Independência. Como a região é de natureza preservada e há poucas estruturas turísticas, vale se informar antes sobre horários e condições de visita.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Nova+Independência,SP,Brasil&output=embed"
-                            title="Mapa de Nova Independência"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== PEREIRA BARRETO ===== -->
-                <article class="mapa-cidade" id="mapa-pereira-barreto" aria-labelledby="mapa-pereira-barreto-titulo">
-                    <h2 class="mapa-titulo" id="mapa-pereira-barreto-titulo">Pereira Barreto</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Pereira Barreto é um marco da imigração japonesa no Brasil. Fundada em 11 de agosto de 1928 com o nome de Novo Oriente, quando a Sociedade Colonizadora do Brasil adquiriu parte das terras, tornou-se município em 1938 e recebeu o nome do médico e cientista Luiz Pereira Barreto. Hoje é Estância Turística, banhada pelo Rio Tietê no reservatório da Usina de Três Irmãos, e famosa pela pesca ao tucunaré e pela Festa das Nações.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Pereira Barreto">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">24.095</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1938</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">974,2 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">pereira-barretense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Praia Municipal Pôr do Sol, praia artificial no Rio Tietê com águas cristalinas, 328 metros de areia e um pôr do sol inesquecível</li>
-                                <li>Canal de Pereira Barreto, com 9,6 km de extensão navegável, que liga os reservatórios de Três Irmãos e Ilha Solteira (obras iniciadas em 1980)</li>
-                                <li>Usina Hidrelétrica de Três Irmãos e Eclusa</li>
-                                <li>Museu Histórico da Colonização (criado em 2001), que conta a história da imigração japonesa</li>
-                                <li>Ponte Novo Oriente: a original, de 1935, está submersa desde 1990 e é visitada por mergulhadores; a atual tem cerca de 2,16 km</li>
-                                <li>Festa das Nações e pesca ao tucunaré</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Pereira Barreto fica a cerca de 621 km da capital, no extremo noroeste paulista, na divisa com Mato Grosso do Sul. É uma das cidades mais estruturadas da região para receber visitantes e um bom ponto de partida para conhecer Ilha Solteira, Sud Mennucci e Suzanápolis.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Pereira+Barreto,SP,Brasil&output=embed"
-                            title="Mapa de Pereira Barreto"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== SUD MENNUCCI ===== -->
-                <article class="mapa-cidade" id="mapa-sud-mennucci" aria-labelledby="mapa-sud-mennucci-titulo">
-                    <h2 class="mapa-titulo" id="mapa-sud-mennucci-titulo">Sud Mennucci</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Sud Mennucci é uma cidade tranquila às margens do Rio Tietê, que ali tem cerca de 30 km dentro do município e chega com águas limpas, repletas de peixes como tucunaré, corvina, pacu e piau. Nasceu como o povoado de Bacuri, ligado a Pereira Barreto, virou distrito em 1948 e município em 1959 (instalado em 1960). Faz parte da Região Turística Pantanal Paulista, é um paraíso para a pesca esportiva e de lazer e tem um pôr do sol de impressionar nas margens do Tietê.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Sud Mennucci">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">7.355</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1959</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">594,5 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">sud-mennucciano</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Rio Tietê: pesca esportiva e de lazer, esportes náuticos e pôr do sol à beira do rio</li>
-                                <li>Encontro de Pesca Esportiva do Tucunaré</li>
-                                <li>Rio São José dos Dourados, que também corta o município</li>
-                                <li>Parque Recanto das Águas, revitalizado com portaria, vestiário e estacionamento</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Sud Mennucci fica a cerca de 620 km da capital paulista, a 176 km de São José do Rio Preto, 121 km de Araçatuba e 113 km de Três Lagoas (MS). Faz divisa com Pereira Barreto e Suzanápolis.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Sud+Mennucci,SP,Brasil&output=embed"
-                            title="Mapa de Sud Mennucci"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== SUZANÁPOLIS ===== -->
-                <article class="mapa-cidade" id="mapa-suzanapolis" aria-labelledby="mapa-suzanapolis-titulo">
-                    <h2 class="mapa-titulo" id="mapa-suzanapolis-titulo">Suzanápolis</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Suzanápolis é um dos municípios mais novos da região. O patrimônio Santo Antônio d’Oeste virou distrito de Pereira Barreto em 1964, passou a se chamar Suzanápolis em 1970, em homenagem a Herna (Susana) Schmidt, esposa do coronel Ernesto Schmidt, e foi emancipado em 1991. A cidade tem 14 córregos de águas de excelente qualidade e o Rio São José dos Dourados, com corredeiras, o que a torna ótima para turismo de pesca, ecoturismo, turismo rural e cultural.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Suzanápolis">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">3.408</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1991</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">330,6 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">suzanapolense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Rio São José dos Dourados (75,7 km dentro do município): pesca de tucunaré, corvina, tilápia e pacu, banhos e passeios de barco</li>
-                                <li>Mata da Suzana, reserva florestal com cerca de 1.900 hectares, rica em fauna e flora</li>
-                                <li>Fazenda Tapir, antiga fazenda do coronel Ernesto Schmidt, e o projeto Safari no Córrego Tapir</li>
-                                <li>Casa de Momentos, referência do turismo cultural</li>
-                                <li>Praça e Igreja do Bairro São Jorge, palco de eventos religiosos durante o ano</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Suzanápolis fica na região noroeste do Estado, vizinha de Pereira Barreto e Sud Mennucci, que formam um bom roteiro de fim de semana pelo Pantanal Paulista (a região fica a pelo menos 650 km da capital).</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Suzanápolis,SP,Brasil&output=embed"
-                            title="Mapa de Suzanápolis"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-
-                <!-- ===== VALPARAÍSO ===== -->
-                <article class="mapa-cidade" id="mapa-valparaiso" aria-labelledby="mapa-valparaiso-titulo">
-                    <h2 class="mapa-titulo" id="mapa-valparaiso-titulo">Valparaíso</h2>
-
-                    <!-- Grade com os 4 painéis de vidro (a posição de cada um é definida no CSS) -->
-                    <div class="cidade__grade">
-
-                        <!-- Painel 1: texto de apresentação -->
-                        <section class="vidro cidade__sobre">
-                            <h3 class="info-subtitulo">Sobre a cidade</h3>
-                            <p class="info-descricao">Valparaíso foi fundada em 1927 por pioneiros que viram na região, abrigada em um vale, um verdadeiro “paraíso”: daí o nome. A Estação Ferroviária foi inaugurada em 1932 e o município foi criado em 1937. Hoje é um dos maiores municípios da região, conhecido pela tradicional Festa do Peão de Boiadeiro, pelas trilhas para motos e pela cultura oriental presente na cidade, e tem aniversário em 30 de maio.</p>
-                        </section>
-
-                        <!-- Painel 2: dados rápidos (população, emancipação, área, gentílico) -->
-                        <section class="vidro cidade__dados" aria-label="Dados de Valparaíso">
-                            <dl class="info-dados">
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">População (Censo 2022)</dt>
-                                    <dd class="info-dado-valor">24.241</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Emancipação</dt>
-                                    <dd class="info-dado-valor">1937</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Área</dt>
-                                    <dd class="info-dado-valor">857,7 km²</dd>
-                                </div>
-                                <div class="info-dado">
-                                    <dt class="info-dado-titulo">Gentílico</dt>
-                                    <dd class="info-dado-valor">valparaisense</dd>
-                                </div>
-                            </dl>
-                        </section>
-
-                        <!-- Painel 3: lista de atrações -->
-                        <section class="vidro cidade__atracoes">
-                            <h3 class="info-subtitulo">Principais atrações</h3>
-                            <ul class="info-lista">
-                                <li>Praça Oscar de Arruda, com o coreto criativo que traz a estátua de um bandeirante e shows em datas comemorativas</li>
-                                <li>Estação Ferroviária de Valparaíso (inaugurada em 1932)</li>
-                                <li>Festa do Peão de Boiadeiro, que movimenta a cidade em maio</li>
-                                <li>Trilhas para motos, queridas pelos motociclistas</li>
-                                <li>Cultura oriental presente na cidade</li>
-                            </ul>
-                        </section>
-
-                        <!-- Painel 4: como chegar -->
-                        <section class="vidro cidade__acesso">
-                            <h3 class="info-subtitulo">Como chegar</h3>
-                            <p class="info-descricao">Valparaíso fica a aproximadamente 560 km da capital paulista e é cortada pela Rodovia Plácido Rocha (SP-541), que a liga a Adamantina. A cidade integra as regiões da Alta Paulista e do Noroeste do Estado.</p>
-                        </section>
-
-                    </div>
-
-                    <!-- Painel do mapa: o endereço fica no "src" do iframe (q=Nome da cidade) -->
-                    <section class="vidro cidade__mapa">
-                        <h3 class="info-subtitulo">Localização</h3>
-                        <iframe
-                            src="https://www.google.com/maps?q=Valparaíso,SP,Brasil&output=embed"
-                            title="Mapa de Valparaíso"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </section>
-
-                    <!-- Botão que rola a página de volta para a lista de cidades -->
-                    <a class="card-botao cidade__voltar" href="#cidades">← Voltar às cidades</a>
-                </article>
-            </section>
-
-            <!-- ============ 5) EVENTOS (id="eventos") ============
+            <!-- ============ F. EVENTOS (id="eventos") ============
                  Carrossel infinito. Os cards NÃO estão aqui: são criados pelo
-                 index.js a partir da lista EVENTOS. Estilo: style.css, bloco "9. EVENTOS". -->
+                 index.js a partir da lista EVENTOS. Estilo: style.css, bloco "8. EVENTOS". -->
             <section
-                class="content-section eventos"
+                class="secao-conteudo eventos"
                 id="eventos"
-                aria-labelledby="eventos-title"
+                aria-labelledby="titulo-eventos"
             >
-                <h2 class="eventos__titulo" id="eventos-title">Eventos</h2>
+                <h2 class="eventos__titulo" id="titulo-eventos">Eventos</h2>
 
                 <!-- Janela que recorta o carrossel; o trilho (ul) é preenchido pelo JavaScript -->
                 <div class="eventos__janela">
@@ -1275,7 +328,9 @@
                     Pausar carrossel
                 </button>
             </section>
+            <!-- ======== FIM: SEÇÃO #eventos ======== -->
         </main>
+        <!-- ======== FIM: CONTEÚDO PRINCIPAL ======== -->
 
         <!-- =================================================================
              RODAPÉ
@@ -1284,13 +339,13 @@
                - Instagram: @rtpantanal
                - Facebook:  /rtpantanalpaulista
                - E-mail:    rtpantanalpaulista@gmail.com
-             Estilo: style.css, bloco "10. RODAPÉ".
+             Estilo: style.css, bloco "12. RODAPÉ".
              ================================================================= -->
-        <footer class="site-footer">
+        <footer class="rodape">
             <!-- Ondas decorativas do fundo (só enfeite: o leitor de tela ignora).
                  Duas peças: uma presa ao topo (mancha amarela) e outra à base. -->
             <svg
-                class="site-footer__decor site-footer__decor--top"
+                class="rodape__decoracao rodape__decoracao--cima"
                 viewBox="0 0 1440 260"
                 preserveAspectRatio="xMinYMin slice"
                 aria-hidden="true"
@@ -1307,7 +362,7 @@
                 />
             </svg>
             <svg
-                class="site-footer__decor site-footer__decor--bottom"
+                class="rodape__decoracao rodape__decoracao--baixo"
                 viewBox="0 0 1440 240"
                 preserveAspectRatio="xMaxYMax slice"
                 aria-hidden="true"
@@ -1325,31 +380,31 @@
                 />
             </svg>
 
-            <div class="site-footer__container">
+            <div class="rodape__conteudo">
                 <!-- Parte de cima: 4 colunas (marca, apresentação, navegação, redes) -->
-                <div class="site-footer__main">
+                <div class="rodape__principal">
                     <!-- Coluna 1: marca (clicar leva ao início) -->
                     <a
-                        class="site-footer__brand"
+                        class="rodape__marca"
                         href="#inicio"
                         aria-label="Pantanal Paulista - voltar ao início"
                     >
-                        <img class="site-footer__logo" src="img/logo.png" alt="" width="160" height="160" />
-                        <span class="site-footer__brand-text">
-                            <span class="site-footer__brand-top">Região Turística</span>
-                            <span class="site-footer__brand-name">Pantanal Paulista</span>
+                        <img class="rodape__logo" src="img/logo.png" alt="" width="160" height="160" />
+                        <span class="rodape__marca-texto">
+                            <span class="rodape__marca-topo">Região Turística</span>
+                            <span class="rodape__marca-nome">Pantanal Paulista</span>
                         </span>
                     </a>
 
                     <!-- Coluna 2: apresentação + botão -->
-                    <div class="site-footer__about">
-                        <h2 class="site-footer__about-title">Descubra o Pantanal Paulista</h2>
+                    <div class="rodape__sobre">
+                        <h2 class="rodape__sobre-titulo">Descubra o Pantanal Paulista</h2>
                         <p>
                             Cidades do extremo noroeste paulista, onde os rios Tietê, Paraná e
                             Aguapeí se encontram: pesca esportiva, praias de água doce, natureza
                             preservada e cultura para toda a família.
                         </p>
-                        <a class="site-footer__button" href="#quem-somos">
+                        <a class="rodape__botao" href="#quem-somos">
                             Saiba mais
                             <span class="material-symbols-rounded" aria-hidden="true"
                                 >arrow_forward</span
@@ -1358,29 +413,31 @@
                     </div>
 
                     <!-- Coluna 3: navegação (mesmos destinos do menu do topo) -->
-                    <nav class="site-footer__col" aria-labelledby="rodape-nav-titulo">
-                        <h2 class="site-footer__col-title" id="rodape-nav-titulo">
+                    <nav class="rodape__coluna" aria-labelledby="rodape-nav-titulo">
+                        <h2 class="rodape__coluna-titulo" id="rodape-nav-titulo">
                             <span class="material-symbols-rounded" aria-hidden="true">eco</span>
                             Navegação
                         </h2>
-                        <ul class="site-footer__list">
+                        <ul class="rodape__lista">
                             <li><a href="#inicio">Início</a></li>
                             <li><a href="#quem-somos">Quem somos</a></li>
-                            <li><a href="#cidades">Cidades</a></li>
+                            <li><a href="cidades.html">Cidades</a></li>
+                            <li><a href="peixes.html">Peixes</a></li>
                             <li><a href="#eventos">Eventos</a></li>
+                            <li><a href="admin.html" class="rodape__admin">Área administrativa (login)</a></li>
                         </ul>
                     </nav>
 
                     <!-- Coluna 4: redes sociais (links reais da Região Turística) -->
-                    <div class="site-footer__col">
-                        <h2 class="site-footer__col-title">
+                    <div class="rodape__coluna">
+                        <h2 class="rodape__coluna-titulo">
                             <span class="material-symbols-rounded" aria-hidden="true">eco</span>
                             Siga-nos
                         </h2>
-                        <p class="site-footer__social-text">
+                        <p class="rodape__redes-texto">
                             Acompanhe nossas redes sociais e fique por dentro das novidades.
                         </p>
-                        <ul class="site-footer__social">
+                        <ul class="rodape__redes">
                             <li>
                                 <a
                                     href="https://www.instagram.com/rtpantanal/"
@@ -1418,11 +475,11 @@
                 </div>
 
                 <!-- Linha de baixo: contato e direitos autorais -->
-                <div class="site-footer__bottom">
-                    <ul class="site-footer__contact">
+                <div class="rodape__base">
+                    <ul class="rodape__contato">
                         <li>
                             <span
-                                class="site-footer__contact-icon material-symbols-rounded"
+                                class="rodape__contato-icone material-symbols-rounded"
                                 aria-hidden="true"
                                 >location_on</span
                             >
@@ -1433,19 +490,19 @@
                         </li>
                         <li>
                             <span
-                                class="site-footer__contact-icon material-symbols-rounded"
+                                class="rodape__contato-icone material-symbols-rounded"
                                 aria-hidden="true"
                                 >mail</span
                             >
                             <span>
                                 <strong>E-mail</strong>
-                                <a href="mailto:rtpantanalpaulista@gmail.com"
+                                <a id="exibe-email" href="mailto:rtpantanalpaulista@gmail.com"
                                     >rtpantanalpaulista@gmail.com</a
                                 >
                             </span>
                         </li>
                         <li>
-                            <span class="site-footer__contact-icon" aria-hidden="true">
+                            <span class="rodape__contato-icone" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" focusable="false">
                                     <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
                                     <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
@@ -1454,7 +511,7 @@
                             </span>
                             <span>
                                 <strong>Instagram</strong>
-                                <a
+                                <a id="exibe-redes"
                                     href="https://www.instagram.com/rtpantanal/"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -1462,15 +519,23 @@
                                 >
                             </span>
                         </li>
+                        <li id="rodape-telefone" hidden>
+                            <span class="rodape__contato-icone material-symbols-rounded" aria-hidden="true">call</span>
+                            <span>
+                                <strong>Telefone</strong>
+                                <span id="exibe-telefone"></span>
+                            </span>
+                        </li>
                     </ul>
 
                     <!-- O ano é atualizado sozinho pelo index.js (2026 é só o valor de reserva). -->
-                    <p class="site-footer__copy">
+                    <p class="rodape__direitos">
                         © <span id="rodape-ano">2026</span> Região Turística Pantanal Paulista.<br />
                         Todos os direitos reservados.
                     </p>
                 </div>
             </div>
         </footer>
+        <!-- ======== FIM: RODAPÉ ======== -->
     </body>
 </html>
