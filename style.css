@@ -1745,7 +1745,7 @@ span.etiqueta-peixe {
 
 .especies {
     display: grid;                                                 /* itens em grade (linhas e colunas) */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* colunas da grade (quantas e de que tamanho) */
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));  /* colunas da grade (quantas e de que tamanho) */
     gap: 28px;                                                     /* espaço entre os itens (aumentar = mais afastados) */
     list-style: none;                                              /* sem bolinhas */
 }
@@ -1768,14 +1768,40 @@ span.etiqueta-peixe {
 .especie__foto {
     position: relative;                                     /* referência para filhos "absolute" */
     aspect-ratio: 16 / 10;                                  /* proporção da caixa (largura / altura) */
-    background: linear-gradient(135deg, #dcebd5, #f3ead7);  /* fundo (cor e/ou imagem) */
+    overflow: hidden;                                       /* esconde o que passa da caixa (o fundo desfocado) */
+    isolation: isolate;                                     /* o fundo desfocado fica preso dentro da caixa */
+    background: linear-gradient(135deg, #dcebd5, #f3ead7);  /* fundo enquanto a foto não carrega */
+    border-bottom: 1px solid rgba(22, 56, 8, 0.08);         /* linha fina separando foto e texto */
+}
+
+/* Fundo desfocado: a própria foto, ampliada e borrada, preenche as sobras
+   para o peixe aparecer INTEIRO (sem cortar cabeça nem cauda).
+   O index.js coloca a foto na variável --foto-fundo quando ela carrega. */
+.especie__foto::before {
+    content: "";
+    position: absolute;                                 /* solto, posicionado dentro do pai */
+    inset: -24px;                                       /* passa um pouco das bordas (esconde a borda do desfoque) */
+    z-index: -1;                                        /* fica atrás da foto */
+    background: var(--foto-fundo, none) center / cover no-repeat;
+    filter: blur(18px) saturate(1.15) brightness(0.92); /* desfoque (aumentar = mais borrado) */
+    opacity: 0.75;                                      /* força do fundo (0 = some, 1 = total) */
 }
 
 .especie__foto img {
-    display: block;     /* ocupa a linha toda */
-    width: 100%;        /* largura (aumentar = mais largo) */
-    height: 100%;       /* altura (aumentar = mais alto) */
-    object-fit: cover;  /* foto preenche a caixa, cortando as sobras */
+    display: block;                        /* ocupa a linha toda */
+    width: 100%;                           /* largura (aumentar = mais largo) */
+    height: 100%;                          /* altura (aumentar = mais alto) */
+    object-fit: contain;                   /* foto inteira dentro da caixa, sem cortar o peixe */
+    object-position: center;               /* foto centralizada */
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18)); /* sombra suave em volta da foto */
+    transition: transform 0.35s ease;      /* animação do zoom ao passar o mouse */
+}
+
+/* Zoom leve ao passar o mouse sobre o cartão. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .especie:hover .especie__foto img {
+        transform: scale(1.04);  /* zoom (aumentar = mais zoom) */
+    }
 }
 
 /* Quando a foto não carrega, o JS esconde a <img> e mostra o ícone. */
@@ -1814,6 +1840,11 @@ span.etiqueta-peixe {
     text-align: left;         /* texto à esquerda */
 }
 
+/* Zera as margens padrão do navegador: o espaço entre os textos vem só do "gap" acima. */
+.especie__corpo > * {
+    margin: 0;
+}
+
 .especie__nome {
     font-family: var(--fonte-titulo);  /* fonte (tipo de letra) */
     font-size: 1.4rem;                 /* tamanho da letra (aumentar = letra maior) */
@@ -1822,6 +1853,7 @@ span.etiqueta-peixe {
 }
 
 .especie__cientifico {
+    margin-top: -6px;  /* cola o nome científico logo abaixo do nome popular */
     font-size: 0.9rem;   /* tamanho da letra (aumentar = letra maior) */
     font-style: italic;  /* letra inclinada */
     color: #5b6b5f;      /* cor do texto */
@@ -1853,6 +1885,9 @@ span.etiqueta-peixe {
 }
 
 .especie__onde {
+    margin-top: auto;                         /* empurra para o pé do cartão (alinha entre cartões da mesma linha) */
+    padding-top: 12px;                        /* espaço acima da linha divisória */
+    border-top: 1px solid rgba(22, 56, 8, 0.1); /* linha fina separando do texto */
     font-size: 0.88rem;  /* tamanho da letra (aumentar = letra maior) */
     line-height: 1.5;    /* altura da linha (aumentar = linhas mais afastadas) */
     color: #5b6b5f;      /* cor do texto */

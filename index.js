@@ -630,8 +630,14 @@
                 caixa.classList.add("sem-foto");
             }
         }
+        // Quando a foto carrega, ela também vira o fundo desfocado do cartão (style.css, .especie__foto::before).
+        function carregou() {
+            caixa.style.setProperty("--foto-fundo", 'url("' + (img.currentSrc || img.src) + '")');
+        }
         img.addEventListener("error", falhou);
-        // Se o erro aconteceu antes de este script rodar:
+        img.addEventListener("load", carregou);
+        // Se o erro/carregamento aconteceu antes de este script rodar:
         if (img.complete && img.naturalWidth === 0) falhou();
+        else if (img.complete) carregou();
     });
 })();
